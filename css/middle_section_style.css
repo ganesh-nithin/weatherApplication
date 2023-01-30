@@ -1,0 +1,141 @@
+@import url(/files/vars.css);
+
+*{
+    padding: 0;
+    margin: 0;
+}
+
+.middle-sec{
+    padding: 15px;
+    color: var(--primary-white);
+    background-color: var(--primary-black);
+}
+
+.header{
+    display: grid;
+    grid-template-columns: .55fr .45fr;
+    padding-bottom: 30px;
+}
+
+.header > .main{
+    justify-self: end;
+    font: 1em sans-serif;
+}
+
+.header > .icons{
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(5,auto);
+    justify-items: center;
+    align-items: flex-end;
+    justify-self: start;
+    padding-left: 185px;
+    
+}
+
+.header > .icons > .border:active{
+    padding: 3px;
+    border-bottom: 2px solid var(--bg-selection-blue);
+}
+
+.header > .icons .dis-top{
+    font: 0.75em sans-serif;
+}
+
+.header > .icons input{
+    background-color: var(--bg-dark-grey-tile);
+    color: var(--primary-white);
+    width: 32px;
+    height: .8em;
+    font-size: 0.75em;
+}
+
+.cards .city{
+    font: 1em sans-serif;
+    display: grid;
+    gap: 5px;
+    grid-template-columns: repeat(3,auto);
+}
+
+.cards .time{
+    font: 0.75em sans-serif;
+    padding: 5px;
+}
+
+.cards .value{
+    display: grid;
+    grid-template-columns: 20px 50px;
+    font: 0.7em sans-serif;
+    padding: 5px;
+}
+
+.cards .city .temp{
+    font-size: 20px;
+}
+
+.cards{
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.cards > .card{
+    min-width: 170px;
+    height: 180px;
+    background-repeat: no-repeat;
+    background-size: 85%;
+    background-position: bottom right;
+    background-color: var(--bg-dark-grey-tile);
+    text-align: start;
+    padding: 15px;
+}
+
+.cards > .card:hover{
+    transform: scale(1.1);
+}
+
+.cards > .card1{
+    background-image: url("/Icons for cities/brokenhill.svg");
+}
+
+.cards > .card2{
+    background-image: url("/Icons for cities/vostok.svg");
+}
+
+.cards > .card3{
+    background-image: url("/Icons for cities/auckland.svg");
+    
+}
+
+.cards > .card4{
+    background-image: url("/Icons for cities/bangkok.svg");
+}
+
+.cards::-webkit-scrollbar {
+    display: none;
+}
+
+.cards .img{
+    padding-left: 15px;
+}
+
+@media screen and (max-width: 850px){
+
+    .header{
+        grid-template-columns: .5fr .5fr;
+    }
+
+    .header > .main{
+        justify-self: center;
+    }
+
+    .header > .icons{
+        padding-left: 0px;
+        justify-self: end;
+    }
+
+    .cards{
+        overflow-x: scroll;
+        justify-content: flex-start;
+    }
+}
