@@ -90,7 +90,7 @@ body{
     color: var(--bright-yellow-text);
 }
 
-.top-sec span.small{
+.top-sec span.seconds{
     font-size: 11px;
     padding: 2px;
 }
