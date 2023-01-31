@@ -9,20 +9,22 @@
     padding: 15px;
     color: var(--primary-white);
     background-color: var(--primary-black);
+    border-top-left-radius: 10%;
+    border-top-right-radius: 10%;
 }
 
-.header{
+.middle-sec .header{
     display: grid;
     grid-template-columns: .55fr .45fr;
     padding-bottom: 30px;
 }
 
-.header > .main{
+.middle-sec .header > .main{
     justify-self: end;
     font: 1em sans-serif;
 }
 
-.header > .icons{
+.middle-sec .header > .icons{
     display: grid;
     gap: 8px;
     grid-template-columns: repeat(5,auto);
@@ -33,16 +35,16 @@
     
 }
 
-.header > .icons > .border:active{
+.middle-sec .header > .icons > .border:active{
     padding: 3px;
     border-bottom: 2px solid var(--bg-selection-blue);
 }
 
-.header > .icons .dis-top{
+.middle-sec .header > .icons .dis-top{
     font: 0.75em sans-serif;
 }
 
-.header > .icons input{
+.middle-sec .header > .icons input{
     background-color: var(--bg-dark-grey-tile);
     color: var(--primary-white);
     width: 32px;
@@ -50,36 +52,36 @@
     font-size: 0.75em;
 }
 
-.cards .city{
+.middle-sec .cards .city{
     font: 1em sans-serif;
     display: grid;
     gap: 5px;
     grid-template-columns: repeat(3,auto);
 }
 
-.cards .time{
+.middle-sec .cards .time{
     font: 0.75em sans-serif;
     padding: 5px;
 }
 
-.cards .value{
+.middle-sec .cards .value{
     display: grid;
     grid-template-columns: 20px 50px;
     font: 0.7em sans-serif;
     padding: 5px;
 }
 
-.cards .city .temp{
+.middle-sec .cards .city .temp{
     font-size: 20px;
 }
 
-.cards{
+.middle-sec .cards{
     display: flex;
     justify-content: center;
     gap: 30px;
 }
 
-.cards > .card{
+.middle-sec .cards > .card{
     min-width: 170px;
     height: 180px;
     background-repeat: no-repeat;
@@ -90,51 +92,43 @@
     padding: 15px;
 }
 
-.cards > .card:hover{
+.middle-sec .cards > .card:hover{
     transform: scale(1.1);
 }
 
-.cards > .card1{
+.middle-sec .cards > .card1{
     background-image: url("/Icons for cities/brokenhill.svg");
 }
 
-.cards > .card2{
+.middle-sec .cards > .card2{
     background-image: url("/Icons for cities/vostok.svg");
 }
 
-.cards > .card3{
+.middle-sec .cards > .card3{
     background-image: url("/Icons for cities/auckland.svg");
     
 }
 
-.cards > .card4{
+.middle-sec .cards > .card4{
     background-image: url("/Icons for cities/bangkok.svg");
 }
 
-.cards::-webkit-scrollbar {
+.middle-sec .cards::-webkit-scrollbar {
     display: none;
 }
 
-.cards .img{
+.middle-sec .cards .img{
     padding-left: 15px;
 }
 
-@media screen and (max-width: 850px){
+@media screen and (max-width: 900px){
 
-    .header{
-        grid-template-columns: .5fr .5fr;
-    }
-
-    .header > .main{
-        justify-self: center;
-    }
-
-    .header > .icons{
+    .middle-sec .header > .icons{
         padding-left: 0px;
         justify-self: end;
     }
 
-    .cards{
+    .middle-sec .cards{
         overflow-x: scroll;
         justify-content: flex-start;
     }
