@@ -3,6 +3,7 @@
 *{
     padding: 0;
     margin: 0;
+    box-sizing: border-box;
 }
 
 .bottom-sec{
@@ -48,7 +49,7 @@
 }
 
 @keyframes color-change{
-    0%   {background-color: rgb(238, 182, 182);transform: scale(1.05);}
+    0%   {background-color: rgb(32, 24, 24);transform: scale(1.05);}
     100% {background-color: rgb(1, 9, 1);transform: scale(1.1);}
   }
 
