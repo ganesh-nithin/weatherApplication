@@ -1,4 +1,4 @@
-@import url(/files/vars.css);
+@import url(/Assets/files/vars.css);
 
 *{
     padding: 0;
@@ -24,7 +24,7 @@ div.main {
     justify-content: center;
     align-items: center;
     height: 170px;
-    background-image: url("/General Images & Icons/background.svg");
+    background-image: url("/Assets/General Images & Icons/background.svg");
     background-repeat: no-repeat;
     background-size: cover;
 }
