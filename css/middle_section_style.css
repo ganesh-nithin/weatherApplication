@@ -1,4 +1,4 @@
-@import url(/files/vars.css);
+@import url(/Assets/files/vars.css);
 
 *{
     padding: 0;
@@ -98,24 +98,24 @@
 }
 
 .middle-sec .cards > .card1{
-    background-image: url("/Icons for cities/brokenhill.svg");
+    background-image: url("/Assets/Icons for cities/brokenhill.svg");
 }
 
 .middle-sec .cards > .card2{
-    background-image: url("/Icons for cities/vostok.svg");
+    background-image: url("/Assets/Icons for cities/vostok.svg");
 }
 
 .middle-sec .cards > .card3{
-    background-image: url("/Icons for cities/auckland.svg");
+    background-image: url("/Assets/Icons for cities/auckland.svg");
     
 }
 
 .middle-sec .cards > .card4{
-    background-image: url("/Icons for cities/bangkok.svg");
+    background-image: url("/Assets/Icons for cities/bangkok.svg");
 }
 
 .middle-sec .cards > .card5{
-    background-image: url("/Icons for cities/maseru.svg");
+    background-image: url("/Assets/Icons for cities/maseru.svg");
 }
 
 .middle-sec .cards::-webkit-scrollbar {
