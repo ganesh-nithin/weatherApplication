@@ -85,7 +85,7 @@ span.time{
     color: var(--bright-yellow-text);
 }
 
-span.small{
+span.seconds{
     font-size: 11px;
     padding: 2px;
 }
