@@ -13,7 +13,7 @@ select{
     color: var(--primary-white);
 }
 
-ul > li {
+div > p {
     list-style-type: none;
 }
 
@@ -52,26 +52,26 @@ div.right{
     align-items: center;
 }
 
-ul.img{
+div.img{
     grid-column: 1 / 2;
     grid-row: 1 / 2;
 }
 
-ul.city{
+div.city{
     position: relative;
     grid-column: 2 / 3;
     grid-row: 1 / 2;
     
 }
 
-ul.time{
+div.time{
     grid-column: 2 / 3;
     grid-row: 2 / 3;
     text-align: start;
     margin-right: 10px;
 }
 
-li.time{
+p.time{
     display: grid;
     grid-template-columns: 0.4fr 0.35fr 0.8fr;
     padding: 0;
@@ -88,24 +88,24 @@ span.seconds{
     padding: 2px;
 }
 
-li.date{
+p.date{
     font: 14px Arial, Helvetica, sans-serif;
     color: var(--pale-yellow-text);
     padding-top: 2px;
 }
 
-li.weather{
+p.weather{
     font: 13px sans-serif;
     color: var(--primary-white);
     padding-bottom: 10px;
 }
 
-li.wth-value{
+p.wth-value{
     font: bold 18px sans-serif;  
     color: var(--primary-white);
 }
 
-ul.dot-bar{
+div.dot-bar{
     border-right:  var(--light-blue-border) 1px dotted;
     padding-right: 15px;
 }
@@ -116,12 +116,12 @@ div.line{
     padding-bottom: 35px;
 }
 
-ul.center {
+div.center {
     text-align: center;
     padding-bottom: 2px;
 }
 
-li.center-text{
+p.center-text{
     font: 11px sans-serif;
     color: var(--primary-white);
     padding-bottom: 5px;
