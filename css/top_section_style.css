@@ -7,7 +7,7 @@
 }
 
 body{
-    height: 180px;
+    height: 100vh;
     background-image: url("/Assets/General Images & Icons/background.svg");
     background-repeat: no-repeat;
     background-size: cover;
