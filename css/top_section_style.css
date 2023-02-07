@@ -14,10 +14,11 @@ body{
 }
 
 .top-sec .header{
-    padding: 15px;
+    padding: 30px 0px;
 }
 
 .top-sec select{
+    width: 200px;
     font: 1.5em Courier,'Courier New', monospace;
     background-color: var(--bg-grey-tile);
     padding: 5px;
@@ -30,10 +31,9 @@ body{
 }
 
 .top-sec div.header {
-    display: grid;
-    grid-template-columns: repeat(3,auto);
-    gap: 40px;
-    justify-content: center;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
     align-items: center;
 }
 
@@ -55,7 +55,7 @@ body{
     display: grid;
     padding-top: 40px;
     grid-template-columns: repeat(11,auto);
-    gap: 20px;
+    gap: 25px;
     justify-content: center;
     align-items: center;
 }
@@ -76,40 +76,42 @@ body{
     grid-column: 2 / 3;
     grid-row: 2 / 3;
     text-align: start;
+    align-items: flex-start;
     margin-right: 10px;
 }
 
 .top-sec p.time{
     display: grid;
-    grid-template-columns: 0.4fr 0.35fr 0.8fr;
+    grid-template-columns: 0.4fr 0.23fr 0.8fr;
     padding: 0;
     align-items: flex-end;
 }
 
 .top-sec span.time{
-    font-family: Arial, Helvetica, sans-serif;
+    font: 1.5em Arial, Helvetica, sans-serif;
     color: var(--bright-yellow-text);
 }
 
 .top-sec span.seconds{
-    font-size: 11px;
+    font-size: 1em;
     padding: 2px;
 }
 
 .top-sec p.date{
-    font: 14px Arial, Helvetica, sans-serif;
+    font-size: 1.5em;
+    font: 1em Arial, Helvetica, sans-serif;
     color: var(--pale-yellow-text);
     padding-top: 2px;
 }
 
 .top-sec p.weather{
-    font: 13px sans-serif;
+    font: 1.25em sans-serif;
     color: var(--primary-white);
     padding-bottom: 10px;
 }
 
 .top-sec p.wth-value{
-    font: bold 18px sans-serif;  
+    font: bold 1.75em sans-serif;  
     color: var(--primary-white);
 }
 
@@ -119,20 +121,57 @@ body{
 }
 
 .top-sec div.line{
-    font: 11px sans-serif;
+    font: 1.05em sans-serif;
     color: var(--primary-white);
-    padding-bottom: 35px;
+    padding-bottom: 44px;
 }
 
 .top-sec div.center {
     text-align: center;
-    padding-bottom: 2px;
 }
 
 .top-sec p.center-text{
-    font: 11px sans-serif;
+    font: 1.05em sans-serif;
     color: var(--primary-white);
     padding-bottom: 5px;
+}
+
+ p.tooltip {
+    position: relative;
+    display: inline-block;
+}
+  
+ p.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: var(--bg-grey-tile);
+    color: var(--primary-white);
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+  
+p.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--bg-grey-tile) transparent transparent transparent;
+}
+  
+p.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
 }
 
 @media screen and (max-width: 880px) {
