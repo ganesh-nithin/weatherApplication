@@ -14,12 +14,11 @@
     <section class="top-sec">
         <div class="header">
             <div class="left">
-                <img class="img" src="/Assets/Icons for cities/london.svg" alt="london" width="100" height="100">
+                <img id="city-img" class="img" src="/Assets/Icons for cities/london.svg" alt="london" width="100" height="100">
                 <div class="city">
-                    <label for="cities"></label>
-                    <select name="cities" id="cities">
-                        <option value="london">London</option>
-                    </select>
+                    <input list="cities" name="cities" id="input-city">
+                    <datalist id="cities">
+                    </datalist>
                 </div>
                 <div class="time">
                     <p class="time">
@@ -316,5 +315,6 @@
             </div>
         </div>
     </section>
+    <script type="module" src="/t1001.js"></script>
 </body>
 </html>
