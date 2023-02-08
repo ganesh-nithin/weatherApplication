@@ -26,19 +26,20 @@
 }
 
 .middle-sec .header > .icons{
-    display: grid;
-    gap: 8px;
+    display: flex;
+    gap: 13px;
+    height: 30px;
     position: sticky;
     grid-template-columns: repeat(5,auto);
     justify-items: center;
-    align-items: flex-end;
+    align-items: start;
     justify-self: end;
     padding-right: 185px;
 }
 
-.middle-sec .header > .icons > .border:active{
-    padding: 3px;
-    border-bottom: 2px solid var(--bg-selection-blue);
+.middle-sec .header > .icons .border{
+    padding-bottom: 3px;
+    border-bottom: 1px solid rebeccapurple;
 }
 
 .middle-sec .header > .icons .display-top{
@@ -48,8 +49,8 @@
 .middle-sec .header > .icons input{
     background-color: var(--bg-dark-grey-tile);
     color: var(--primary-white);
-    width: 32px;
-    height: 1.1em;
+    width: 35px;
+    height: 1.3em;
     font-size: 0.9em;
 }
 
