@@ -19,7 +19,7 @@ body{
 
 .top-sec select{
     width: 200px;
-    font: 1.5em Courier,'Courier New', monospace;
+    font: 1.5em Arial, Helvetica, sans-serif;
     background-color: var(--bg-grey-tile);
     padding: 5px;
     padding-right: 12px;
