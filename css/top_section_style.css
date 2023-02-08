@@ -28,7 +28,7 @@ body{
 
 .top-sec .incorrect{
     border-color: var(--bright-red-border);
-    background-color: var(--bg-input-box-error);
+    background-color: var(--bright-red-border);
 }
 
 .top-sec div > p {

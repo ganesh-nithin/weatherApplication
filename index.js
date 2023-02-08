@@ -17,6 +17,8 @@ function indexFunction() {
   }
   var my_list = document.getElementById("cities");
   my_list.innerHTML = str;
+  document.getElementById("input-city").value = "Kolkata";
+  changeFeatures("kolkata");
 }
 
 function changeIcon(city) {
@@ -100,6 +102,7 @@ function changeWeatherIconData(temperature, number) {
 function changeNextFiveHrs(weatherData, timeZone, currentTemp) {
   let hour = parseInt(getTime(timeZone).split(":")[0]);
   changeWeatherIconData(currentTemp, 0);
+  document.getElementById("time0").innerHTML = "NOW";
   for (let i = 1; i < 5; i++) {
     let displayHour = hour + i;
     if (displayHour <= 12 || displayHour >= 24) {
@@ -112,6 +115,42 @@ function changeNextFiveHrs(weatherData, timeZone, currentTemp) {
   }
 }
 
+function changeFeatures(key) {
+  changeIcon(weatherData[key].cityName);
+  changeDateTime(weatherData[key].timeZone, weatherData[key].dateAndTime);
+  changeWeatherData(
+    weatherData[key].temperature,
+    weatherData[key].humidity,
+    weatherData[key].precipitation
+  );
+  changeNextFiveHrs(
+    weatherData[key].nextFiveHrs,
+    weatherData[key].timeZone,
+    weatherData[key].temperature
+  );
+}
+
+function showNILValues() {
+  document.getElementById("city-img").src = "";
+  document.getElementById("city-img").alt = "NIL";
+  if (timerId) {
+    clearInterval(timerId);
+  }
+  document.getElementById("hour-minutes").innerHTML = "NIL:NIL";
+  document.getElementById("seconds").innerHTML = "NIL";
+  document.getElementById("date-id").innerHTML = "NIL-NIL-NIL";
+  document.getElementById("temperature-celsius").innerHTML = "NIL";
+  document.getElementById("humidity").innerHTML = "NIL";
+  document.getElementById("temperature-fahrenheit").innerHTML = "NIL";
+  document.getElementById("precipitation").innerHTML = "NIL";
+  for (let i = 0; i <= 4; i++) {
+    document.getElementById(`time${i}`).innerHTML = "NIL";
+    document.getElementById(`weatherImg${i}`).src = "NIL";
+    document.getElementById(`weatherImg${i}`).alt = "";
+    document.getElementById(`temp${i}`).innerHTML = "NIL";
+  }
+}
+
 function changeCity() {
   let city = document.getElementById("input-city");
   let cityVal = city.value;
@@ -121,22 +160,12 @@ function changeCity() {
     if (weatherData[key].cityName == cityVal) {
       isCorrect = true;
       city.className = "";
-      changeIcon(cityVal);
-      changeDateTime(weatherData[key].timeZone, weatherData[key].dateAndTime);
-      changeWeatherData(
-        weatherData[key].temperature,
-        weatherData[key].humidity,
-        weatherData[key].precipitation
-      );
-      changeNextFiveHrs(
-        weatherData[key].nextFiveHrs,
-        weatherData[key].timeZone,
-        weatherData[key].temperature
-      );
+      changeFeatures(key);
     }
   }
   if (!isCorrect) {
     city.className = "incorrect";
+    showNILValues();
   }
 }
 
