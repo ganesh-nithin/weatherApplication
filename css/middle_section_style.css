@@ -1,0 +1,162 @@
+@import url(/Assets/files/vars.css);
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.middle-sec{
+    color: var(--primary-white);
+    background-color: var(--primary-black);
+}
+
+.middle-sec .header{
+    display: grid;
+    position: sticky;
+    top: 0px;
+    background-color: var(--primary-black);
+    grid-template-columns: .55fr .45fr;
+    padding: 20px;
+}
+
+.middle-sec .header > .main{
+    justify-self: end;
+    font: 1.25em sans-serif;
+}
+
+.middle-sec .header > .icons{
+    display: flex;
+    gap: 13px;
+    height: 30px;
+    position: sticky;
+    grid-template-columns: repeat(5,auto);
+    justify-items: center;
+    align-items: start;
+    justify-self: end;
+    padding-right: 185px;
+}
+
+.middle-sec .header > .icons .border{
+    padding-bottom: 3px;
+    border-bottom: 1px solid rebeccapurple;
+}
+
+.middle-sec .header > .icons .display-top{
+    font: 0.9em sans-serif;
+}
+
+.middle-sec .header > .icons input{
+    background-color: var(--bg-dark-grey-tile);
+    color: var(--primary-white);
+    width: 35px;
+    height: 1.3em;
+    font-size: 0.9em;
+}
+
+.middle-sec .cards .city{
+    font: 1.2em sans-serif;
+    display: grid;
+    gap: 5px;
+    grid-template-columns: repeat(3,auto);
+    padding: 5px;
+}
+
+.middle-sec .cards .time{
+    font: 1em sans-serif;
+    padding: 5px;
+}
+
+.middle-sec .cards .value{
+    display: grid;
+    grid-template-columns: 20px 60px;
+    font: 1em sans-serif;
+    padding: 5px;
+}
+
+.middle-sec .cards .city .temp{
+    font-size: 1em;
+}
+
+.middle-sec .cards .city .img{
+    padding: 0;
+}
+
+.middle-sec .cards{
+    display: flex;
+    margin: 0 auto;
+    max-width: 1150px;
+    overflow-x: scroll;
+    gap: 50px;
+    padding: 20px 0px;
+}
+
+.middle-sec .cards > .card{
+    min-width: 250px;
+    height: 270px;
+    background-repeat: no-repeat;
+    background-size: 85%;
+    background-position: bottom right;
+    background-color: var(--bg-dark-grey-tile);
+    text-align: start;
+    padding: 15px;
+}
+
+.middle-sec .cards > .card:hover{
+    transform: scale(1.1);
+}
+
+.middle-sec .cards > .card1{
+    background-image: url("/Assets/Icons for cities/brokenhill.svg");
+}
+
+.middle-sec .cards > .card2{
+    background-image: url("/Assets/Icons for cities/vostok.svg");
+}
+
+.middle-sec .cards > .card3{
+    background-image: url("/Assets/Icons for cities/auckland.svg");
+    
+}
+
+.middle-sec .cards > .card4{
+    background-image: url("/Assets/Icons for cities/bangkok.svg");
+}
+
+.middle-sec .cards > .card5{
+    background-image: url("/Assets/Icons for cities/maseru.svg");
+}
+
+.middle-sec .cards::-webkit-scrollbar {
+    display: none;
+}
+
+.middle-sec .cards .img{
+    padding-left: 15px;
+}
+
+@media screen and (max-width: 1170px){
+
+    .middle-sec .header > .icons{
+        padding-left: 0px;
+        justify-self: center;
+        padding-right: 10px;
+    }
+
+    .middle-sec .cards{
+        max-width: 845px;
+        
+    }
+}
+
+@media screen and (max-width: 900px){
+
+    .middle-sec .header > .icons{
+        padding-right: 0px;
+    }
+
+    .middle-sec .cards{
+        max-width: 550px;
+    }
+}
+
