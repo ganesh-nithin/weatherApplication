@@ -17,7 +17,7 @@ body{
     padding: 30px 0px;
 }
 
-.top-sec select{
+.top-sec input{
     width: 200px;
     font: 1.5em Arial, Helvetica, sans-serif;
     background-color: var(--bg-grey-tile);
@@ -28,7 +28,7 @@ body{
 
 .top-sec .incorrect{
     border-color: var(--bright-red-border);
-    background-color: var(--bright-red-border);
+    background-color: var(--bg-input-box-error);
 }
 
 .top-sec div > p {
@@ -59,7 +59,7 @@ body{
 .top-sec div.right{
     display: grid;
     padding-top: 40px;
-    grid-template-columns: repeat(11,auto);
+    grid-template-columns: repeat(9,auto);
     gap: 25px;
     justify-content: center;
     align-items: center;
@@ -87,7 +87,7 @@ body{
 
 .top-sec p.time{
     display: grid;
-    grid-template-columns: 0.4fr 0.23fr 0.8fr;
+    grid-template-columns: 0.3fr 0.23fr 0.8fr;
     padding: 0;
     align-items: flex-end;
 }

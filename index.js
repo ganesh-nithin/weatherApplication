@@ -41,18 +41,16 @@ function changeDate(date) {
     "Nov",
     "Dec",
   ];
-  let dateStr = date[1] + "-" + months[parseInt(date[0]) - 1] + "-" + date[2];
+  let dateStr = date[1] + "-" + months[date[0] - 1] + "-" + date[2];
   document.getElementById("date-id").innerHTML = dateStr;
 }
 
 function getTime(timeZone) {
-  let time = new Date().toLocaleString("en-US", {
+  return new Date().toLocaleString("en-US", {
     timeZone: timeZone,
     timeStyle: "medium",
     hourCycle: "h24",
   });
-
-  return time;
 }
 
 function changeDateTime(timeZone, dateAndTime) {
@@ -64,7 +62,14 @@ function changeDateTime(timeZone, dateAndTime) {
     let time = getTime(timeZone).split(":");
     document.getElementById("hour-minutes").innerHTML =
       (time[0] % 12) + ":" + time[1];
-    document.getElementById("seconds").innerHTML = time[2];
+    document.getElementById("seconds").innerHTML = ":" + time[2];
+    if (time[0] >= 0 && time[0] <= 11) {
+      document.getElementById("stateIcon").src =
+        "/Assets/General Images & Icons/amState.svg";
+    } else {
+      document.getElementById("stateIcon").src =
+        "/Assets/General Images & Icons/pmState.svg";
+    }
   }, 100);
 
   changeDate(dateAndTime.split(",")[0].split("/"));
@@ -97,6 +102,7 @@ function changeWeatherIconData(temperature, number) {
 
   document.getElementById(`temp${number}`).innerHTML = temperature;
   image.src = "/Assets/Weather Icons/" + icon + "Icon.svg";
+  image.title = icon;
 }
 
 function changeNextFiveHrs(weatherData, timeZone, currentTemp) {
@@ -132,12 +138,14 @@ function changeFeatures(key) {
 
 function showNILValues() {
   document.getElementById("city-img").src = "";
-  document.getElementById("city-img").alt = "NIL";
+  document.getElementById("city-img").alt = "";
   if (timerId) {
     clearInterval(timerId);
   }
   document.getElementById("hour-minutes").innerHTML = "NIL:NIL";
-  document.getElementById("seconds").innerHTML = "NIL";
+  document.getElementById("seconds").innerHTML = ":NIL";
+  document.getElementById("stateIcon").src = "";
+  document.getElementById("stateIcon").alt = "";
   document.getElementById("date-id").innerHTML = "NIL-NIL-NIL";
   document.getElementById("temperature-celsius").innerHTML = "NIL";
   document.getElementById("humidity").innerHTML = "NIL";
@@ -146,6 +154,7 @@ function showNILValues() {
   for (let i = 0; i <= 4; i++) {
     document.getElementById(`time${i}`).innerHTML = "NIL";
     document.getElementById(`weatherImg${i}`).src = "NIL";
+    document.getElementById(`weatherImg${i}`).title = "";
     document.getElementById(`weatherImg${i}`).alt = "";
     document.getElementById(`temp${i}`).innerHTML = "NIL";
   }
