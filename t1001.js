@@ -4,7 +4,6 @@ fetch("/Assets/files/data.json")
   .then((myJson) => myJson.json())
   .then((json) => {
     weatherData = json;
-    console.log(weatherData);
     indexFunction();
   });
 
@@ -44,23 +43,28 @@ function changeDate(date) {
   document.getElementById("date-id").innerHTML = dateStr;
 }
 
+function getTime(timeZone) {
+  let time = new Date().toLocaleString("en-US", {
+    timeZone: timeZone,
+    timeStyle: "medium",
+    hourCycle: "h24",
+  });
+
+  return time;
+}
+
 function changeDateTime(timeZone, dateAndTime) {
   if (timerId) {
     clearInterval(timerId);
   }
 
   timerId = setInterval(() => {
-    let date = new Date()
-      .toLocaleString("en-US", {
-        timeZone: timeZone,
-        timeStyle: "medium",
-        hourCycle: "h24",
-      })
-      .split(":");
+    let time = getTime(timeZone).split(":");
     document.getElementById("hour-minutes").innerHTML =
-      (date[0] % 12) + ":" + date[1];
-    document.getElementById("seconds").innerHTML = date[2];
+      (time[0] % 12) + ":" + time[1];
+    document.getElementById("seconds").innerHTML = time[2];
   }, 100);
+
   changeDate(dateAndTime.split(",")[0].split("/"));
 }
 
@@ -72,6 +76,40 @@ function changeWeatherData(temperature, humidity, precipitation) {
   document.getElementById("humidity").innerHTML = humidity;
   document.getElementById("precipitation").innerHTML = precipitation;
   document.getElementById("temperature-fahrenheit").innerHTML = fahrenheit;
+}
+
+function changeWeatherIconData(temperature, number) {
+  let tempVal = parseInt(temperature.slice(0, -2));
+  let image = document.getElementById(`weatherImg${number}`);
+  let icon;
+
+  if (tempVal < 18) {
+    icon = "rainy";
+  } else if (tempVal >= 18 && tempVal <= 22) {
+    icon = "windy";
+  } else if (tempVal >= 23 && tempVal <= 29) {
+    icon = "cloudy";
+  } else {
+    icon = "sunny";
+  }
+
+  document.getElementById(`temp${number}`).innerHTML = temperature;
+  image.src = "/Assets/Weather Icons/" + icon + "Icon.svg";
+}
+
+function changeNextFiveHrs(weatherData, timeZone, currentTemp) {
+  let hour = parseInt(getTime(timeZone).split(":")[0]);
+  changeWeatherIconData(currentTemp, 0);
+  for (let i = 1; i < 5; i++) {
+    let displayHour = hour + i;
+    if (displayHour <= 12 || displayHour >= 24) {
+      displayHour = (displayHour % 24) + "AM";
+    } else {
+      displayHour = (displayHour % 12) + "PM";
+    }
+    document.getElementById(`time${i}`).innerHTML = displayHour;
+    changeWeatherIconData(weatherData[i - 1], i);
+  }
 }
 
 function changeCity() {
@@ -89,6 +127,11 @@ function changeCity() {
         weatherData[key].temperature,
         weatherData[key].humidity,
         weatherData[key].precipitation
+      );
+      changeNextFiveHrs(
+        weatherData[key].nextFiveHrs,
+        weatherData[key].timeZone,
+        weatherData[key].temperature
       );
     }
   }
