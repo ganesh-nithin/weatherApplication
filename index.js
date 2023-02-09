@@ -24,6 +24,7 @@ function indexFunction() {
 function changeIcon(city) {
   let image = document.getElementById("city-img");
   image.src = "/Assets/Icons for cities/" + city.toLowerCase() + ".svg";
+  image.style.visibility = "visible";
 }
 
 function changeDate(date) {
@@ -57,6 +58,7 @@ function changeDateTime(timeZone, dateAndTime) {
   if (timerId) {
     clearInterval(timerId);
   }
+  document.getElementById("stateIcon").style.visibility = "visible";
 
   timerId = setInterval(() => {
     let time = getTime(timeZone).split(":");
@@ -103,6 +105,7 @@ function changeWeatherIconData(temperature, number) {
   document.getElementById(`temp${number}`).innerHTML = temperature;
   image.src = "/Assets/Weather Icons/" + icon + "Icon.svg";
   image.title = icon;
+  image.style.visibility = "visible";
 }
 
 function changeNextFiveHrs(weatherData, timeZone, currentTemp) {
@@ -122,6 +125,7 @@ function changeNextFiveHrs(weatherData, timeZone, currentTemp) {
 }
 
 function changeFeatures(key) {
+  document.getElementById("invalid-input").style.display = "none";
   changeIcon(weatherData[key].cityName);
   changeDateTime(weatherData[key].timeZone, weatherData[key].dateAndTime);
   changeWeatherData(
@@ -137,14 +141,16 @@ function changeFeatures(key) {
 }
 
 function showNILValues() {
-  document.getElementById("city-img").src = "";
-  document.getElementById("city-img").alt = "";
   if (timerId) {
     clearInterval(timerId);
   }
+
+  document.getElementById("invalid-input").style.display = "block";
+  document.getElementById("city-img").style.visibility = "hidden";
+  document.getElementById("city-img").alt = "";
   document.getElementById("hour-minutes").innerHTML = "NIL:NIL";
   document.getElementById("seconds").innerHTML = ":NIL";
-  document.getElementById("stateIcon").src = "";
+  document.getElementById("stateIcon").style.visibility = "hidden";
   document.getElementById("stateIcon").alt = "";
   document.getElementById("date-id").innerHTML = "NIL-NIL-NIL";
   document.getElementById("temperature-celsius").innerHTML = "NIL";
@@ -153,7 +159,7 @@ function showNILValues() {
   document.getElementById("precipitation").innerHTML = "NIL";
   for (let i = 0; i <= 4; i++) {
     document.getElementById(`time${i}`).innerHTML = "NIL";
-    document.getElementById(`weatherImg${i}`).src = "NIL";
+    document.getElementById(`weatherImg${i}`).style.visibility = "hidden";
     document.getElementById(`weatherImg${i}`).title = "";
     document.getElementById(`weatherImg${i}`).alt = "";
     document.getElementById(`temp${i}`).innerHTML = "NIL";

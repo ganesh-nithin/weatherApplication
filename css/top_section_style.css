@@ -26,6 +26,11 @@ body{
     color: var(--primary-white);
 }
 
+.top-sec .city .error-input{
+    color:var(--primary-white);
+    padding-top: 8px;
+}
+
 .top-sec .incorrect{
     border-color: var(--bright-red-border);
     background-color: var(--bg-input-box-error);

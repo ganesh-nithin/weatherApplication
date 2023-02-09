@@ -24,13 +24,16 @@
           <div class="city">
             <input list="cities" name="cities" id="input-city" />
             <datalist id="cities"> </datalist>
+            <p id="invalid-input" class="error-input" style="display: none">
+              Please select in the given list of cities.
+            </p>
           </div>
           <div class="time">
             <p class="time">
               <span class="time" id="hour-minutes">10:10</span>
               <span class="time seconds" id="seconds">:40</span>
               <img
-              id="stateIcon"
+                id="stateIcon"
                 src="/Assets/General Images & Icons/amState.svg"
                 alt="AM"
                 width="50"
