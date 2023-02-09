@@ -208,3 +208,107 @@ function changeCity() {
 }
 
 document.getElementById("input-city").addEventListener("change", changeCity);
+
+function getTime12Hrs(timeZone) {
+  return new Date().toLocaleString("en-US", {
+    timeZone: timeZone,
+    timeStyle: "medium",
+    hourCycle: "h12",
+  });
+}
+
+function arrangeCardsInContainer(cities, weatherCondition) {
+  let str = "";
+  let cardsContainer = document.getElementById("cards");
+
+  for (let i = 0; i < cities.length; i++) {
+    str += `<div class="card" id=card${i}>
+      <p class="city">
+        ${cities[i].cityName}
+        <img
+          class="img"
+          src="/Assets/Weather Icons/${weatherCondition}Icon.svg"
+          alt="${weatherCondition}Icon"
+          width="18"
+          height="18"
+        />
+        <span class="temp">${cities[i].temperature}</span>
+      </p>
+      <p class="time">${getTime12Hrs(cities[i].timeZone)}</p>
+      <p class="time">${cities[i].dateAndTime.split(",")[0]}</p>
+      <p class="value">
+        <img
+          src="/Assets/Weather Icons/humidityIcon.svg"
+          alt="humidityIcon"
+          width="15"
+          height="15"
+        />
+        ${cities[i].humidity}
+      </p>
+      <p class="value">
+        <img
+          src="/Assets/Weather Icons/precipitationIcon.svg"
+          alt="precipitationIcon"
+          width="15"
+          height="15"
+        />
+        ${cities[i].precipitation}
+      </p>
+    </div>`;
+  }
+  cardsContainer.innerHTML = str;
+  for (let i = 0; i < cities.length; i++) {
+    document.getElementById(
+      `card${i}`
+    ).style.backgroundImage = `url(/Assets/Icons%20for%20cities/${cities[
+      i
+    ].cityName.toLowerCase()}.svg)`;
+  }
+}
+
+function filterSunnyCards() {
+  let sunnyCities = [];
+
+  for (let key in weatherData) {
+    let temperatureValue = parseInt(weatherData[key].temperature);
+    let humidityValue = parseInt(weatherData[key].humidity);
+    let precipitationValue = parseInt(weatherData[key].precipitation);
+    if (
+      temperatureValue > 29 &&
+      humidityValue < 50 &&
+      precipitationValue >= 50
+    ) {
+      sunnyCities.push(weatherData[key]);
+    }
+  }
+  sunnyCities = sunnyCities.sort((temperature1, temperature2) => {
+    return (
+      parseInt(temperature2.temperature) - parseInt(temperature1.temperature)
+    );
+  });
+
+  arrangeCardsInContainer(sunnyCities, "sunny");
+}
+
+function showSunnyCards() {
+  document.getElementById("sunny-icon").className = "border";
+  document.getElementById("snow-icon").className = "";
+  document.getElementById("rainy-icon").className = "";
+  filterSunnyCards();
+}
+
+function showSnowCards() {
+  document.getElementById("sunny-icon").className = "";
+  document.getElementById("snow-icon").className = "border";
+  document.getElementById("rainy-icon").className = "";
+}
+
+function showRainyCards() {
+  document.getElementById("sunny-icon").className = "";
+  document.getElementById("snow-icon").className = "";
+  document.getElementById("rainy-icon").className = "border";
+}
+
+document.getElementById("sunny-icon").addEventListener("click", showSunnyCards);
+document.getElementById("snow-icon").addEventListener("click", showSnowCards);
+document.getElementById("rainy-icon").addEventListener("click", showRainyCards);

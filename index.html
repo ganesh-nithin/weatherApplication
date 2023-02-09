@@ -152,7 +152,7 @@
       <div class="header">
         <p class="main">Top cities around world</p>
         <div class="icons">
-          <div class="border">
+          <div id="sunny-icon">
             <img
               title="Sunny"
               src="/Assets/Weather Icons/sunnyIcon.svg"
@@ -161,20 +161,24 @@
               height="20"
             />
           </div>
-          <img
-            title="Snowflake"
-            src="/Assets/Weather Icons/snowflakeIcon.svg"
-            alt="snowflakeIcon"
-            width="20"
-            height="20"
-          />
-          <img
-            title="Rainy"
-            src="/Assets/Weather Icons/rainyIconBlack.svg"
-            alt="rainyIcon"
-            width="20"
-            height="20"
-          />
+          <div id="snow-icon">
+            <img
+              title="Snowflake"
+              src="/Assets/Weather Icons/snowflakeIcon.svg"
+              alt="snowflakeIcon"
+              width="20"
+              height="20"
+            />
+          </div>
+          <div id="rainy-icon">
+            <img
+              title="Rainy"
+              src="/Assets/Weather Icons/rainyIconBlack.svg"
+              alt="rainyIcon"
+              width="20"
+              height="20"
+            />
+          </div>
           <label for="icons" class="display-top">Display Top</label>
           <input type="number" value="4" min="3" max="10" />
         </div>
@@ -182,7 +186,7 @@
 
       <div class="cards-container">
         <div class="arrow left-arrow">&lt;</div>
-        <div class="cards">
+        <div class="cards" id="cards">
           <div class="card card1">
             <p class="city">
               Brokenhill
