@@ -24,6 +24,7 @@ body{
     padding: 5px;
     padding-right: 12px;
     color: var(--primary-white);
+    cursor: pointer;
 }
 
 .top-sec .city .error-input{
