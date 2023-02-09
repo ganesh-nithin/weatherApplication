@@ -167,19 +167,19 @@ function showNILValues() {
 }
 
 function changeCity() {
-  let city = document.getElementById("input-city");
-  let cityVal = city.value;
-  let isCorrect = false;
+  let cityElement = document.getElementById("input-city");
+  let cityName = cityElement.value;
+  let isValidCity = false;
 
   for (let key in weatherData) {
-    if (weatherData[key].cityName == cityVal) {
-      isCorrect = true;
-      city.className = "";
+    if (weatherData[key].cityName == cityName) {
+      isValidCity = true;
+      cityElement.className = "";
       changeFeatures(key);
     }
   }
-  if (!isCorrect) {
-    city.className = "incorrect";
+  if (!isValidCity) {
+    cityElement.className = "incorrect";
     showNILValues();
   }
 }
