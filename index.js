@@ -273,7 +273,7 @@ function arrangeCardsInContainer(cities, weatherCondition, noOfCities) {
 }
 
 function toggleArrowsAndDisplayNumber(noOfCities) {
-  if (noOfCities > 3) {
+  if (noOfCities > 4) {
     document.getElementById("arrow-left").style.visibility = "visible";
     document.getElementById("arrow-right").style.visibility = "visible";
   } else {
