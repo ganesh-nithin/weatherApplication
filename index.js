@@ -65,7 +65,7 @@ function isTimeAm(time) {
   return time >= 0 && time <= 12;
 }
 
-function changeDateTime(timeZone, dateAndTime) {
+function changeTime(timeZone) {
   if (timerId) {
     clearInterval(timerId);
   }
@@ -84,8 +84,6 @@ function changeDateTime(timeZone, dateAndTime) {
         "/Assets/General Images & Icons/pmState.svg";
     }
   }, 100);
-
-  changeDate(dateAndTime.split(",")[0].split("/"));
 }
 
 function changeWeatherData(temperature, humidity, precipitation) {
@@ -138,7 +136,7 @@ function changeNextFiveHrs(weatherData, timeZone, currentTemp) {
 function changeFeatures(key) {
   document.getElementById("invalid-input").style.display = "none";
   changeIcon(weatherData[key].cityName);
-  changeDateTime(weatherData[key].timeZone, weatherData[key].dateAndTime);
+  changeTime(weatherData[key].timeZone);
   changeWeatherData(
     weatherData[key].temperature,
     weatherData[key].humidity,
@@ -149,6 +147,7 @@ function changeFeatures(key) {
     weatherData[key].timeZone,
     weatherData[key].temperature
   );
+  changeDate(weatherData[key].dateAndTime.split(",")[0].split("/"));
 }
 
 function showNILValues() {
