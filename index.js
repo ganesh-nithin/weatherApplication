@@ -191,13 +191,16 @@ function changeCity() {
   let cityName = cityElement.value;
   let isValidCity = false;
 
-  for (let key in weatherData) {
+  const keys = Object.keys(weatherData);
+
+  keys.forEach((key) => {
     if (weatherData[key].cityName == cityName) {
       isValidCity = true;
       cityElement.className = "";
       changeWeatherTimeDateDataForSelectedCity(key);
     }
-  }
+  });
+
   if (!isValidCity) {
     cityElement.className = "incorrect";
     showNILValues();
