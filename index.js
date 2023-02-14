@@ -9,13 +9,13 @@ fetch("/Assets/files/data.json")
   })
   .then((json) => {
     weatherData = json;
-    indexFunction();
+    settingCitiesToDropdownAndAddingDefaultCity();
   })
   .catch((err) => console.error(`Fetch problem: ${err.message}`));
 
 var timerId;
 
-function indexFunction() {
+function settingCitiesToDropdownAndAddingDefaultCity() {
   var str = "";
 
   for (let key in weatherData) {
