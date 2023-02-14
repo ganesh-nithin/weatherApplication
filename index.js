@@ -1,11 +1,17 @@
 let weatherData;
 
 fetch("/Assets/files/data.json")
-  .then((myJson) => myJson.json())
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error(`HTTP error: ${response.status}`);
+    }
+    return response.json();
+  })
   .then((json) => {
     weatherData = json;
     indexFunction();
-  });
+  })
+  .catch((err) => console.error(`Fetch problem: ${err.message}`));
 
 var timerId;
 
