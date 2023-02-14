@@ -17,11 +17,12 @@ var timerId;
 
 function settingCitiesToDropdownAndAddingDefaultCity() {
   var str = "";
-
-  for (let key in weatherData) {
-    str += '<option value="' + weatherData[key].cityName + '" />';
-  }
+  const keys = Object.keys(weatherData);
   var my_list = document.getElementById("cities");
+
+  keys.forEach((key) => {
+    str += '<option value="' + weatherData[key].cityName + '" />';
+  });
   my_list.innerHTML = str;
   document.getElementById("input-city").value = "Kolkata";
   changeFeatures("kolkata");
