@@ -212,7 +212,7 @@ document.getElementById("input-city").addEventListener("change", changeCity);
 function getTime12Hrs(timeZone) {
   return new Date().toLocaleString("en-US", {
     timeZone: timeZone,
-    timeStyle: "medium",
+    timeStyle: "short",
     hourCycle: "h12",
   });
 }
@@ -234,7 +234,9 @@ function arrangeCardsInContainer(cities, weatherCondition) {
         />
         <span class="temp">${cities[i].temperature}</span>
       </p>
-      <p class="time">${getTime12Hrs(cities[i].timeZone)}</p>
+      <p class="time">
+        ${getTime12Hrs(cities[i].timeZone)}
+      </p>
       <p class="time">${cities[i].dateAndTime.split(",")[0]}</p>
       <p class="value">
         <img
@@ -266,10 +268,64 @@ function arrangeCardsInContainer(cities, weatherCondition) {
   }
 }
 
+var cardsTimerId;
+
+function filterRainyCards() {
+  let rainyCities = [];
+  const keys = Object.keys(weatherData);
+
+  keys.forEach((key) => {
+    let temperatureValue = parseInt(weatherData[key].temperature);
+    let humidityValue = parseInt(weatherData[key].humidity);
+    if (temperatureValue < 20 && humidityValue >= 50) {
+      rainyCities.push(weatherData[key]);
+    }
+  });
+  rainyCities = rainyCities.sort((city1, city2) => {
+    return parseInt(city2.humidity) - parseInt(city1.humidity);
+  });
+
+  if (cardsTimerId) {
+    clearInterval(cardsTimerId);
+  }
+  cardsTimerId = setInterval(() => {
+    arrangeCardsInContainer(rainyCities, "rainy");
+  }, 100);
+}
+
+function filterSnowCards() {
+  let snowCities = [];
+  const keys = Object.keys(weatherData);
+
+  keys.forEach((key) => {
+    let temperatureValue = parseInt(weatherData[key].temperature);
+    let humidityValue = parseInt(weatherData[key].humidity);
+    let precipitationValue = parseInt(weatherData[key].precipitation);
+    if (
+      temperatureValue >= 20 &&
+      temperatureValue <= 28 &&
+      humidityValue > 50 &&
+      precipitationValue < 50
+    ) {
+      snowCities.push(weatherData[key]);
+    }
+  });
+  snowCities = snowCities.sort((city1, city2) => {
+    return parseInt(city2.precipitation) - parseInt(city1.precipitation);
+  });
+  if (cardsTimerId) {
+    clearInterval(cardsTimerId);
+  }
+  cardsTimerId = setInterval(() => {
+    arrangeCardsInContainer(snowCities, "snowflake");
+  }, 100);
+}
+
 function filterSunnyCards() {
   let sunnyCities = [];
+  const keys = Object.keys(weatherData);
 
-  for (let key in weatherData) {
+  keys.forEach((key) => {
     let temperatureValue = parseInt(weatherData[key].temperature);
     let humidityValue = parseInt(weatherData[key].humidity);
     let precipitationValue = parseInt(weatherData[key].precipitation);
@@ -280,14 +336,16 @@ function filterSunnyCards() {
     ) {
       sunnyCities.push(weatherData[key]);
     }
-  }
-  sunnyCities = sunnyCities.sort((temperature1, temperature2) => {
-    return (
-      parseInt(temperature2.temperature) - parseInt(temperature1.temperature)
-    );
   });
-
-  arrangeCardsInContainer(sunnyCities, "sunny");
+  sunnyCities = sunnyCities.sort((city1, city2) => {
+    return parseInt(city2.temperature) - parseInt(city1.temperature);
+  });
+  if (cardsTimerId) {
+    clearInterval(cardsTimerId);
+  }
+  cardsTimerId = setInterval(() => {
+    arrangeCardsInContainer(sunnyCities, "sunny");
+  }, 100);
 }
 
 function showSunnyCards() {
@@ -301,12 +359,14 @@ function showSnowCards() {
   document.getElementById("sunny-icon").className = "";
   document.getElementById("snow-icon").className = "border";
   document.getElementById("rainy-icon").className = "";
+  filterSnowCards();
 }
 
 function showRainyCards() {
   document.getElementById("sunny-icon").className = "";
   document.getElementById("snow-icon").className = "";
   document.getElementById("rainy-icon").className = "border";
+  filterRainyCards();
 }
 
 document.getElementById("sunny-icon").addEventListener("click", showSunnyCards);
