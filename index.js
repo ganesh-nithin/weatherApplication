@@ -141,6 +141,9 @@ function changeNextFiveHrs(weatherData, timeZone, currentTemp) {
 }
 
 function changeWeatherTimeDateDataForSelectedCity(key) {
+  if (weatherData[key] === null) {
+    return;
+  }
   document.getElementById("invalid-input").style.display = "none";
   changeIcon(weatherData[key].cityName);
   changeTime(weatherData[key].timeZone);
