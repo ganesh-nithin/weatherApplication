@@ -120,13 +120,17 @@ function changeWeatherIconData(temperature, number) {
   image.style.visibility = "visible";
 }
 
+function isTimeAmfor24Format(time) {
+  return time <= 12 || time >= 24;
+}
+
 function changeNextFiveHrs(weatherData, timeZone, currentTemp) {
   let hour = parseInt(getTime(timeZone).split(":")[0]);
   changeWeatherIconData(currentTemp, 0);
   document.getElementById("time0").innerHTML = "NOW";
   for (let i = 1; i < 5; i++) {
     let displayHour = hour + i;
-    if (displayHour <= 12 || displayHour >= 24) {
+    if (isTimeAmfor24Format(displayHour)) {
       displayHour = (displayHour % 24) + "AM";
     } else {
       displayHour = (displayHour % 12) + "PM";
