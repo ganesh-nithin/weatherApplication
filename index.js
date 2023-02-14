@@ -222,7 +222,7 @@ function arrangeCardsInContainer(cities, weatherCondition, noOfCities) {
   let str = "";
   let cardsContainer = document.getElementById("cards");
   noOfCities = noOfCities || cities.length;
-  noOfCities = cities.length > 10 ? 10 : noOfCities;
+  noOfCities = noOfCities > 10 ? 10 : noOfCities;
   console.log(noOfCities);
 
   for (let i = 0; i < noOfCities; i++) {
@@ -300,13 +300,8 @@ function filterRainyCards() {
   rainyCities = rainyCities.sort((city1, city2) => {
     return parseInt(city2.humidity) - parseInt(city1.humidity);
   });
-  toggleArrowsAndDisplayNumber(rainyCities.length);
-  if (cardsTimerId) {
-    clearInterval(cardsTimerId);
-  }
-  cardsTimerId = setInterval(() => {
-    arrangeCardsInContainer(rainyCities, "rainy");
-  }, 100);
+
+  return rainyCities;
 }
 
 function filterSnowCards() {
@@ -329,13 +324,8 @@ function filterSnowCards() {
   snowCities = snowCities.sort((city1, city2) => {
     return parseInt(city2.precipitation) - parseInt(city1.precipitation);
   });
-  toggleArrowsAndDisplayNumber(snowCities.length);
-  if (cardsTimerId) {
-    clearInterval(cardsTimerId);
-  }
-  cardsTimerId = setInterval(() => {
-    arrangeCardsInContainer(snowCities, "snowflake");
-  }, 100);
+
+  return snowCities;
 }
 
 function filterSunnyCards() {
@@ -357,6 +347,16 @@ function filterSunnyCards() {
   sunnyCities = sunnyCities.sort((city1, city2) => {
     return parseInt(city2.temperature) - parseInt(city1.temperature);
   });
+
+  return sunnyCities;
+}
+
+function showSunnyCards() {
+  let sunnyCities = filterSunnyCards();
+
+  document.getElementById("sunny-icon").className = "border";
+  document.getElementById("snow-icon").className = "";
+  document.getElementById("rainy-icon").className = "";
   toggleArrowsAndDisplayNumber(sunnyCities.length);
   if (cardsTimerId) {
     clearInterval(cardsTimerId);
@@ -366,25 +366,34 @@ function filterSunnyCards() {
   }, 100);
 }
 
-function showSunnyCards() {
-  document.getElementById("sunny-icon").className = "border";
-  document.getElementById("snow-icon").className = "";
-  document.getElementById("rainy-icon").className = "";
-  filterSunnyCards();
-}
-
 function showSnowCards() {
+  let snowCities = filterSnowCards();
+
   document.getElementById("sunny-icon").className = "";
   document.getElementById("snow-icon").className = "border";
   document.getElementById("rainy-icon").className = "";
-  filterSnowCards();
+  toggleArrowsAndDisplayNumber(snowCities.length);
+  if (cardsTimerId) {
+    clearInterval(cardsTimerId);
+  }
+  cardsTimerId = setInterval(() => {
+    arrangeCardsInContainer(snowCities, "snowflake");
+  }, 100);
 }
 
 function showRainyCards() {
+  let rainyCities = filterRainyCards();
+
   document.getElementById("sunny-icon").className = "";
   document.getElementById("snow-icon").className = "";
   document.getElementById("rainy-icon").className = "border";
-  filterRainyCards();
+  toggleArrowsAndDisplayNumber(rainyCities.length);
+  if (cardsTimerId) {
+    clearInterval(cardsTimerId);
+  }
+  cardsTimerId = setInterval(() => {
+    arrangeCardsInContainer(rainyCities, "rainy");
+  }, 100);
 }
 
 document.getElementById("sunny-icon").addEventListener("click", showSunnyCards);
@@ -404,3 +413,42 @@ function leftScroll() {
   left.scrollBy(-width, 0);
 }
 document.getElementById("arrow-left").addEventListener("click", leftScroll);
+
+function findSelectedWeather() {
+  if (document.getElementById("sunny-icon").className === "border") {
+    return "sunny";
+  } else if (document.getElementById("snow-icon").className === "border") {
+    return "snowflake";
+  }
+}
+
+function displayGivenNumberOfCities() {
+  let noOfCities = document.getElementById("no-of-cities").value;
+  let cities, weatherCondition;
+  if (document.getElementById("sunny-icon").className === "border") {
+    cities = filterSunnyCards();
+    weatherCondition = "sunny";
+  } else if (document.getElementById("snow-icon").className === "border") {
+    cities = filterSnowCards();
+    weatherCondition = "snowflake";
+  } else {
+    cities = filterRainyCards();
+    weatherCondition = "rainy";
+  }
+  let sizeOfCitiesArray = cities.length > 10 ? 10 : cities.length;
+  if (sizeOfCitiesArray < noOfCities || noOfCities < 3) {
+    document.getElementById("no-of-cities").value = sizeOfCitiesArray;
+    noOfCities = sizeOfCitiesArray;
+  }
+  toggleArrowsAndDisplayNumber(noOfCities);
+  if (cardsTimerId) {
+    clearInterval(cardsTimerId);
+  }
+  cardsTimerId = setInterval(() => {
+    arrangeCardsInContainer(cities, weatherCondition, noOfCities);
+  }, 100);
+}
+
+document
+  .getElementById("no-of-cities")
+  .addEventListener("change", displayGivenNumberOfCities);
