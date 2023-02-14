@@ -61,6 +61,10 @@ function getTime(timeZone) {
   });
 }
 
+function isTimeAm(time) {
+  return time >= 0 && time <= 12;
+}
+
 function changeDateTime(timeZone, dateAndTime) {
   if (timerId) {
     clearInterval(timerId);
@@ -72,7 +76,7 @@ function changeDateTime(timeZone, dateAndTime) {
     document.getElementById("hour-minutes").innerHTML =
       (time[0] % 12) + ":" + time[1];
     document.getElementById("seconds").innerHTML = ":" + time[2];
-    if (time[0] >= 0 && time[0] <= 11) {
+    if (isTimeAm(time[0])) {
       document.getElementById("stateIcon").src =
         "/Assets/General Images & Icons/amState.svg";
     } else {
