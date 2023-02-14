@@ -25,7 +25,7 @@ function settingCitiesToDropdownAndAddingDefaultCity() {
   });
   my_list.innerHTML = str;
   document.getElementById("input-city").value = "Kolkata";
-  changeFeatures("kolkata");
+  changeWeatherTimeDateDataForSelectedCity("kolkata");
 }
 
 function changeIcon(city) {
@@ -140,7 +140,7 @@ function changeNextFiveHrs(weatherData, timeZone, currentTemp) {
   }
 }
 
-function changeFeatures(key) {
+function changeWeatherTimeDateDataForSelectedCity(key) {
   document.getElementById("invalid-input").style.display = "none";
   changeIcon(weatherData[key].cityName);
   changeTime(weatherData[key].timeZone);
@@ -192,7 +192,7 @@ function changeCity() {
     if (weatherData[key].cityName == cityName) {
       isValidCity = true;
       cityElement.className = "";
-      changeFeatures(key);
+      changeWeatherTimeDateDataForSelectedCity(key);
     }
   }
   if (!isValidCity) {
