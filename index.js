@@ -26,6 +26,7 @@ function settingCitiesToDropdownAndAddingDefaultCity() {
   my_list.innerHTML = str;
   document.getElementById("input-city").value = "Kolkata";
   changeWeatherTimeDateDataForSelectedCity("kolkata");
+  showSunnyCards();
 }
 
 function changeIcon(city) {
@@ -217,11 +218,14 @@ function getTime12Hrs(timeZone) {
   });
 }
 
-function arrangeCardsInContainer(cities, weatherCondition) {
+function arrangeCardsInContainer(cities, weatherCondition, noOfCities) {
   let str = "";
   let cardsContainer = document.getElementById("cards");
+  noOfCities = noOfCities || cities.length;
+  noOfCities = cities.length > 10 ? 10 : noOfCities;
+  console.log(noOfCities);
 
-  for (let i = 0; i < cities.length; i++) {
+  for (let i = 0; i < noOfCities; i++) {
     str += `<div class="card" id=card${i}>
       <p class="city">
         ${cities[i].cityName}
@@ -259,13 +263,25 @@ function arrangeCardsInContainer(cities, weatherCondition) {
     </div>`;
   }
   cardsContainer.innerHTML = str;
-  for (let i = 0; i < cities.length; i++) {
+  for (let i = 0; i < noOfCities; i++) {
     document.getElementById(
       `card${i}`
     ).style.backgroundImage = `url(/Assets/Icons%20for%20cities/${cities[
       i
     ].cityName.toLowerCase()}.svg)`;
   }
+}
+
+function toggleArrowsAndDisplayNumber(noOfCities) {
+  if (noOfCities > 3) {
+    document.getElementById("arrow-left").style.visibility = "visible";
+    document.getElementById("arrow-right").style.visibility = "visible";
+  } else {
+    document.getElementById("arrow-left").style.visibility = "hidden";
+    document.getElementById("arrow-right").style.visibility = "hidden";
+  }
+  document.getElementById("no-of-cities").value =
+    noOfCities > 10 ? 10 : noOfCities;
 }
 
 var cardsTimerId;
@@ -284,7 +300,7 @@ function filterRainyCards() {
   rainyCities = rainyCities.sort((city1, city2) => {
     return parseInt(city2.humidity) - parseInt(city1.humidity);
   });
-
+  toggleArrowsAndDisplayNumber(rainyCities.length);
   if (cardsTimerId) {
     clearInterval(cardsTimerId);
   }
@@ -313,6 +329,7 @@ function filterSnowCards() {
   snowCities = snowCities.sort((city1, city2) => {
     return parseInt(city2.precipitation) - parseInt(city1.precipitation);
   });
+  toggleArrowsAndDisplayNumber(snowCities.length);
   if (cardsTimerId) {
     clearInterval(cardsTimerId);
   }
@@ -340,6 +357,7 @@ function filterSunnyCards() {
   sunnyCities = sunnyCities.sort((city1, city2) => {
     return parseInt(city2.temperature) - parseInt(city1.temperature);
   });
+  toggleArrowsAndDisplayNumber(sunnyCities.length);
   if (cardsTimerId) {
     clearInterval(cardsTimerId);
   }
@@ -372,3 +390,17 @@ function showRainyCards() {
 document.getElementById("sunny-icon").addEventListener("click", showSunnyCards);
 document.getElementById("snow-icon").addEventListener("click", showSnowCards);
 document.getElementById("rainy-icon").addEventListener("click", showRainyCards);
+
+function rightScroll() {
+  var right = document.querySelector(".cards");
+  var width = document.querySelector(".card").clientWidth * 1.2;
+  right.scrollBy(width, 0);
+}
+document.getElementById("arrow-right").addEventListener("click", rightScroll);
+
+function leftScroll() {
+  var left = document.querySelector(".cards");
+  var width = document.querySelector(".card").clientWidth * 1.2;
+  left.scrollBy(-width, 0);
+}
+document.getElementById("arrow-left").addEventListener("click", leftScroll);
