@@ -459,3 +459,167 @@ function displayGivenNumberOfCities() {
 
 let noOfCitiesId = document.getElementById("no-of-cities");
 noOfCitiesId.addEventListener("change", displayGivenNumberOfCities);
+
+function toogleArrows(element) {
+  if (element.alt === "arrowDown") {
+    element.alt = "arrowUp";
+    element.src = "/Assets/General Images & Icons/arrowUp.svg";
+  } else {
+    element.alt = "arrowDown";
+    element.src = "/Assets/General Images & Icons/arrowDown.svg";
+  }
+}
+
+function sortCitiesByTemperatureAndContinent(
+  cityKeys,
+  continetArrowDirection,
+  temperatureArrowDirection
+) {
+  // let continentArray = continetArrowDirection === "arrowUp" ? [1, 2] : [2, 1];
+  // let temperatureArray =
+  //   temperatureArrowDirection === "arrowUp" ? [2, 1] : [1, 2];
+
+  // cityKeys = cityKeys.sort((city1, city2) => {
+  //   let firstLiteral = "city" + continentArray[0];
+  //   let secondLiteral = "city" + continentArray[1];
+  //   let thirdLiteral = "city" + temperatureArray[0];
+  //   let fourthLiteral = "city" + temperatureArray[1];
+  //   console.log(firstLiteral, secondLiteral, thirdLiteral, fourthLiteral);
+  //   return (
+  //     weatherData[firstLiteral].timeZone
+  //       .split("/")[0]
+  //       .localeCompare(weatherData[secondLiteral].timeZone.split("/")[0]) ||
+  //     parseInt(weatherData[thirdLiteral].temperature) -
+  //       parseInt(weatherData[fourthLiteral].temperature)
+  //   );
+  // });
+
+  if (
+    continetArrowDirection === "arrowUp" &&
+    temperatureArrowDirection === "arrowUp"
+  ) {
+    cityKeys = cityKeys.sort((city1, city2) => {
+      return (
+        weatherData[city1].timeZone
+          .split("/")[0]
+          .localeCompare(weatherData[city2].timeZone.split("/")[0]) ||
+        parseInt(weatherData[city1].temperature) -
+          parseInt(weatherData[city2].temperature)
+      );
+    });
+  } else if (
+    continetArrowDirection === "arrowUp" &&
+    temperatureArrowDirection === "arrowDown"
+  ) {
+    cityKeys = cityKeys.sort((city1, city2) => {
+      return (
+        weatherData[city1].timeZone
+          .split("/")[0]
+          .localeCompare(weatherData[city2].timeZone.split("/")[0]) ||
+        parseInt(weatherData[city2].temperature) -
+          parseInt(weatherData[city1].temperature)
+      );
+    });
+  } else if (
+    continetArrowDirection === "arrowDown" &&
+    temperatureArrowDirection === "arrowDown"
+  ) {
+    cityKeys = cityKeys.sort((city1, city2) => {
+      return (
+        weatherData[city2].timeZone
+          .split("/")[0]
+          .localeCompare(weatherData[city1].timeZone.split("/")[0]) ||
+        parseInt(weatherData[city2].temperature) -
+          parseInt(weatherData[city1].temperature)
+      );
+    });
+  } else {
+    cityKeys = cityKeys.sort((city1, city2) => {
+      return (
+        weatherData[city2].timeZone
+          .split("/")[0]
+          .localeCompare(weatherData[city1].timeZone.split("/")[0]) ||
+        parseInt(weatherData[city1].temperature) -
+          parseInt(weatherData[city2].temperature)
+      );
+    });
+  }
+
+  return cityKeys;
+}
+
+function arrangeCardsInContainerByOrder(cityKeys) {
+  let htmlInnerText = "";
+  let cardsContainer = document.getElementById("continent-card-container");
+
+  for (let i = 0; i < 12; i++) {
+    htmlInnerText += `<div class="card">
+    <p class="name">${weatherData[cityKeys[i]].timeZone.split("/")[0]}</p>
+    <p class="temp">${weatherData[cityKeys[i]].temperature}</p>
+    <p class="place-time">${weatherData[cityKeys[i]].cityName}, ${getTime12Hrs(
+      weatherData[cityKeys[i]].timeZone
+    )}</p>
+    <p class="humidity">
+      <img
+        src="/Assets/Weather Icons/humidityIcon.svg"
+        alt="humidityIcon"
+        width="15"
+        height="15"
+      />
+      ${weatherData[cityKeys[i]].humidity}
+    </p>
+  </div>`;
+  }
+  cardsContainer.innerHTML = htmlInnerText;
+  console.log(cardsContainer);
+}
+var continentTimerId;
+function setTimeIntervels(cityKeys) {
+  if (continentTimerId) {
+    clearInterval(continentTimerId);
+  }
+  continentTimerId = setInterval(() => {
+    for (let i = 0; i < 12; i++) {
+      let element = document.querySelectorAll(".place-time")[i];
+      console.log(element);
+      let str =
+        weatherData[cityKeys[i]].cityName +
+        " , " +
+        getTime12Hrs(weatherData[cityKeys[i]].timeZone);
+      element.innerHTML = str;
+    }
+  }, 6000);
+}
+
+function sortingAndArrangingCards() {
+  let cityKeys = sortCitiesByTemperatureAndContinent(
+    Object.keys(weatherData),
+    document.getElementById("continent-name").alt,
+    document.getElementById("temperature").alt
+  );
+
+  arrangeCardsInContainerByOrder(cityKeys);
+  setTimeIntervels(cityKeys);
+}
+
+function arrangeCardsInOrderTemperature() {
+  let temperatureElement = document.getElementById("temperature");
+
+  toogleArrows(temperatureElement);
+  sortingAndArrangingCards();
+}
+
+function arrangeCardsInOrderContinentName() {
+  let continentNameElement = document.getElementById("continent-name");
+
+  toogleArrows(continentNameElement);
+  sortingAndArrangingCards();
+}
+
+document
+  .getElementById("continent-name")
+  .addEventListener("click", arrangeCardsInOrderContinentName);
+
+document
+  .getElementById("temperature")
+  .addEventListener("click", arrangeCardsInOrderTemperature);
