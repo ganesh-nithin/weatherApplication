@@ -27,6 +27,7 @@ function settingCitiesToDropdownAndAddingDefaultCity() {
   document.getElementById("input-city").value = "Kolkata";
   changeWeatherTimeDateDataForSelectedCity("kolkata");
   showSunnyCards();
+  arrangeCardsInOrderContinentName();
 }
 
 function changeIcon(city) {
@@ -571,7 +572,6 @@ function arrangeCardsInContainerByOrder(cityKeys) {
   </div>`;
   }
   cardsContainer.innerHTML = htmlInnerText;
-  console.log(cardsContainer);
 }
 var continentTimerId;
 function setTimeIntervels(cityKeys) {
@@ -581,14 +581,13 @@ function setTimeIntervels(cityKeys) {
   continentTimerId = setInterval(() => {
     for (let i = 0; i < 12; i++) {
       let element = document.querySelectorAll(".place-time")[i];
-      console.log(element);
       let str =
         weatherData[cityKeys[i]].cityName +
         " , " +
         getTime12Hrs(weatherData[cityKeys[i]].timeZone);
       element.innerHTML = str;
     }
-  }, 6000);
+  }, 60000);
 }
 
 function sortingAndArrangingCards() {
