@@ -476,75 +476,20 @@ function sortCitiesByTemperatureAndContinent(
   continetArrowDirection,
   temperatureArrowDirection
 ) {
-  // let continentArray = continetArrowDirection === "arrowUp" ? [1, 2] : [2, 1];
-  // let temperatureArray =
-  //   temperatureArrowDirection === "arrowUp" ? [2, 1] : [1, 2];
+  let continentVarable = continetArrowDirection === "arrowUp" ? 1 : -1;
+  let temperatureVariable = temperatureArrowDirection === "arrowUp" ? 1 : -1;
 
-  // cityKeys = cityKeys.sort((city1, city2) => {
-  //   let firstLiteral = "city" + continentArray[0];
-  //   let secondLiteral = "city" + continentArray[1];
-  //   let thirdLiteral = "city" + temperatureArray[0];
-  //   let fourthLiteral = "city" + temperatureArray[1];
-  //   console.log(firstLiteral, secondLiteral, thirdLiteral, fourthLiteral);
-  //   return (
-  //     weatherData[firstLiteral].timeZone
-  //       .split("/")[0]
-  //       .localeCompare(weatherData[secondLiteral].timeZone.split("/")[0]) ||
-  //     parseInt(weatherData[thirdLiteral].temperature) -
-  //       parseInt(weatherData[fourthLiteral].temperature)
-  //   );
-  // });
-
-  if (
-    continetArrowDirection === "arrowUp" &&
-    temperatureArrowDirection === "arrowUp"
-  ) {
-    cityKeys = cityKeys.sort((city1, city2) => {
-      return (
-        weatherData[city1].timeZone
-          .split("/")[0]
-          .localeCompare(weatherData[city2].timeZone.split("/")[0]) ||
-        parseInt(weatherData[city1].temperature) -
-          parseInt(weatherData[city2].temperature)
-      );
-    });
-  } else if (
-    continetArrowDirection === "arrowUp" &&
-    temperatureArrowDirection === "arrowDown"
-  ) {
-    cityKeys = cityKeys.sort((city1, city2) => {
-      return (
-        weatherData[city1].timeZone
-          .split("/")[0]
-          .localeCompare(weatherData[city2].timeZone.split("/")[0]) ||
-        parseInt(weatherData[city2].temperature) -
-          parseInt(weatherData[city1].temperature)
-      );
-    });
-  } else if (
-    continetArrowDirection === "arrowDown" &&
-    temperatureArrowDirection === "arrowDown"
-  ) {
-    cityKeys = cityKeys.sort((city1, city2) => {
-      return (
-        weatherData[city2].timeZone
-          .split("/")[0]
-          .localeCompare(weatherData[city1].timeZone.split("/")[0]) ||
-        parseInt(weatherData[city2].temperature) -
-          parseInt(weatherData[city1].temperature)
-      );
-    });
-  } else {
-    cityKeys = cityKeys.sort((city1, city2) => {
-      return (
-        weatherData[city2].timeZone
-          .split("/")[0]
-          .localeCompare(weatherData[city1].timeZone.split("/")[0]) ||
-        parseInt(weatherData[city1].temperature) -
-          parseInt(weatherData[city2].temperature)
-      );
-    });
-  }
+  cityKeys = cityKeys.sort((city1, city2) => {
+    return (
+      weatherData[city1].timeZone
+        .split("/")[0]
+        .localeCompare(weatherData[city2].timeZone.split("/")[0]) *
+        continentVarable ||
+      (parseInt(weatherData[city1].temperature) -
+        parseInt(weatherData[city2].temperature)) *
+        temperatureVariable
+    );
+  });
 
   return cityKeys;
 }
