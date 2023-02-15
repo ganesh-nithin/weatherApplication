@@ -50,8 +50,7 @@ function changeDate(date) {
     "Nov",
     "Dec",
   ];
-  let dateStr = date[1] + "-" + months[date[0] - 1] + "-" + date[2];
-  document.getElementById("date-id").innerHTML = dateStr;
+  return date[1] + "-" + months[date[0] - 1] + "-" + date[2];
 }
 
 function getTime(timeZone) {
@@ -85,6 +84,8 @@ function changeTime(timeZone) {
         "/Assets/General Images & Icons/pmState.svg";
     }
   }, 100);
+  let dateString = changeDate(dateAndTime.split(",")[0].split("/"));
+  document.getElementById("date-id").innerHTML = dateString;
 }
 
 function covertCelsiusToFahrenheit(temperature) {
@@ -241,7 +242,9 @@ function arrangeCardsInContainer(cities, weatherCondition, noOfCities) {
       <p class="time">
         ${getTime12Hrs(cities[i].timeZone)}
       </p>
-      <p class="time">${cities[i].dateAndTime.split(",")[0]}</p>
+      <p class="time">${changeDate(
+        cities[i].dateAndTime.split(",")[0].split("/")
+      )}</p>
       <p class="value">
         <img
           src="/Assets/Weather Icons/humidityIcon.svg"
