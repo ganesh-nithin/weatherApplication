@@ -279,6 +279,7 @@ function arrangeCardsInContainer(cities, weatherCondition, noOfCities) {
 }
 
 var cityTimerId;
+var timeIntervalValue = 60000;
 
 function setTimeIntervalsForMiddleCards(cities, noOfCities) {
   if (cityTimerId) {
@@ -291,7 +292,7 @@ function setTimeIntervalsForMiddleCards(cities, noOfCities) {
       let str = getTime12Hrs(cities[i].timeZone);
       element.innerHTML = str;
     }
-  }, 60000);
+  }, timeIntervalValue);
 }
 
 function toggleArrowsAndDisplayNumber(noOfCities) {
