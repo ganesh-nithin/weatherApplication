@@ -126,50 +126,51 @@ City.prototype.getDate = function () {
 };
 
 City.prototype.isTimeAm = function (time) {
-  return time >= 0 && time < 12;
+function isTimeAm(time) {
 };
-
+}
 City.prototype.changeTime = function () {
+function changeTime(timeZone) {
   if (timerId) {
     clearInterval(timerId);
   }
   document.getElementById("stateIcon").style.visibility = "visible";
 
-  timerId = setInterval(() => {
     let time = this.getTime().split(":");
+    let time = getTime(timeZone).split(":");
     document.getElementById("hour-minutes").innerHTML =
       (time[0] == 12 ? 12 : time[0] % 12) + ":" + time[1];
-    document.getElementById("seconds").innerHTML = ":" + time[2];
     if (this.isTimeAm(time[0])) {
+    if (isTimeAm(time[0])) {
       document.getElementById("stateIcon").src = amStateIconPath;
     } else {
       document.getElementById("stateIcon").src = pmStateIconPath;
     }
-  }, 100);
 };
-
+}
 City.prototype.changeDate = function () {
   let dateString = this.getDate();
-  document.getElementById("date-id").innerHTML = dateString;
+  let dateString = formatDate(unFormatDate);
 };
-
+}
 CityWeatherData.prototype.convertCelsiusToFahrenheit = function (temperature) {
-  return (1.8 * parseInt(temperature.slice(0, -2)) + 32).toFixed() + "F";
+function convertCelsiusToFahrenheit(temperature) {
 };
-
+}
 CityWeatherData.prototype.changeWeatherData = function () {
   let fahrenheit = this.convertCelsiusToFahrenheit(this.temperature);
-
+  let fahrenheit = convertCelsiusToFahrenheit(temperature);
   document.getElementById("temperature-celsius").innerHTML = this.temperature;
   document.getElementById("humidity").innerHTML = this.humidity;
   document.getElementById("precipitation").innerHTML = this.precipitation;
-  document.getElementById("temperature-fahrenheit").innerHTML = fahrenheit;
+  document.getElementById("precipitation").innerHTML = precipitation;
 };
-
+}
 CityWeatherData.prototype.changeWeatherIconData = function (
   temperature,
   number
 ) {
+function changeWeatherIconData(temperature, number) {
   let tempVal = parseInt(temperature.slice(0, -2));
   let image = document.getElementById(`weatherImg${number}`);
   let icon;
@@ -187,41 +188,40 @@ CityWeatherData.prototype.changeWeatherIconData = function (
   document.getElementById(`temp${number}`).innerHTML = temperature;
   image.src = "/Assets/Weather Icons/" + icon + "Icon.svg";
   image.title = icon;
-  image.style.visibility = "visible";
 };
-
+}
 City.prototype.isTimeAmfor24Format = function (time) {
-  return time <= 12 || time >= 24;
+function isTimeAmfor24Format(time) {
 };
-
+}
 CityWeatherData.prototype.changeNextFiveHrs = function () {
   let hour = parseInt(this.getTime().split(":")[0]);
   this.changeWeatherIconData(this.temperature, 0);
+  changeWeatherIconData(currentTemp, 0);
   document.getElementById("time0").innerHTML = "NOW";
   for (let i = 1; i < 5; i++) {
-    let displayHour = hour + i;
     if (this.isTimeAmfor24Format(displayHour)) {
+    if (isTimeAmfor24Format(displayHour)) {
       displayHour = (displayHour % 24) + "AM";
     } else {
       displayHour = (displayHour % 12) + "PM";
     }
-    document.getElementById(`time${i}`).innerHTML = displayHour;
     this.changeWeatherIconData(this.nextFiveHrs[i - 1], i);
-  }
+    changeWeatherIconData(weatherData[i - 1], i);
 };
-
+}
 const changeWeatherTimeDateDataForSelectedCity = (key) => {
+function changeWeatherTimeDateDataForSelectedCity(key) {
   if (weatherData[key] === null) {
     return;
-  }
   const cityWeatherData = new CityWeatherData(
     weatherData[key].cityName,
     weatherData[key].timeZone,
+  changeWeatherData(
     weatherData[key].temperature,
-    weatherData[key].humidity,
     weatherData[key].precipitation,
     weatherData[key].nextFiveHrs
-  );
+    weatherData[key].precipitation
 
   document.getElementById("invalid-input").style.display = "none";
   cityWeatherData.changeIcon();
@@ -230,8 +230,9 @@ const changeWeatherTimeDateDataForSelectedCity = (key) => {
   cityWeatherData.changeWeatherData();
   cityWeatherData.changeNextFiveHrs();
 };
-
+}
 const showNILValues = () => {
+function showNILValues() {
   if (timerId) {
     clearInterval(timerId);
   }
@@ -254,8 +255,8 @@ const showNILValues = () => {
     document.getElementById(`weatherImg${i}`).title = "";
     document.getElementById(`weatherImg${i}`).alt = "";
     document.getElementById(`temp${i}`).innerHTML = "NIL";
-  }
 };
+}
 
 function changeCity() {
   let cityElement = document.getElementById("input-city");
@@ -277,16 +278,16 @@ function changeCity() {
     showNILValues();
   }
 }
-
 City.prototype.getTime12Hrs = function () {
-  return new Date().toLocaleString("en-US", {
+function getTime12Hrs(timeZone) {
     timeZone: this.timeZone,
+    timeZone: timeZone,
     timeStyle: "short",
     hourCycle: "h12",
-  });
 };
-
+}
 const arrangeCardsInContainer = (cities, weatherCondition, noOfCities) => {
+function arrangeCardsInContainer(cities, weatherCondition, noOfCities) {
   let str = "";
   let cardsContainer = document.getElementById("cards");
   noOfCities = noOfCities || cities.length;
@@ -305,10 +306,10 @@ const arrangeCardsInContainer = (cities, weatherCondition, noOfCities) => {
         />
         <span class="temp">${cities[i].temperature}</span>
       </p>
-      <p class="time time-interval">
         ${cities[i].getTime12Hrs()}
-      </p>
+        ${getTime12Hrs(cities[i].timeZone)}
       <p class="time">${cities[i].getDate()}</p>
+      )}</p>
       <p class="value">
         <img
           src= ${humidityIconPath}
@@ -336,24 +337,24 @@ const arrangeCardsInContainer = (cities, weatherCondition, noOfCities) => {
     ).style.backgroundImage = `url(/Assets/Icons%20for%20cities/${cities[
       i
     ].cityName.toLowerCase()}.svg)`;
-  }
 };
-
+}
 const setTimeIntervalsForMiddleCards = function (cities, noOfCities) {
+function setTimeIntervalsForMiddleCards(cities, noOfCities) {
   if (cityTimerId) {
     clearInterval(cityTimerId);
   }
 
   cityTimerId = setInterval(() => {
     for (let i = 0; i < noOfCities; i++) {
-      let element = document.querySelectorAll(".time-interval")[i];
       let str = cities[i].getTime12Hrs();
+      let str = getTime12Hrs(cities[i].timeZone);
       element.innerHTML = str;
     }
-  }, timeIntervalValue);
 };
-
+}
 const toggleArrowsAndDisplayNumber = function (noOfCities) {
+function toggleArrowsAndDisplayNumber(noOfCities) {
   if (noOfCities > 4) {
     document.getElementById("arrow-left").style.visibility = "visible";
     document.getElementById("arrow-right").style.visibility = "visible";
@@ -362,7 +363,6 @@ const toggleArrowsAndDisplayNumber = function (noOfCities) {
     document.getElementById("arrow-right").style.visibility = "hidden";
   }
   document.getElementById("no-of-cities").value =
-    noOfCities > 10 ? 10 : noOfCities;
 };
 
 const createCityWeatherDataObjects = (cityKeys) => {
@@ -384,26 +384,28 @@ const createCityWeatherDataObjects = (cityKeys) => {
 };
 
 const filterRainyCards = function () {
+
+function filterRainyCards() {
   let rainyCities = [];
   const keys = Object.keys(weatherData);
 
   keys.forEach((key) => {
     let temperatureValue = parseInt(weatherData[key].temperature);
-    let humidityValue = parseInt(weatherData[key].humidity);
-    if (temperatureValue < 20 && humidityValue >= 50) {
       rainyCities.push(key);
+    if (temperatureValue < 20 && humidityValue >= 50) {
+      rainyCities.push(weatherData[key]);
     }
   });
   rainyCities = rainyCities.sort((city1, city2) => {
-    return parseInt(city2.humidity) - parseInt(city1.humidity);
-  });
 
   rainyCities = createCityWeatherDataObjects(rainyCities);
-
-  return rainyCities;
+    return parseInt(city2.humidity) - parseInt(city1.humidity);
+  });
 };
-
+  return rainyCities;
 const filterSnowCards = function () {
+
+function filterSnowCards() {
   let snowCities = [];
   const keys = Object.keys(weatherData);
 
@@ -415,21 +417,21 @@ const filterSnowCards = function () {
       temperatureValue >= 20 &&
       temperatureValue <= 28 &&
       humidityValue > 50 &&
-      precipitationValue < 50
-    ) {
       snowCities.push(key);
+    ) {
+      snowCities.push(weatherData[key]);
     }
   });
   snowCities = snowCities.sort((city1, city2) => {
-    return parseInt(city2.precipitation) - parseInt(city1.precipitation);
-  });
 
   snowCities = createCityWeatherDataObjects(snowCities);
-
-  return snowCities;
+    return parseInt(city2.precipitation) - parseInt(city1.precipitation);
+  });
 };
-
+  return snowCities;
 const filterSunnyCards = function () {
+
+function filterSunnyCards() {
   let sunnyCities = [];
   const keys = Object.keys(weatherData);
 
@@ -440,19 +442,19 @@ const filterSunnyCards = function () {
     if (
       temperatureValue > 29 &&
       humidityValue < 50 &&
-      precipitationValue >= 50
-    ) {
       sunnyCities.push(key);
+    ) {
+      sunnyCities.push(weatherData[key]);
     }
   });
   sunnyCities = sunnyCities.sort((city1, city2) => {
-    return parseInt(city2.temperature) - parseInt(city1.temperature);
-  });
 
   sunnyCities = createCityWeatherDataObjects(sunnyCities);
-
-  return sunnyCities;
+    return parseInt(city2.temperature) - parseInt(city1.temperature);
+  });
 };
+  return sunnyCities;
+}
 
 function showSunnyCards() {
   let sunnyCities = filterSunnyCards();
@@ -487,24 +489,24 @@ function showRainyCards() {
   toggleArrowsAndDisplayNumber(rainyCities.length);
 
   arrangeCardsInContainer(rainyCities, "rainy");
-  setTimeIntervalsForMiddleCards(rainyCities, rainyCities.length);
-}
+document.getElementById("snow-icon").addEventListener("click", showSnowCards);
+document.getElementById("rainy-icon").addEventListener("click", showRainyCards);
 
 function rightScroll() {
   var right = document.querySelector(".cards");
   var width = document.querySelector(".card").clientWidth * 1.2;
-  right.scrollBy(width, 0);
 }
+document.getElementById("arrow-right").addEventListener("click", rightScroll);
 
 function leftScroll() {
   var left = document.querySelector(".cards");
   var width = document.querySelector(".card").clientWidth * 1.2;
-  left.scrollBy(-width, 0);
 }
-
 const isIdSelected = function (id) {
-  return document.getElementById(id).className === "border";
+
 };
+  return document.getElementById(id).className === "border";
+}
 
 function displayGivenNumberOfCities() {
   let noOfCities = document.getElementById("no-of-cities").value;
@@ -529,23 +531,23 @@ function displayGivenNumberOfCities() {
 
   arrangeCardsInContainer(cities, weatherCondition, noOfCities);
   setTimeIntervalsForMiddleCards(cities, noOfCities);
-}
-
 const toggleArrows = function (element) {
+
+function toggleArrows(element) {
   if (element.alt === "arrowUp") {
     element.alt = "arrowDown";
     element.src = arrowDownIconPath;
   } else {
     element.alt = "arrowUp";
-    element.src = arrowUpIconPath;
-  }
-};
-
+  ASCENDING_ORDER: 1,
+  DESCENDING_ORDER: -1,
 const getContinentName = function (timeZone) {
-  return timeZone.split("/")[0];
-};
 
+};
+  return timeZone.split("/")[0];
 const sortCitiesByTemperatureAndContinent = function (
+function sortCitiesByTemperatureAndContinent(
+  cityKeys,
   continetArrowDirection,
   temperatureArrowDirection
 ) {
@@ -555,9 +557,9 @@ const sortCitiesByTemperatureAndContinent = function (
       : sortOrderEnum.DESCENDING_ORDER;
   let temperatureVariable =
     temperatureArrowDirection === "arrowUp"
+  let cityKeys = Object.keys(weatherData);
       ? sortOrderEnum.ASCENDING_ORDER
       : sortOrderEnum.DESCENDING_ORDER;
-  let cityKeys = Object.keys(weatherData);
 
   cityKeys = cityKeys.sort((city1, city2) => {
     return (
@@ -568,58 +570,58 @@ const sortCitiesByTemperatureAndContinent = function (
         parseInt(weatherData[city2].temperature)) *
         temperatureVariable
     );
-  });
-
   return createCityWeatherDataObjects(cityKeys);
 };
-
+  return cityKeys;
 const arrangeCardsInContainerByOrder = function (cityObjects) {
+
+function arrangeCardsInContainerByOrder(cityKeys) {
   let htmlInnerText = "";
   let cardsContainer = document.getElementById("continent-card-container");
 
-  for (let i = 0; i < 12; i++) {
-    htmlInnerText += `<div class="card">
     <p class="name">${getContinentName(cityObjects[i].timeZone)}</p>
     <p class="temp">${cityObjects[i].temperature}</p>
     <p class="place-time">${cityObjects[i].cityName}, ${cityObjects[
       i
     ].getTime12Hrs()}</p>
+      weatherData[cityKeys[i]].timeZone
+    )}</p>
     <p class="humidity">
       <img
         src=${humidityIconPath}
         alt="humidityIcon"
         width="15"
-        height="15"
-      />
       ${cityObjects[i].humidity}
+      />
+      ${weatherData[cityKeys[i]].humidity}
     </p>
   </div>`;
-  }
-  cardsContainer.innerHTML = htmlInnerText;
 };
-
+  cardsContainer.innerHTML = htmlInnerText;
 const setTimeIntervels = function (cityObjects) {
+
+function setTimeIntervels(cityKeys) {
   if (continentTimerId) {
     clearInterval(continentTimerId);
   }
   continentTimerId = setInterval(() => {
-    for (let i = 0; i < 12; i++) {
-      let element = document.querySelectorAll(".place-time")[i];
       let str = `${cityObjects[i].cityName}, ${cityObjects[i].getTime12Hrs()}`;
+        " , " +
+        getTime12Hrs(weatherData[cityKeys[i]].timeZone);
       element.innerHTML = str;
-    }
-  }, 60000);
 };
-
+  }, 60000);
 const sortingAndArrangingCards = function () {
   let cityObjects = sortCitiesByTemperatureAndContinent(
+  let cityKeys = sortCitiesByTemperatureAndContinent(
+    Object.keys(weatherData),
     document.getElementById("continent-name").alt,
     document.getElementById("temperature").alt
-  );
-
   arrangeCardsInContainerByOrder(cityObjects);
   setTimeIntervels(cityObjects);
 };
+  setTimeIntervels(cityKeys);
+}
 
 function arrangeCardsInOrderTemperature() {
   let temperatureElement = document.getElementById("temperature");
@@ -633,4 +635,4 @@ function arrangeCardsInOrderContinentName() {
 
   toggleArrows(continentNameElement);
   sortingAndArrangingCards();
-}
+  .addEventListener("click", arrangeCardsInOrderTemperature);
