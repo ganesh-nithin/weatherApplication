@@ -258,7 +258,7 @@ function showNILValues() {
 };
 }
 
-function changeCity() {
+Weather.prototype.changeCity=function () {
   let cityElement = document.getElementById("input-city");
   let cityName = cityElement.value;
   let isValidCity = false;
@@ -385,7 +385,7 @@ const createCityWeatherDataObjects = (cityKeys) => {
 
 const filterRainyCards = function () {
 
-function filterRainyCards() {
+Weather.prototype.filterRainyCards=function () {
   let rainyCities = [];
   const keys = Object.keys(weatherData);
 
@@ -405,7 +405,7 @@ function filterRainyCards() {
   return rainyCities;
 const filterSnowCards = function () {
 
-function filterSnowCards() {
+Weather.prototype.filterSnowCards=function () {
   let snowCities = [];
   const keys = Object.keys(weatherData);
 
@@ -431,7 +431,7 @@ function filterSnowCards() {
   return snowCities;
 const filterSunnyCards = function () {
 
-function filterSunnyCards() {
+Weather.prototype.filterSunnyCards=function () {
   let sunnyCities = [];
   const keys = Object.keys(weatherData);
 
@@ -454,9 +454,9 @@ function filterSunnyCards() {
   });
 };
   return sunnyCities;
-}
+};
 
-function showSunnyCards() {
+Weather.prototype.showSunnyCards=function () {
   let sunnyCities = filterSunnyCards();
 
   document.getElementById("sunny-icon").className = "border";
@@ -466,9 +466,9 @@ function showSunnyCards() {
 
   arrangeCardsInContainer(sunnyCities, "sunny");
   setTimeIntervalsForMiddleCards(sunnyCities, sunnyCities.length);
-}
+};
 
-function showSnowCards() {
+Weather.prototype.showSnowCards=function () {
   let snowCities = filterSnowCards();
 
   document.getElementById("sunny-icon").className = "";
@@ -478,9 +478,9 @@ function showSnowCards() {
 
   arrangeCardsInContainer(snowCities, "snowflake");
   setTimeIntervalsForMiddleCards(snowCities, snowCities.length);
-}
+};
 
-function showRainyCards() {
+Weather.prototype.showRainyCards=function () {
   let rainyCities = filterRainyCards();
 
   document.getElementById("sunny-icon").className = "";
@@ -492,13 +492,13 @@ function showRainyCards() {
 document.getElementById("snow-icon").addEventListener("click", showSnowCards);
 document.getElementById("rainy-icon").addEventListener("click", showRainyCards);
 
-function rightScroll() {
+Weather.prototype.rightScroll=function () {
   var right = document.querySelector(".cards");
   var width = document.querySelector(".card").clientWidth * 1.2;
 }
 document.getElementById("arrow-right").addEventListener("click", rightScroll);
 
-function leftScroll() {
+Weather.prototype.leftScroll=function () {
   var left = document.querySelector(".cards");
   var width = document.querySelector(".card").clientWidth * 1.2;
 }
@@ -506,9 +506,9 @@ const isIdSelected = function (id) {
 
 };
   return document.getElementById(id).className === "border";
-}
+};
 
-function displayGivenNumberOfCities() {
+Weather.prototype.displayGivenNumberOfCities=function () {
   let noOfCities = document.getElementById("no-of-cities").value;
   let cities, weatherCondition;
 
@@ -575,7 +575,7 @@ function sortCitiesByTemperatureAndContinent(
   return cityKeys;
 const arrangeCardsInContainerByOrder = function (cityObjects) {
 
-function arrangeCardsInContainerByOrder(cityKeys) {
+Weather.prototype.arrangeCardsInContainerByOrder=function (cityKeys) {
   let htmlInnerText = "";
   let cardsContainer = document.getElementById("continent-card-container");
 
@@ -600,7 +600,7 @@ function arrangeCardsInContainerByOrder(cityKeys) {
   cardsContainer.innerHTML = htmlInnerText;
 const setTimeIntervels = function (cityObjects) {
 
-function setTimeIntervels(cityKeys) {
+Weather.prototype.setTimeIntervels=function (cityKeys) {
   if (continentTimerId) {
     clearInterval(continentTimerId);
   }
@@ -621,16 +621,16 @@ const sortingAndArrangingCards = function () {
   setTimeIntervels(cityObjects);
 };
   setTimeIntervels(cityKeys);
-}
+};
 
-function arrangeCardsInOrderTemperature() {
+Weather.prototype.arrangeCardsInOrderTemperature=function () {
   let temperatureElement = document.getElementById("temperature");
 
   toggleArrows(temperatureElement);
   sortingAndArrangingCards();
-}
+};
 
-function arrangeCardsInOrderContinentName() {
+Weather.prototype.arrangeCardsInOrderContinentName=function () {
   let continentNameElement = document.getElementById("continent-name");
 
   toggleArrows(continentNameElement);
