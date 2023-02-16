@@ -428,14 +428,6 @@ function leftScroll() {
 }
 document.getElementById("arrow-left").addEventListener("click", leftScroll);
 
-function findSelectedWeather() {
-  if (document.getElementById("sunny-icon").className === "border") {
-    return "sunny";
-  } else if (document.getElementById("snow-icon").className === "border") {
-    return "snowflake";
-  }
-}
-
 function displayGivenNumberOfCities() {
   let noOfCities = document.getElementById("no-of-cities").value;
   let cities, weatherCondition;
