@@ -428,14 +428,18 @@ function leftScroll() {
 }
 document.getElementById("arrow-left").addEventListener("click", leftScroll);
 
+function isIdSelected(id) {
+  return document.getElementById(id).className === "border";
+}
+
 function displayGivenNumberOfCities() {
   let noOfCities = document.getElementById("no-of-cities").value;
   let cities, weatherCondition;
 
-  if (document.getElementById("sunny-icon").className === "border") {
+  if (isIdSelected("sunny-icon")) {
     cities = filterSunnyCards();
     weatherCondition = "sunny";
-  } else if (document.getElementById("snow-icon").className === "border") {
+  } else if (isIdSelected("snow-icon")) {
     cities = filterSnowCards();
     weatherCondition = "snowflake";
   } else {
