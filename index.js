@@ -172,7 +172,7 @@ class CityWeatherData extends City {
       this.changeWeatherIconData(this.nextFiveHrs[i - 1], i);
     }
   }
-}
+};
 
 fetch("/Assets/files/data.json")
   .then((response) => {
@@ -266,7 +266,7 @@ const showNILValues = () => {
   }
 };
 
-function changeCity() {
+Weather.prototype.changeCity=function () {
   let cityElement = document.getElementById("input-city");
   let cityName = cityElement.value;
   let isValidCity = false;
@@ -285,7 +285,7 @@ function changeCity() {
     cityElement.className = "incorrect";
     showNILValues();
   }
-}
+};
 
 const arrangeCardsInContainer = (cities, weatherCondition, noOfCities) => {
   let str = "";
@@ -456,7 +456,7 @@ function filterSunnyCards() {
 };
 }
 
-function showSunnyCards() {
+Weather.prototype.showSunnyCards=function () {
   let sunnyCities = filterSunnyCards();
 
   document.getElementById("sunny-icon").className = "border";
@@ -465,9 +465,9 @@ function showSunnyCards() {
 
   arrangeCardsInContainer(sunnyCities, "sunny");
   setTimeIntervalsForMiddleCards(sunnyCities, sunnyCities.length);
-}
+};
 
-function showSnowCards() {
+Weather.prototype.showSnowCards=function () {
   let snowCities = filterSnowCards();
 
   document.getElementById("sunny-icon").className = "";
@@ -476,9 +476,9 @@ function showSnowCards() {
 
   arrangeCardsInContainer(snowCities, "snowflake");
   setTimeIntervalsForMiddleCards(snowCities, snowCities.length);
-}
+};
 
-function showRainyCards() {
+Weather.prototype.showRainyCards=function () {
   let rainyCities = filterRainyCards();
 
   document.getElementById("sunny-icon").className = "";
@@ -489,14 +489,14 @@ function showRainyCards() {
   setTimeIntervalsForMiddleCards(rainyCities, rainyCities.length);
 document.getElementById("rainy-icon").addEventListener("click", showRainyCards);
 
-function rightScroll() {
+Weather.prototype.rightScroll=function () {
   var right = document.querySelector(".cards");
 
   var width = document.querySelector(".card").clientWidth * 1.2;
   right.scrollBy(width, 0);
 document.getElementById("arrow-right").addEventListener("click", rightScroll);
 
-function leftScroll() {
+Weather.prototype.leftScroll=function () {
   var left = document.querySelector(".cards");
   var width = document.querySelector(".card").clientWidth * 1.2;
   left.scrollBy(-width, 0);
@@ -506,7 +506,7 @@ function isIdSelected(id) {
 };
 }
 
-function displayGivenNumberOfCities() {
+Weather.prototype.displayGivenNumberOfCities=function () {
   let noOfCities = document.getElementById("no-of-cities").value;
   let cities, weatherCondition;
 
@@ -621,16 +621,16 @@ const sortingAndArrangingCards = function () {
 };
 }
 
-function arrangeCardsInOrderTemperature() {
+Weather.prototype.arrangeCardsInOrderTemperature=function () {
   let temperatureElement = document.getElementById("temperature");
 
   toggleArrows(temperatureElement);
   sortingAndArrangingCards();
-}
+};
 
-function arrangeCardsInOrderContinentName() {
+Weather.prototype.arrangeCardsInOrderContinentName=function () {
   let continentNameElement = document.getElementById("continent-name");
 
   toggleArrows(continentNameElement);
   sortingAndArrangingCards();
-}
+};
