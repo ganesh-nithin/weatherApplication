@@ -164,7 +164,6 @@ function changeWeatherTimeDateDataForSelectedCity(key) {
     weatherData[key].timeZone,
     weatherData[key].temperature
   );
-  formatDate(weatherData[key].dateAndTime.split(",")[0].split("/"));
 }
 
 function showNILValues() {
