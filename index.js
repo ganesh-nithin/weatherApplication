@@ -92,12 +92,12 @@ function changeDate(dateAndTime) {
   document.getElementById("date-id").innerHTML = dateString;
 }
 
-function covertCelsiusToFahrenheit(temperature) {
+function convertCelsiusToFahrenheit(temperature) {
   return (1.8 * parseInt(temperature.slice(0, -2)) + 32).toFixed() + "F";
 }
 
 function changeWeatherData(temperature, humidity, precipitation) {
-  let fahrenheit = covertCelsiusToFahrenheit(temperature);
+  let fahrenheit = convertCelsiusToFahrenheit(temperature);
 
   document.getElementById("temperature-celsius").innerHTML = temperature;
   document.getElementById("humidity").innerHTML = humidity;
