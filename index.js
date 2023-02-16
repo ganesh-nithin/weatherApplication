@@ -1,16 +1,18 @@
-var weatherData;
-var timerId;
-const amStateIconPath = "/Assets/General%20Images%20&%20Icons/amState.svg";
-const pmStateIconPath = "/Assets/General%20Images%20&%20Icons/pmState.svg";
-const humidityIconPath = "/Assets/Weather%20Icons/humidityIcon.svg";
-const precipitationIconPath = "/Assets/Weather%20Icons/precipitationIcon.svg";
-var cityTimerId;
-const timeIntervalValue = 60000;
-var cardsTimerId;
-const arrowUpIconPath = "/Assets/General%20Images%20&%20Icons/arrowUp.svg";
-const arrowDownIconPath = "/Assets/General%20Images%20&%20Icons/arrowDown.svg";
-var continentTimerId;
-const noOfCitiesId = document.getElementById("no-of-cities");
+function Weather(weatherData) {
+  this.weatherData = weatherData;
+  this.timerId;
+  this.amStateIconPath = "/Assets/General%20Images%20&%20Icons/amState.svg";
+  this.pmStateIconPath = "/Assets/General%20Images%20&%20Icons/pmState.svg";
+  this.humidityIconPath = "/Assets/Weather%20Icons/humidityIcon.svg";
+  this.precipitationIconPath = "/Assets/Weather%20Icons/precipitationIcon.svg";
+  this.cityTimerId;
+  this.timeIntervalValue = 60000;
+  this.cardsTimerId;
+  this.arrowUpIconPath = "/Assets/General%20Images%20&%20Icons/arrowUp.svg";
+  this.arrowDownIconPath = "/Assets/General%20Images%20&%20Icons/arrowDown.svg";
+  this.noOfCitiesId = document.getElementById("no-of-cities");
+  this.continentTimerId;
+}
 
 fetch("/Assets/files/data.json")
   .then((response) => {
