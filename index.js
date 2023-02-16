@@ -457,6 +457,5 @@ function displayGivenNumberOfCities() {
   setTimeIntervalsForMiddleCards(cities, noOfCities);
 }
 
-document
-  .getElementById("no-of-cities")
-  .addEventListener("change", displayGivenNumberOfCities);
+let noOfCitiesId = document.getElementById("no-of-cities");
+noOfCitiesId.addEventListener("change", displayGivenNumberOfCities);
