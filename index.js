@@ -35,7 +35,7 @@ function changeIcon(city) {
   image.style.visibility = "visible";
 }
 
-function changeDate(date) {
+function getDate(date) {
   let months = [
     "Jan",
     "Feb",
@@ -84,7 +84,10 @@ function changeTime(timeZone) {
         "/Assets/General Images & Icons/pmState.svg";
     }
   }, 100);
-  let dateString = changeDate(dateAndTime.split(",")[0].split("/"));
+}
+
+function changeDate(dateAndTime) {
+  let dateString = getDate(dateAndTime.split(",")[0].split("/"));
   document.getElementById("date-id").innerHTML = dateString;
 }
 
@@ -149,6 +152,7 @@ function changeWeatherTimeDateDataForSelectedCity(key) {
   document.getElementById("invalid-input").style.display = "none";
   changeIcon(weatherData[key].cityName);
   changeTime(weatherData[key].timeZone);
+  changeDate(weatherData[key].dateAndTime);
   changeWeatherData(
     weatherData[key].temperature,
     weatherData[key].humidity,
@@ -159,7 +163,7 @@ function changeWeatherTimeDateDataForSelectedCity(key) {
     weatherData[key].timeZone,
     weatherData[key].temperature
   );
-  changeDate(weatherData[key].dateAndTime.split(",")[0].split("/"));
+  getDate(weatherData[key].dateAndTime.split(",")[0].split("/"));
 }
 
 function showNILValues() {
@@ -241,7 +245,7 @@ function arrangeCardsInContainer(cities, weatherCondition, noOfCities) {
       <p class="time time-interval">
         ${getTime12Hrs(cities[i].timeZone)}
       </p>
-      <p class="time">${changeDate(
+      <p class="time">${getDate(
         cities[i].dateAndTime.split(",")[0].split("/")
       )}</p>
       <p class="value">
