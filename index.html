@@ -152,7 +152,7 @@
       <div class="header">
         <p class="main">Top cities around world</p>
         <div class="icons">
-          <div class="border">
+          <div id="sunny-icon">
             <img
               title="Sunny"
               src="/Assets/Weather Icons/sunnyIcon.svg"
@@ -161,236 +161,244 @@
               height="20"
             />
           </div>
-          <img
-            title="Snowflake"
-            src="/Assets/Weather Icons/snowflakeIcon.svg"
-            alt="snowflakeIcon"
-            width="20"
-            height="20"
-          />
-          <img
-            title="Rainy"
-            src="/Assets/Weather Icons/rainyIconBlack.svg"
-            alt="rainyIcon"
-            width="20"
-            height="20"
-          />
+          <div id="snow-icon">
+            <img
+              title="Snowflake"
+              src="/Assets/Weather Icons/snowflakeIcon.svg"
+              alt="snowflakeIcon"
+              width="20"
+              height="20"
+            />
+          </div>
+          <div id="rainy-icon">
+            <img
+              title="Rainy"
+              src="/Assets/Weather Icons/rainyIconBlack.svg"
+              alt="rainyIcon"
+              width="20"
+              height="20"
+            />
+          </div>
           <label for="icons" class="display-top">Display Top</label>
-          <input type="number" value="4" min="3" max="10" />
+          <input type="number" value="4" min="3" max="10" id="no-of-cities" />
         </div>
       </div>
 
-      <div class="cards">
-        <div class="card card1">
-          <p class="city">
-            Brokenhill
-            <img
-              class="img"
-              src="/Assets/Weather Icons/sunnyIcon.svg"
-              alt="sunnyIcon"
-              width="18"
-              height="18"
-            />
-            <span class="temp"> 25 &deg;C</span>
-          </p>
-          <p class="time">10:00 AM</p>
-          <p class="time">2-MAR-2020</p>
-          <p class="value">
-            <img
-              src="/Assets/Weather Icons/humidityIcon.svg"
-              alt="humidityIcon"
-              width="15"
-              height="15"
-            />
-            53%
-          </p>
-          <p class="value">
-            <img
-              src="/Assets/Weather Icons/windyIcon.svg"
-              alt="windyIcon"
-              width="15"
-              height="15"
-            />
-            5 Km/hr
-          </p>
-          <p class="value">
-            <img
-              src="/Assets/Weather Icons/precipitationIcon.svg"
-              alt="precipitationIcon"
-              width="15"
-              height="15"
-            />
-            10%
-          </p>
+      <div class="cards-container">
+        <div class="arrow left-arrow" id="arrow-left">&lt;</div>
+        <div class="cards" id="cards">
+          <div class="card card1">
+            <p class="city">
+              Brokenhill
+              <img
+                class="img"
+                src="/Assets/Weather Icons/sunnyIcon.svg"
+                alt="sunnyIcon"
+                width="18"
+                height="18"
+              />
+              <span class="temp"> 25 &deg;C</span>
+            </p>
+            <p class="time">10:00 AM</p>
+            <p class="time">2-MAR-2020</p>
+            <p class="value">
+              <img
+                src="/Assets/Weather Icons/humidityIcon.svg"
+                alt="humidityIcon"
+                width="15"
+                height="15"
+              />
+              53%
+            </p>
+            <p class="value">
+              <img
+                src="/Assets/Weather Icons/windyIcon.svg"
+                alt="windyIcon"
+                width="15"
+                height="15"
+              />
+              5 Km/hr
+            </p>
+            <p class="value">
+              <img
+                src="/Assets/Weather Icons/precipitationIcon.svg"
+                alt="precipitationIcon"
+                width="15"
+                height="15"
+              />
+              10%
+            </p>
+          </div>
+          <div class="card card2">
+            <p class="city">
+              Vostok
+              <img
+                class="img"
+                src="/Assets/Weather Icons/sunnyIcon.svg"
+                alt="sunnyIcon"
+                width="18"
+                height="18"
+              />
+              <span class="temp"> 25 &deg;C</span>
+            </p>
+            <p class="time">10:00 AM</p>
+            <p class="time">2-MAR-2020</p>
+            <p class="value">
+              <img
+                src="/Assets/Weather Icons/humidityIcon.svg"
+                alt="humidityIcon"
+                width="15"
+                height="15"
+              />
+              53%
+            </p>
+            <p class="value">
+              <img
+                src="/Assets/Weather Icons/windyIcon.svg"
+                alt="windyIcon"
+                width="15"
+                height="15"
+              />
+              5 Km/hr
+            </p>
+            <p class="value">
+              <img
+                src="/Assets/Weather Icons/precipitationIcon.svg"
+                alt="precipitationIcon"
+                width="15"
+                height="15"
+              />
+              10%
+            </p>
+          </div>
+          <div class="card card3">
+            <p class="city">
+              Auckland
+              <img
+                class="img"
+                src="/Assets/Weather Icons/sunnyIcon.svg"
+                alt="sunnyIcon"
+                width="18"
+                height="18"
+              />
+              <span class="temp"> 25 &deg;C</span>
+            </p>
+            <p class="time">10:00 AM</p>
+            <p class="time">2-MAR-2020</p>
+            <p class="value">
+              <img
+                src="/Assets/Weather Icons/humidityIcon.svg"
+                alt="humidityIcon"
+                width="15"
+                height="15"
+              />
+              53%
+            </p>
+            <p class="value">
+              <img
+                src="/Assets/Weather Icons/windyIcon.svg"
+                alt="windyIcon"
+                width="15"
+                height="15"
+              />
+              5 Km/hr
+            </p>
+            <p class="value">
+              <img
+                src="/Assets/Weather Icons/precipitationIcon.svg"
+                alt="precipitationIcon"
+                width="15"
+                height="15"
+              />
+              10%
+            </p>
+          </div>
+          <div class="card card4">
+            <p class="city">
+              Bangkok
+              <img
+                class="img"
+                src="/Assets/Weather Icons/sunnyIcon.svg"
+                alt="sunnyIcon"
+                width="18"
+                height="18"
+              />
+              <span class="temp"> 25 &deg;C</span>
+            </p>
+            <p class="time">10:00 AM</p>
+            <p class="time">2-MAR-2020</p>
+            <p class="value">
+              <img
+                src="/Assets/Weather Icons/humidityIcon.svg"
+                alt="humidityIcon"
+                width="15"
+                height="15"
+              />
+              53%
+            </p>
+            <p class="value">
+              <img
+                src="/Assets/Weather Icons/windyIcon.svg"
+                alt="windyIcon"
+                width="15"
+                height="15"
+              />
+              5 Km/hr
+            </p>
+            <p class="value">
+              <img
+                src="/Assets/Weather Icons/precipitationIcon.svg"
+                alt="precipitationIcon"
+                width="15"
+                height="15"
+              />
+              10%
+            </p>
+          </div>
+          <div class="card card5">
+            <p class="city">
+              Maseru
+              <img
+                class="img"
+                src="/Assets/Weather Icons/sunnyIcon.svg"
+                alt="sunnyIcon"
+                width="18"
+                height="18"
+              />
+              <span class="temp"> 25 &deg;C</span>
+            </p>
+            <p class="time">10:00 AM</p>
+            <p class="time">2-MAR-2020</p>
+            <p class="value">
+              <img
+                src="/Assets/Weather Icons/humidityIcon.svg"
+                alt="humidityIcon"
+                width="15"
+                height="15"
+              />
+              53%
+            </p>
+            <p class="value">
+              <img
+                src="/Assets/Weather Icons/windyIcon.svg"
+                alt="windyIcon"
+                width="15"
+                height="15"
+              />
+              5 Km/hr
+            </p>
+            <p class="value">
+              <img
+                src="/Assets/Weather Icons/precipitationIcon.svg"
+                alt="precipitationIcon"
+                width="15"
+                height="15"
+              />
+              10%
+            </p>
+          </div>
         </div>
-        <div class="card card2">
-          <p class="city">
-            Vostok
-            <img
-              class="img"
-              src="/Assets/Weather Icons/sunnyIcon.svg"
-              alt="sunnyIcon"
-              width="18"
-              height="18"
-            />
-            <span class="temp"> 25 &deg;C</span>
-          </p>
-          <p class="time">10:00 AM</p>
-          <p class="time">2-MAR-2020</p>
-          <p class="value">
-            <img
-              src="/Assets/Weather Icons/humidityIcon.svg"
-              alt="humidityIcon"
-              width="15"
-              height="15"
-            />
-            53%
-          </p>
-          <p class="value">
-            <img
-              src="/Assets/Weather Icons/windyIcon.svg"
-              alt="windyIcon"
-              width="15"
-              height="15"
-            />
-            5 Km/hr
-          </p>
-          <p class="value">
-            <img
-              src="/Assets/Weather Icons/precipitationIcon.svg"
-              alt="precipitationIcon"
-              width="15"
-              height="15"
-            />
-            10%
-          </p>
-        </div>
-        <div class="card card3">
-          <p class="city">
-            Auckland
-            <img
-              class="img"
-              src="/Assets/Weather Icons/sunnyIcon.svg"
-              alt="sunnyIcon"
-              width="18"
-              height="18"
-            />
-            <span class="temp"> 25 &deg;C</span>
-          </p>
-          <p class="time">10:00 AM</p>
-          <p class="time">2-MAR-2020</p>
-          <p class="value">
-            <img
-              src="/Assets/Weather Icons/humidityIcon.svg"
-              alt="humidityIcon"
-              width="15"
-              height="15"
-            />
-            53%
-          </p>
-          <p class="value">
-            <img
-              src="/Assets/Weather Icons/windyIcon.svg"
-              alt="windyIcon"
-              width="15"
-              height="15"
-            />
-            5 Km/hr
-          </p>
-          <p class="value">
-            <img
-              src="/Assets/Weather Icons/precipitationIcon.svg"
-              alt="precipitationIcon"
-              width="15"
-              height="15"
-            />
-            10%
-          </p>
-        </div>
-        <div class="card card4">
-          <p class="city">
-            Bangkok
-            <img
-              class="img"
-              src="/Assets/Weather Icons/sunnyIcon.svg"
-              alt="sunnyIcon"
-              width="18"
-              height="18"
-            />
-            <span class="temp"> 25 &deg;C</span>
-          </p>
-          <p class="time">10:00 AM</p>
-          <p class="time">2-MAR-2020</p>
-          <p class="value">
-            <img
-              src="/Assets/Weather Icons/humidityIcon.svg"
-              alt="humidityIcon"
-              width="15"
-              height="15"
-            />
-            53%
-          </p>
-          <p class="value">
-            <img
-              src="/Assets/Weather Icons/windyIcon.svg"
-              alt="windyIcon"
-              width="15"
-              height="15"
-            />
-            5 Km/hr
-          </p>
-          <p class="value">
-            <img
-              src="/Assets/Weather Icons/precipitationIcon.svg"
-              alt="precipitationIcon"
-              width="15"
-              height="15"
-            />
-            10%
-          </p>
-        </div>
-        <div class="card card5">
-          <p class="city">
-            Maseru
-            <img
-              class="img"
-              src="/Assets/Weather Icons/sunnyIcon.svg"
-              alt="sunnyIcon"
-              width="18"
-              height="18"
-            />
-            <span class="temp"> 25 &deg;C</span>
-          </p>
-          <p class="time">10:00 AM</p>
-          <p class="time">2-MAR-2020</p>
-          <p class="value">
-            <img
-              src="/Assets/Weather Icons/humidityIcon.svg"
-              alt="humidityIcon"
-              width="15"
-              height="15"
-            />
-            53%
-          </p>
-          <p class="value">
-            <img
-              src="/Assets/Weather Icons/windyIcon.svg"
-              alt="windyIcon"
-              width="15"
-              height="15"
-            />
-            5 Km/hr
-          </p>
-          <p class="value">
-            <img
-              src="/Assets/Weather Icons/precipitationIcon.svg"
-              alt="precipitationIcon"
-              width="15"
-              height="15"
-            />
-            10%
-          </p>
-        </div>
+        <div class="arrow right-arrow" id="arrow-right">&gt;</div>
       </div>
     </section>
 
@@ -599,6 +607,6 @@
         </div>
       </div>
     </section>
-    <script type="module" src="/index.js"></script>
+    <script type="application/javascript" src="/index.js"></script>
   </body>
 </html>
