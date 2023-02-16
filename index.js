@@ -279,7 +279,7 @@ function arrangeCardsInContainer(cities, weatherCondition, noOfCities) {
 }
 
 var cityTimerId;
-var timeIntervalValue = 60000;
+const timeIntervalValue = 60000;
 
 function setTimeIntervalsForMiddleCards(cities, noOfCities) {
   if (cityTimerId) {
