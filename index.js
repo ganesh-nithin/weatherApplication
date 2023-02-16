@@ -35,7 +35,7 @@ function changeIcon(city) {
   image.style.visibility = "visible";
 }
 
-function getDate(date) {
+function formatDate(date) {
   let months = [
     "Jan",
     "Feb",
@@ -87,7 +87,8 @@ function changeTime(timeZone) {
 }
 
 function changeDate(dateAndTime) {
-  let dateString = getDate(dateAndTime.split(",")[0].split("/"));
+  let unFormatDate = dateAndTime.split(",")[0].split("/");
+  let dateString = formatDate(unFormatDate);
   document.getElementById("date-id").innerHTML = dateString;
 }
 
@@ -163,7 +164,7 @@ function changeWeatherTimeDateDataForSelectedCity(key) {
     weatherData[key].timeZone,
     weatherData[key].temperature
   );
-  getDate(weatherData[key].dateAndTime.split(",")[0].split("/"));
+  formatDate(weatherData[key].dateAndTime.split(",")[0].split("/"));
 }
 
 function showNILValues() {
@@ -245,7 +246,7 @@ function arrangeCardsInContainer(cities, weatherCondition, noOfCities) {
       <p class="time time-interval">
         ${getTime12Hrs(cities[i].timeZone)}
       </p>
-      <p class="time">${getDate(
+      <p class="time">${formatDate(
         cities[i].dateAndTime.split(",")[0].split("/")
       )}</p>
       <p class="value">
@@ -438,6 +439,7 @@ function findSelectedWeather() {
 function displayGivenNumberOfCities() {
   let noOfCities = document.getElementById("no-of-cities").value;
   let cities, weatherCondition;
+
   if (document.getElementById("sunny-icon").className === "border") {
     cities = filterSunnyCards();
     weatherCondition = "sunny";
