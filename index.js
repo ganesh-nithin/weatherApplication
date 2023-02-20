@@ -461,7 +461,7 @@ function displayGivenNumberOfCities() {
 let noOfCitiesId = document.getElementById("no-of-cities");
 noOfCitiesId.addEventListener("change", displayGivenNumberOfCities);
 
-function toogleArrows(element) {
+function toggleArrows(element) {
   if (element.alt === "arrowDown") {
     element.alt = "arrowUp";
     element.src = "/Assets/General Images & Icons/arrowUp.svg";
@@ -549,14 +549,14 @@ function sortingAndArrangingCards() {
 function arrangeCardsInOrderTemperature() {
   let temperatureElement = document.getElementById("temperature");
 
-  toogleArrows(temperatureElement);
+  toggleArrows(temperatureElement);
   sortingAndArrangingCards();
 }
 
 function arrangeCardsInOrderContinentName() {
   let continentNameElement = document.getElementById("continent-name");
 
-  toogleArrows(continentNameElement);
+  toggleArrows(continentNameElement);
   sortingAndArrangingCards();
 }
 
