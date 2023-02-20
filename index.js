@@ -462,7 +462,7 @@ let noOfCitiesId = document.getElementById("no-of-cities");
 noOfCitiesId.addEventListener("change", displayGivenNumberOfCities);
 
 function toggleArrows(element) {
-  if (element.alt === "arrowDown") {
+  if (element.src === "/Assets/General Images & Icons/arrowDown.svg") {
     element.alt = "arrowUp";
     element.src = "/Assets/General Images & Icons/arrowUp.svg";
   } else {
