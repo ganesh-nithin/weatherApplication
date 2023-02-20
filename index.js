@@ -10,7 +10,6 @@ function Weather(weatherData) {
   this.cardsTimerId;
   this.arrowUpIconPath = "/Assets/General%20Images%20&%20Icons/arrowUp.svg";
   this.arrowDownIconPath = "/Assets/General%20Images%20&%20Icons/arrowDown.svg";
-  this.noOfCitiesId = document.getElementById("no-of-cities");
   this.continentTimerId;
   this.sortOrderEnum = {
     ASCENDING_ORDER: 1,
@@ -127,9 +126,9 @@ Weather.prototype.changeTime = function (timeZone) {
       (time[0] == 12 ? 12 : time[0] % 12) + ":" + time[1];
     document.getElementById("seconds").innerHTML = ":" + time[2];
     if (this.isTimeAm(time[0])) {
-      document.getElementById("stateIcon").src = amStateIconPath;
+      document.getElementById("stateIcon").src = this.amStateIconPath;
     } else {
-      document.getElementById("stateIcon").src = pmStateIconPath;
+      document.getElementById("stateIcon").src = this.pmStateIconPath;
     }
   }, 100);
 };
@@ -308,7 +307,7 @@ Weather.prototype.arrangeCardsInContainer = function (
       )}</p>
       <p class="value">
         <img
-          src= ${humidityIconPath}
+          src= ${this.humidityIconPath}
           alt="humidityIcon"
           width="15"
           height="15"
@@ -317,7 +316,7 @@ Weather.prototype.arrangeCardsInContainer = function (
       </p>
       <p class="value">
         <img
-          src=${precipitationIconPath}
+          src=${this.precipitationIconPath}
           alt="precipitationIcon"
           width="15"
           height="15"
@@ -510,10 +509,10 @@ Weather.prototype.displayGivenNumberOfCities = function () {
 Weather.prototype.toogleArrows = function (element) {
   if (element.alt === "arrowUp") {
     element.alt = "arrowDown";
-    element.src = arrowDownIconPath;
+    element.src = this.arrowDownIconPath;
   } else {
     element.alt = "arrowUp";
-    element.src = arrowUpIconPath;
+    element.src = this.arrowUpIconPath;
   }
 };
 
@@ -537,8 +536,8 @@ Weather.prototype.sortCitiesByTemperatureAndContinent = function (
 
   cityKeys = cityKeys.sort((city1, city2) => {
     return (
-      getContinentName(this.weatherData[city1].timeZone).localeCompare(
-        getContinentName(this.weatherData[city2].timeZone)
+      this.getContinentName(this.weatherData[city1].timeZone).localeCompare(
+        this.getContinentName(this.weatherData[city2].timeZone)
       ) * continentVarable ||
       (parseInt(this.weatherData[city1].temperature) -
         parseInt(this.weatherData[city2].temperature)) *
@@ -555,16 +554,16 @@ Weather.prototype.arrangeCardsInContainerByOrder = function (cityKeys) {
 
   for (let i = 0; i < 12; i++) {
     htmlInnerText += `<div class="card">
-    <p class="name">${getContinentName(
+    <p class="name">${this.getContinentName(
       this.weatherData[cityKeys[i]].timeZone
     )}</p>
     <p class="temp">${this.weatherData[cityKeys[i]].temperature}</p>
     <p class="place-time">${
       this.weatherData[cityKeys[i]].cityName
-    }, ${getTime12Hrs(this.weatherData[cityKeys[i]].timeZone)}</p>
+    }, ${this.getTime12Hrs(this.weatherData[cityKeys[i]].timeZone)}</p>
     <p class="humidity">
       <img
-        src=${humidityIconPath}
+        src=${this.humidityIconPath}
         alt="humidityIcon"
         width="15"
         height="15"
