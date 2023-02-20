@@ -66,6 +66,9 @@ function isTimeAm(time) {
   return time >= 0 && time <= 12;
 }
 
+const amStateIconPath = "/Assets/General Images & Icons/amState.svg";
+const pmStateIconPath = "/Assets/General Images & Icons/pmState.svg";
+
 function changeTime(timeZone) {
   if (timerId) {
     clearInterval(timerId);
@@ -78,11 +81,9 @@ function changeTime(timeZone) {
       (time[0] % 12) + ":" + time[1];
     document.getElementById("seconds").innerHTML = ":" + time[2];
     if (isTimeAm(time[0])) {
-      document.getElementById("stateIcon").src =
-        "/Assets/General Images & Icons/amState.svg";
+      document.getElementById("stateIcon").src = amStateIconPath;
     } else {
-      document.getElementById("stateIcon").src =
-        "/Assets/General Images & Icons/pmState.svg";
+      document.getElementById("stateIcon").src = pmStateIconPath;
     }
   }, 100);
 }
@@ -224,6 +225,9 @@ function getTime12Hrs(timeZone) {
   });
 }
 
+const humidityIconPath = "/Assets/Weather Icons/humidityIcon.svg";
+const precipitationIconPath = "/Assets/Weather Icons/precipitationIcon.svg";
+
 function arrangeCardsInContainer(cities, weatherCondition, noOfCities) {
   let str = "";
   let cardsContainer = document.getElementById("cards");
@@ -251,7 +255,7 @@ function arrangeCardsInContainer(cities, weatherCondition, noOfCities) {
       )}</p>
       <p class="value">
         <img
-          src="/Assets/Weather Icons/humidityIcon.svg"
+          src= ${humidityIconPath}
           alt="humidityIcon"
           width="15"
           height="15"
@@ -260,7 +264,7 @@ function arrangeCardsInContainer(cities, weatherCondition, noOfCities) {
       </p>
       <p class="value">
         <img
-          src="/Assets/Weather Icons/precipitationIcon.svg"
+          src=${precipitationIconPath}
           alt="precipitationIcon"
           width="15"
           height="15"
@@ -461,13 +465,16 @@ function displayGivenNumberOfCities() {
 let noOfCitiesId = document.getElementById("no-of-cities");
 noOfCitiesId.addEventListener("change", displayGivenNumberOfCities);
 
+const arrowUpIconPath = "/Assets/General Images & Icons/arrowUp.svg";
+const arrowDownIconPath = "/Assets/General Images & Icons/arrowDown.svg";
+
 function toggleArrows(element) {
-  if (element.src === "/Assets/General Images & Icons/arrowDown.svg") {
+  if (element.src === arrowDownIconPath) {
     element.alt = "arrowUp";
-    element.src = "/Assets/General Images & Icons/arrowUp.svg";
+    element.src = arrowUpIconPath;
   } else {
     element.alt = "arrowDown";
-    element.src = "/Assets/General Images & Icons/arrowDown.svg";
+    element.src = arrowDownIconPath;
   }
 }
 
@@ -507,7 +514,7 @@ function arrangeCardsInContainerByOrder(cityKeys) {
     )}</p>
     <p class="humidity">
       <img
-        src="/Assets/Weather Icons/humidityIcon.svg"
+        src=${humidityIconPath}
         alt="humidityIcon"
         width="15"
         height="15"
