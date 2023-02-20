@@ -1,4 +1,16 @@
-let weatherData;
+var weatherData;
+var timerId;
+const amStateIconPath = "/Assets/General%20Images%20&%20Icons/amState.svg";
+const pmStateIconPath = "/Assets/General%20Images%20&%20Icons/pmState.svg";
+const humidityIconPath = "/Assets/Weather%20Icons/humidityIcon.svg";
+const precipitationIconPath = "/Assets/Weather%20Icons/precipitationIcon.svg";
+var cityTimerId;
+const timeIntervalValue = 60000;
+var cardsTimerId;
+const arrowUpIconPath = "/Assets/General%20Images%20&%20Icons/arrowUp.svg";
+const arrowDownIconPath = "/Assets/General%20Images%20&%20Icons/arrowDown.svg";
+var continentTimerId;
+const noOfCitiesId = document.getElementById("no-of-cities");
 
 fetch("/Assets/files/data.json")
   .then((response) => {
@@ -12,8 +24,6 @@ fetch("/Assets/files/data.json")
     settingCitiesToDropdownAndAddingDefaultCity();
   })
   .catch((err) => console.error(`Fetch problem: ${err.message}`));
-
-var timerId;
 
 function settingCitiesToDropdownAndAddingDefaultCity() {
   var str = "";
@@ -65,9 +75,6 @@ function getTime(timeZone) {
 function isTimeAm(time) {
   return time >= 0 && time < 12;
 }
-
-const amStateIconPath = "/Assets/General%20Images%20&%20Icons/amState.svg";
-const pmStateIconPath = "/Assets/General%20Images%20&%20Icons/pmState.svg";
 
 function changeTime(timeZone) {
   if (timerId) {
@@ -225,9 +232,6 @@ function getTime12Hrs(timeZone) {
   });
 }
 
-const humidityIconPath = "/Assets/Weather%20Icons/humidityIcon.svg";
-const precipitationIconPath = "/Assets/Weather%20Icons/precipitationIcon.svg";
-
 function arrangeCardsInContainer(cities, weatherCondition, noOfCities) {
   let str = "";
   let cardsContainer = document.getElementById("cards");
@@ -283,9 +287,6 @@ function arrangeCardsInContainer(cities, weatherCondition, noOfCities) {
   }
 }
 
-var cityTimerId;
-const timeIntervalValue = 60000;
-
 function setTimeIntervalsForMiddleCards(cities, noOfCities) {
   if (cityTimerId) {
     clearInterval(cityTimerId);
@@ -311,8 +312,6 @@ function toggleArrowsAndDisplayNumber(noOfCities) {
   document.getElementById("no-of-cities").value =
     noOfCities > 10 ? 10 : noOfCities;
 }
-
-var cardsTimerId;
 
 function filterRainyCards() {
   let rainyCities = [];
@@ -462,11 +461,7 @@ function displayGivenNumberOfCities() {
   setTimeIntervalsForMiddleCards(cities, noOfCities);
 }
 
-let noOfCitiesId = document.getElementById("no-of-cities");
 noOfCitiesId.addEventListener("change", displayGivenNumberOfCities);
-
-const arrowUpIconPath = "/Assets/General%20Images%20&%20Icons/arrowUp.svg";
-const arrowDownIconPath = "/Assets/General%20Images%20&%20Icons/arrowDown.svg";
 
 function toggleArrows(element) {
   if (element.alt === "arrowUp") {
@@ -478,7 +473,7 @@ function toggleArrows(element) {
   }
 }
 
-const orderEnum = {
+const sortOrderEnum = {
   ASCENDING_ORDER: 1,
   DESCENDING_ORDER: -1,
 };
@@ -494,12 +489,12 @@ function sortCitiesByTemperatureAndContinent(
 ) {
   let continentVarable =
     continetArrowDirection === "arrowUp"
-      ? orderEnum.ASCENDING_ORDER
-      : orderEnum.DESCENDING_ORDER;
+      ? sortOrderEnum.ASCENDING_ORDER
+      : sortOrderEnum.DESCENDING_ORDER;
   let temperatureVariable =
     temperatureArrowDirection === "arrowUp"
-      ? orderEnum.ASCENDING_ORDER
-      : orderEnum.DESCENDING_ORDER;
+      ? sortOrderEnum.ASCENDING_ORDER
+      : sortOrderEnum.DESCENDING_ORDER;
 
   cityKeys = cityKeys.sort((city1, city2) => {
     return (
@@ -539,7 +534,7 @@ function arrangeCardsInContainerByOrder(cityKeys) {
   }
   cardsContainer.innerHTML = htmlInnerText;
 }
-var continentTimerId;
+
 function setTimeIntervels(cityKeys) {
   if (continentTimerId) {
     clearInterval(continentTimerId);
