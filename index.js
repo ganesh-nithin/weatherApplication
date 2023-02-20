@@ -467,7 +467,6 @@ const filterSunnyCards = function () {
     this.arrangeCardsInContainer(sunnyCities, "sunny");
     this.setTimeIntervalsForMiddleCards(sunnyCities, sunnyCities.length);
   }
-
   showSnowCards() {
     let snowCities = this.filterSnowCards();
 
@@ -479,7 +478,6 @@ const filterSunnyCards = function () {
     this.arrangeCardsInContainer(snowCities, "snowflake");
     this.setTimeIntervalsForMiddleCards(snowCities, snowCities.length);
   }
-
   showRainyCards() {
     let rainyCities = this.filterRainyCards();
 
