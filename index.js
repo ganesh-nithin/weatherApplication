@@ -483,6 +483,10 @@ const orderEnum = {
   DESCENDING_ORDER: -1,
 };
 
+function getContinentName(timeZone) {
+  return timeZone.split("/")[0];
+}
+
 function sortCitiesByTemperatureAndContinent(
   cityKeys,
   continetArrowDirection,
@@ -499,10 +503,9 @@ function sortCitiesByTemperatureAndContinent(
 
   cityKeys = cityKeys.sort((city1, city2) => {
     return (
-      weatherData[city1].timeZone
-        .split("/")[0]
-        .localeCompare(weatherData[city2].timeZone.split("/")[0]) *
-        continentVarable ||
+      getContinentName(weatherData[city1].timeZone).localeCompare(
+        getContinentName(weatherData[city2].timeZone)
+      ) * continentVarable ||
       (parseInt(weatherData[city1].temperature) -
         parseInt(weatherData[city2].temperature)) *
         temperatureVariable
@@ -518,7 +521,7 @@ function arrangeCardsInContainerByOrder(cityKeys) {
 
   for (let i = 0; i < 12; i++) {
     htmlInnerText += `<div class="card">
-    <p class="name">${weatherData[cityKeys[i]].timeZone.split("/")[0]}</p>
+    <p class="name">${getContinentName(weatherData[cityKeys[i]].timeZone)}</p>
     <p class="temp">${weatherData[cityKeys[i]].temperature}</p>
     <p class="place-time">${weatherData[cityKeys[i]].cityName}, ${getTime12Hrs(
       weatherData[cityKeys[i]].timeZone
