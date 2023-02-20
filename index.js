@@ -63,11 +63,11 @@ function getTime(timeZone) {
 }
 
 function isTimeAm(time) {
-  return time >= 0 && time <= 12;
+  return time >= 0 && time < 12;
 }
 
-const amStateIconPath = "/Assets/General Images & Icons/amState.svg";
-const pmStateIconPath = "/Assets/General Images & Icons/pmState.svg";
+const amStateIconPath = "/Assets/General%20Images%20&%20Icons/amState.svg";
+const pmStateIconPath = "/Assets/General%20Images%20&%20Icons/pmState.svg";
 
 function changeTime(timeZone) {
   if (timerId) {
@@ -78,7 +78,7 @@ function changeTime(timeZone) {
   timerId = setInterval(() => {
     let time = getTime(timeZone).split(":");
     document.getElementById("hour-minutes").innerHTML =
-      (time[0] % 12) + ":" + time[1];
+      (time[0] == 12 ? 12 : time[0] % 12) + ":" + time[1];
     document.getElementById("seconds").innerHTML = ":" + time[2];
     if (isTimeAm(time[0])) {
       document.getElementById("stateIcon").src = amStateIconPath;
@@ -225,8 +225,8 @@ function getTime12Hrs(timeZone) {
   });
 }
 
-const humidityIconPath = "/Assets/Weather Icons/humidityIcon.svg";
-const precipitationIconPath = "/Assets/Weather Icons/precipitationIcon.svg";
+const humidityIconPath = "/Assets/Weather%20Icons/humidityIcon.svg";
+const precipitationIconPath = "/Assets/Weather%20Icons/precipitationIcon.svg";
 
 function arrangeCardsInContainer(cities, weatherCondition, noOfCities) {
   let str = "";
@@ -465,26 +465,37 @@ function displayGivenNumberOfCities() {
 let noOfCitiesId = document.getElementById("no-of-cities");
 noOfCitiesId.addEventListener("change", displayGivenNumberOfCities);
 
-const arrowUpIconPath = "/Assets/General Images & Icons/arrowUp.svg";
-const arrowDownIconPath = "/Assets/General Images & Icons/arrowDown.svg";
+const arrowUpIconPath = "/Assets/General%20Images%20&%20Icons/arrowUp.svg";
+const arrowDownIconPath = "/Assets/General%20Images%20&%20Icons/arrowDown.svg";
 
 function toggleArrows(element) {
-  if (element.src === arrowDownIconPath) {
-    element.alt = "arrowUp";
-    element.src = arrowUpIconPath;
-  } else {
+  if (element.alt === "arrowUp") {
     element.alt = "arrowDown";
     element.src = arrowDownIconPath;
+  } else {
+    element.alt = "arrowUp";
+    element.src = arrowUpIconPath;
   }
 }
+
+const orderEnum = {
+  ASCENDING_ORDER: 1,
+  DESCENDING_ORDER: -1,
+};
 
 function sortCitiesByTemperatureAndContinent(
   cityKeys,
   continetArrowDirection,
   temperatureArrowDirection
 ) {
-  let continentVarable = continetArrowDirection === "arrowUp" ? 1 : -1;
-  let temperatureVariable = temperatureArrowDirection === "arrowUp" ? 1 : -1;
+  let continentVarable =
+    continetArrowDirection === "arrowUp"
+      ? orderEnum.ASCENDING_ORDER
+      : orderEnum.DESCENDING_ORDER;
+  let temperatureVariable =
+    temperatureArrowDirection === "arrowUp"
+      ? orderEnum.ASCENDING_ORDER
+      : orderEnum.DESCENDING_ORDER;
 
   cityKeys = cityKeys.sort((city1, city2) => {
     return (
