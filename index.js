@@ -312,7 +312,7 @@ const arrangeCardsInContainer = (cities, weatherCondition, noOfCities) => {
       <p class="time">${cities[i].getDate()}</p>
       <p class="value">
         <img
-          src= ${humidityIconPath}
+          src= ${this.humidityIconPath}
           alt="humidityIcon"
           width="15"
           height="15"
@@ -321,7 +321,7 @@ const arrangeCardsInContainer = (cities, weatherCondition, noOfCities) => {
       </p>
       <p class="value">
         <img
-          src=${precipitationIconPath}
+          src=${this.precipitationIconPath}
           alt="precipitationIcon"
           width="15"
           height="15"
@@ -584,9 +584,13 @@ function arrangeCardsInContainerByOrder(cityKeys) {
       i
     ].getTime12Hrs()}</p>
     )}</p>
+    <p class="temp">${this.weatherData[cityKeys[i]].temperature}</p>
+    <p class="place-time">${
+      this.weatherData[cityKeys[i]].cityName
+    }, ${this.getTime12Hrs(this.weatherData[cityKeys[i]].timeZone)}</p>
     <p class="humidity">
       <img
-        src=${humidityIconPath}
+        src=${this.humidityIconPath}
         alt="humidityIcon"
         width="15"
         height="15"
@@ -624,13 +628,14 @@ const sortingAndArrangingCards = function () {
   arrangeCardsInOrderTemperature() {
     let temperatureElement = document.getElementById("temperature");
 
-  toggleArrows(temperatureElement);
-  sortingAndArrangingCards();
-};
+    this.toogleArrows(temperatureElement);
+    this.sortingAndArrangingCards();
+  }
 
   arrangeCardsInOrderContinentName() {
     let continentNameElement = document.getElementById("continent-name");
 
-  toggleArrows(continentNameElement);
-  sortingAndArrangingCards();
-};
+    this.toogleArrows(continentNameElement);
+    this.sortingAndArrangingCards();
+  }
+}
