@@ -1,53 +1,19 @@
-function Weather(weatherData) {
-  this.weatherData = weatherData;
-  this.timerId;
-  this.amStateIconPath = "/Assets/General%20Images%20&%20Icons/amState.svg";
-  this.pmStateIconPath = "/Assets/General%20Images%20&%20Icons/pmState.svg";
-  this.humidityIconPath = "/Assets/Weather%20Icons/humidityIcon.svg";
-  this.precipitationIconPath = "/Assets/Weather%20Icons/precipitationIcon.svg";
-  this.cityTimerId;
-  this.timeIntervalValue = 60000;
-  this.cardsTimerId;
-  this.arrowUpIconPath = "/Assets/General%20Images%20&%20Icons/arrowUp.svg";
-  this.arrowDownIconPath = "/Assets/General%20Images%20&%20Icons/arrowDown.svg";
-  this.continentTimerId;
-  this.sortOrderEnum = {
-    ASCENDING_ORDER: 1,
-    DESCENDING_ORDER: -1,
-  };
-
-  document
-    .getElementById("input-city")
-    .addEventListener("input", this.changeCity.bind(this));
-  document
-    .getElementById("sunny-icon")
-    .addEventListener("click", this.showSunnyCards.bind(this));
-  document
-    .getElementById("snow-icon")
-    .addEventListener("click", this.showSnowCards.bind(this));
-  document
-    .getElementById("rainy-icon")
-    .addEventListener("click", this.showRainyCards.bind(this));
-  document
-    .getElementById("arrow-right")
-    .addEventListener("click", this.rightScroll.bind(this));
-  document
-    .getElementById("arrow-left")
-    .addEventListener("click", this.leftScroll.bind(this));
-  document
-    .getElementById("no-of-cities")
-    .addEventListener("change", this.displayGivenNumberOfCities.bind(this));
-  document
-    .getElementById("continent-name")
-    .addEventListener(
-      "click",
-      this.arrangeCardsInOrderContinentName.bind(this)
-    );
-
-  document
-    .getElementById("temperature")
-    .addEventListener("click", this.arrangeCardsInOrderTemperature.bind(this));
-}
+var weatherData;
+var timerId;
+const amStateIconPath = "/Assets/General%20Images%20&%20Icons/amState.svg";
+const pmStateIconPath = "/Assets/General%20Images%20&%20Icons/pmState.svg";
+const humidityIconPath = "/Assets/Weather%20Icons/humidityIcon.svg";
+const precipitationIconPath = "/Assets/Weather%20Icons/precipitationIcon.svg";
+var cityTimerId;
+const timeIntervalValue = 60000;
+var cardsTimerId;
+const arrowUpIconPath = "/Assets/General%20Images%20&%20Icons/arrowUp.svg";
+const arrowDownIconPath = "/Assets/General%20Images%20&%20Icons/arrowDown.svg";
+var continentTimerId;
+const sortOrderEnum = {
+  ASCENDING_ORDER: 1,
+  DESCENDING_ORDER: -1,
+};
 
 fetch("/Assets/files/data.json")
   .then((response) => {
@@ -58,12 +24,49 @@ fetch("/Assets/files/data.json")
   })
   .then((json) => {
     weatherData = json;
-    let weather = new Weather(weatherData);
-    weather.settingCitiesToDropdownAndAddingDefaultCity();
+    settingCitiesToDropdownAndAddingDefaultCity();
   })
   .catch((err) => console.error(`Fetch problem: ${err.message}`));
 
-Weather.prototype.settingCitiesToDropdownAndAddingDefaultCity = function () {
+document.getElementById("input-city").addEventListener("input", changeCity);
+document.getElementById("sunny-icon").addEventListener("click", showSunnyCards);
+document.getElementById("snow-icon").addEventListener("click", showSnowCards);
+document.getElementById("rainy-icon").addEventListener("click", showRainyCards);
+document.getElementById("arrow-right").addEventListener("click", rightScroll);
+document.getElementById("arrow-left").addEventListener("click", leftScroll);
+document
+  .getElementById("no-of-cities")
+  .addEventListener("change", displayGivenNumberOfCities);
+document
+  .getElementById("continent-name")
+  .addEventListener("click", arrangeCardsInOrderContinentName);
+document
+  .getElementById("temperature")
+  .addEventListener("click", arrangeCardsInOrderTemperature);
+
+function City(cityName, timeZone) {
+  this.cityName = cityName;
+  this.timeZone = timeZone;
+}
+
+function CityWeatherData(
+  cityName,
+  timeZone,
+  temperature,
+  humidity,
+  precipitation,
+  nextFiveHrs
+) {
+  City.call(this, cityName, timeZone);
+  this.temperature = temperature;
+  this.humidity = humidity;
+  this.precipitation = precipitation;
+  this.nextFiveHrs = nextFiveHrs;
+}
+
+CityWeatherData.prototype = Object.create(City.prototype);
+
+const settingCitiesToDropdownAndAddingDefaultCity = () => {
   var str = "";
   const keys = Object.keys(this.weatherData);
   var my_list = document.getElementById("cities");
@@ -73,18 +76,19 @@ Weather.prototype.settingCitiesToDropdownAndAddingDefaultCity = function () {
   });
   my_list.innerHTML = str;
   document.getElementById("input-city").value = "Kolkata";
-  this.changeWeatherTimeDateDataForSelectedCity("kolkata");
-  this.showSunnyCards();
-  this.arrangeCardsInOrderContinentName();
+  changeWeatherTimeDateDataForSelectedCity("kolkata");
+  showSunnyCards();
+  arrangeCardsInOrderContinentName();
 };
 
-Weather.prototype.changeIcon = function (city) {
+City.prototype.changeIcon = function () {
   let image = document.getElementById("city-img");
-  image.src = "/Assets/Icons for cities/" + city.toLowerCase() + ".svg";
+  image.src =
+    "/Assets/Icons for cities/" + this.cityName.toLowerCase() + ".svg";
   image.style.visibility = "visible";
 };
 
-Weather.prototype.formatDate = function (date) {
+City.prototype.formatDate = function (date) {
   let months = [
     "Jan",
     "Feb",
@@ -102,61 +106,70 @@ Weather.prototype.formatDate = function (date) {
   return date[1] + "-" + months[date[0] - 1] + "-" + date[2];
 };
 
-Weather.prototype.getTime = function (timeZone) {
+City.prototype.getTime = function () {
   return new Date().toLocaleString("en-US", {
-    timeZone: timeZone,
+    timeZone: this.timeZone,
     timeStyle: "medium",
     hourCycle: "h24",
   });
 };
 
-Weather.prototype.isTimeAm = function (time) {
+City.prototype.getDate = function () {
+  let unFormatDate = new Date()
+    .toLocaleString("en-US", {
+      timeZone: this.timeZone,
+      hourCycle: "h24",
+    })
+    .split(",")[0]
+    .split("/");
+  return this.formatDate(unFormatDate);
+};
+
+City.prototype.isTimeAm = function (time) {
   return time >= 0 && time < 12;
 };
 
-Weather.prototype.changeTime = function (timeZone) {
-  if (this.timerId) {
-    clearInterval(this.timerId);
+City.prototype.changeTime = function () {
+  if (timerId) {
+    clearInterval(timerId);
   }
   document.getElementById("stateIcon").style.visibility = "visible";
 
-  this.timerId = setInterval(() => {
-    let time = this.getTime(timeZone).split(":");
+  timerId = setInterval(() => {
+    let time = this.getTime().split(":");
     document.getElementById("hour-minutes").innerHTML =
       (time[0] == 12 ? 12 : time[0] % 12) + ":" + time[1];
     document.getElementById("seconds").innerHTML = ":" + time[2];
     if (this.isTimeAm(time[0])) {
-      document.getElementById("stateIcon").src = this.amStateIconPath;
+      document.getElementById("stateIcon").src = amStateIconPath;
     } else {
-      document.getElementById("stateIcon").src = this.pmStateIconPath;
+      document.getElementById("stateIcon").src = pmStateIconPath;
     }
   }, 100);
 };
 
-Weather.prototype.changeDate = function (dateAndTime) {
-  let unFormatDate = dateAndTime.split(",")[0].split("/");
-  let dateString = this.formatDate(unFormatDate);
+City.prototype.changeDate = function () {
+  let dateString = this.getDate();
   document.getElementById("date-id").innerHTML = dateString;
 };
 
-Weather.prototype.convertCelsiusToFahrenheit = function (temperature) {
+CityWeatherData.prototype.convertCelsiusToFahrenheit = function (temperature) {
   return (1.8 * parseInt(temperature.slice(0, -2)) + 32).toFixed() + "F";
 };
 
-Weather.prototype.changeWeatherData = function (
-  temperature,
-  humidity,
-  precipitation
-) {
-  let fahrenheit = this.convertCelsiusToFahrenheit(temperature);
+CityWeatherData.prototype.changeWeatherData = function () {
+  let fahrenheit = this.convertCelsiusToFahrenheit(this.temperature);
 
-  document.getElementById("temperature-celsius").innerHTML = temperature;
-  document.getElementById("humidity").innerHTML = humidity;
-  document.getElementById("precipitation").innerHTML = precipitation;
+  document.getElementById("temperature-celsius").innerHTML = this.temperature;
+  document.getElementById("humidity").innerHTML = this.humidity;
+  document.getElementById("precipitation").innerHTML = this.precipitation;
   document.getElementById("temperature-fahrenheit").innerHTML = fahrenheit;
 };
 
-Weather.prototype.changeWeatherIconData = function (temperature, number) {
+CityWeatherData.prototype.changeWeatherIconData = function (
+  temperature,
+  number
+) {
   let tempVal = parseInt(temperature.slice(0, -2));
   let image = document.getElementById(`weatherImg${number}`);
   let icon;
@@ -177,17 +190,13 @@ Weather.prototype.changeWeatherIconData = function (temperature, number) {
   image.style.visibility = "visible";
 };
 
-Weather.prototype.isTimeAmfor24Format = function (time) {
+City.prototype.isTimeAmfor24Format = function (time) {
   return time <= 12 || time >= 24;
 };
 
-Weather.prototype.changeNextFiveHrs = function (
-  weatherData,
-  timeZone,
-  currentTemp
-) {
-  let hour = parseInt(this.getTime(timeZone).split(":")[0]);
-  this.changeWeatherIconData(currentTemp, 0);
+CityWeatherData.prototype.changeNextFiveHrs = function () {
+  let hour = parseInt(this.getTime().split(":")[0]);
+  this.changeWeatherIconData(this.temperature, 0);
   document.getElementById("time0").innerHTML = "NOW";
   for (let i = 1; i < 5; i++) {
     let displayHour = hour + i;
@@ -197,31 +206,32 @@ Weather.prototype.changeNextFiveHrs = function (
       displayHour = (displayHour % 12) + "PM";
     }
     document.getElementById(`time${i}`).innerHTML = displayHour;
-    this.changeWeatherIconData(weatherData[i - 1], i);
+    this.changeWeatherIconData(this.nextFiveHrs[i - 1], i);
   }
 };
 
-Weather.prototype.changeWeatherTimeDateDataForSelectedCity = function (key) {
+changeWeatherTimeDateDataForSelectedCity = (key) => {
   if (weatherData[key] === null) {
     return;
   }
+  const cityWeatherData = new CityWeatherData(
+    weatherData[key].cityName,
+    weatherData[key].timeZone,
+    weatherData[key].temperature,
+    weatherData[key].humidity,
+    weatherData[key].precipitation,
+    weatherData[key].nextFiveHrs
+  );
+
   document.getElementById("invalid-input").style.display = "none";
-  this.changeIcon(weatherData[key].cityName);
-  this.changeTime(weatherData[key].timeZone);
-  this.changeDate(weatherData[key].dateAndTime);
-  this.changeWeatherData(
-    this.weatherData[key].temperature,
-    this.weatherData[key].humidity,
-    this.weatherData[key].precipitation
-  );
-  this.changeNextFiveHrs(
-    this.weatherData[key].nextFiveHrs,
-    this.weatherData[key].timeZone,
-    this.weatherData[key].temperature
-  );
+  cityWeatherData.changeIcon();
+  cityWeatherData.changeTime();
+  cityWeatherData.changeDate();
+  cityWeatherData.changeWeatherData();
+  cityWeatherData.changeNextFiveHrs();
 };
 
-Weather.prototype.showNILValues = function () {
+const showNILValues = () => {
   if (this.timerId) {
     clearInterval(this.timerId);
   }
@@ -247,40 +257,36 @@ Weather.prototype.showNILValues = function () {
   }
 };
 
-Weather.prototype.changeCity = function () {
+function changeCity() {
   let cityElement = document.getElementById("input-city");
   let cityName = cityElement.value;
   let isValidCity = false;
 
-  const keys = Object.keys(this.weatherData);
+  const keys = Object.keys(weatherData);
 
   keys.forEach((key) => {
-    if (this.weatherData[key].cityName == cityName) {
+    if (weatherData[key].cityName == cityName) {
       isValidCity = true;
       cityElement.className = "";
-      this.changeWeatherTimeDateDataForSelectedCity(key);
+      changeWeatherTimeDateDataForSelectedCity(key);
     }
   });
 
   if (!isValidCity) {
     cityElement.className = "incorrect";
-    this.showNILValues();
+    showNILValues();
   }
-};
+}
 
-Weather.prototype.getTime12Hrs = function (timeZone) {
+City.prototype.getTime12Hrs = function () {
   return new Date().toLocaleString("en-US", {
-    timeZone: timeZone,
+    timeZone: this.timeZone,
     timeStyle: "short",
     hourCycle: "h12",
   });
 };
 
-Weather.prototype.arrangeCardsInContainer = function (
-  cities,
-  weatherCondition,
-  noOfCities
-) {
+const arrangeCardsInContainer = (cities, weatherCondition, noOfCities) => {
   let str = "";
   let cardsContainer = document.getElementById("cards");
   noOfCities = noOfCities || cities.length;
@@ -300,14 +306,12 @@ Weather.prototype.arrangeCardsInContainer = function (
         <span class="temp">${cities[i].temperature}</span>
       </p>
       <p class="time time-interval">
-        ${this.getTime12Hrs(cities[i].timeZone)}
+        ${cities[i].getTime12Hrs()}
       </p>
-      <p class="time">${this.formatDate(
-        cities[i].dateAndTime.split(",")[0].split("/")
-      )}</p>
+      <p class="time">${cities[i].getDate()}</p>
       <p class="value">
         <img
-          src= ${this.humidityIconPath}
+          src= ${humidityIconPath}
           alt="humidityIcon"
           width="15"
           height="15"
@@ -316,7 +320,7 @@ Weather.prototype.arrangeCardsInContainer = function (
       </p>
       <p class="value">
         <img
-          src=${this.precipitationIconPath}
+          src=${precipitationIconPath}
           alt="precipitationIcon"
           width="15"
           height="15"
@@ -335,24 +339,21 @@ Weather.prototype.arrangeCardsInContainer = function (
   }
 };
 
-Weather.prototype.setTimeIntervalsForMiddleCards = function (
-  cities,
-  noOfCities
-) {
-  if (this.cityTimerId) {
-    clearInterval(this.cityTimerId);
+const setTimeIntervalsForMiddleCards = function (cities, noOfCities) {
+  if (cityTimerId) {
+    clearInterval(cityTimerId);
   }
 
-  this.cityTimerId = setInterval(() => {
+  cityTimerId = setInterval(() => {
     for (let i = 0; i < noOfCities; i++) {
       let element = document.querySelectorAll(".time-interval")[i];
-      let str = this.getTime12Hrs(cities[i].timeZone);
+      let str = cities[i].getTime12Hrs();
       element.innerHTML = str;
     }
-  }, this.timeIntervalValue);
+  }, timeIntervalValue);
 };
 
-Weather.prototype.toggleArrowsAndDisplayNumber = function (noOfCities) {
+const toggleArrowsAndDisplayNumber = function (noOfCities) {
   if (noOfCities > 4) {
     document.getElementById("arrow-left").style.visibility = "visible";
     document.getElementById("arrow-right").style.visibility = "visible";
@@ -364,135 +365,157 @@ Weather.prototype.toggleArrowsAndDisplayNumber = function (noOfCities) {
     noOfCities > 10 ? 10 : noOfCities;
 };
 
-Weather.prototype.filterRainyCards = function () {
+const createCityFullWeatherDataObjects = (cityKeys) => {
+  let cityObjects = [];
+
+  cityKeys.forEach((key) => {
+    let cityWeatherData = new CityWeatherData(
+      weatherData[key].cityName,
+      weatherData[key].timeZone,
+      weatherData[key].temperature,
+      weatherData[key].humidity,
+      weatherData[key].precipitation
+    );
+
+    cityObjects.push(cityWeatherData);
+  });
+
+  return cityObjects;
+};
+
+const filterRainyCards = function () {
   let rainyCities = [];
-  const keys = Object.keys(this.weatherData);
+  const keys = Object.keys(weatherData);
 
   keys.forEach((key) => {
-    let temperatureValue = parseInt(this.weatherData[key].temperature);
-    let humidityValue = parseInt(this.weatherData[key].humidity);
+    let temperatureValue = parseInt(weatherData[key].temperature);
+    let humidityValue = parseInt(weatherData[key].humidity);
     if (temperatureValue < 20 && humidityValue >= 50) {
-      rainyCities.push(weatherData[key]);
+      rainyCities.push(key);
     }
   });
   rainyCities = rainyCities.sort((city1, city2) => {
     return parseInt(city2.humidity) - parseInt(city1.humidity);
   });
 
+  rainyCities = createCityFullWeatherDataObjects(rainyCities);
+
   return rainyCities;
 };
 
-Weather.prototype.filterSnowCards = function () {
+const filterSnowCards = function () {
   let snowCities = [];
-  const keys = Object.keys(this.weatherData);
+  const keys = Object.keys(weatherData);
 
   keys.forEach((key) => {
-    let temperatureValue = parseInt(this.weatherData[key].temperature);
-    let humidityValue = parseInt(this.weatherData[key].humidity);
-    let precipitationValue = parseInt(this.weatherData[key].precipitation);
+    let temperatureValue = parseInt(weatherData[key].temperature);
+    let humidityValue = parseInt(weatherData[key].humidity);
+    let precipitationValue = parseInt(weatherData[key].precipitation);
     if (
       temperatureValue >= 20 &&
       temperatureValue <= 28 &&
       humidityValue > 50 &&
       precipitationValue < 50
     ) {
-      snowCities.push(this.weatherData[key]);
+      snowCities.push(key);
     }
   });
   snowCities = snowCities.sort((city1, city2) => {
     return parseInt(city2.precipitation) - parseInt(city1.precipitation);
   });
 
+  snowCities = createCityFullWeatherDataObjects(snowCities);
   return snowCities;
 };
 
-Weather.prototype.filterSunnyCards = function () {
+const filterSunnyCards = function () {
   let sunnyCities = [];
-  const keys = Object.keys(this.weatherData);
+  const keys = Object.keys(weatherData);
 
   keys.forEach((key) => {
-    let temperatureValue = parseInt(this.weatherData[key].temperature);
-    let humidityValue = parseInt(this.weatherData[key].humidity);
-    let precipitationValue = parseInt(this.weatherData[key].precipitation);
+    let temperatureValue = parseInt(weatherData[key].temperature);
+    let humidityValue = parseInt(weatherData[key].humidity);
+    let precipitationValue = parseInt(weatherData[key].precipitation);
     if (
       temperatureValue > 29 &&
       humidityValue < 50 &&
       precipitationValue >= 50
     ) {
-      sunnyCities.push(this.weatherData[key]);
+      sunnyCities.push(key);
     }
   });
   sunnyCities = sunnyCities.sort((city1, city2) => {
     return parseInt(city2.temperature) - parseInt(city1.temperature);
   });
 
+  sunnyCities = createCityFullWeatherDataObjects(sunnyCities);
   return sunnyCities;
 };
 
-Weather.prototype.showSunnyCards = function () {
-  let sunnyCities = this.filterSunnyCards();
+function showSunnyCards() {
+  let sunnyCities = filterSunnyCards();
 
   document.getElementById("sunny-icon").className = "border";
   document.getElementById("snow-icon").className = "";
   document.getElementById("rainy-icon").className = "";
-  this.toggleArrowsAndDisplayNumber(sunnyCities.length);
+  toggleArrowsAndDisplayNumber(sunnyCities.length);
 
-  this.arrangeCardsInContainer(sunnyCities, "sunny");
-  this.setTimeIntervalsForMiddleCards(sunnyCities, sunnyCities.length);
-};
+  arrangeCardsInContainer(sunnyCities, "sunny");
+  setTimeIntervalsForMiddleCards(sunnyCities, sunnyCities.length);
+}
 
-Weather.prototype.showSnowCards = function () {
-  let snowCities = this.filterSnowCards();
+function showSnowCards() {
+  let snowCities = filterSnowCards();
 
   document.getElementById("sunny-icon").className = "";
   document.getElementById("snow-icon").className = "border";
   document.getElementById("rainy-icon").className = "";
-  this.toggleArrowsAndDisplayNumber(snowCities.length);
+  toggleArrowsAndDisplayNumber(snowCities.length);
 
-  this.arrangeCardsInContainer(snowCities, "snowflake");
-  this.setTimeIntervalsForMiddleCards(snowCities, snowCities.length);
-};
+  arrangeCardsInContainer(snowCities, "snowflake");
+  setTimeIntervalsForMiddleCards(snowCities, snowCities.length);
+}
 
-Weather.prototype.showRainyCards = function () {
-  let rainyCities = this.filterRainyCards();
+function showRainyCards() {
+  let rainyCities = filterRainyCards();
 
   document.getElementById("sunny-icon").className = "";
   document.getElementById("snow-icon").className = "";
   document.getElementById("rainy-icon").className = "border";
-  this.toggleArrowsAndDisplayNumber(rainyCities.length);
+  toggleArrowsAndDisplayNumber(rainyCities.length);
 
-  this.arrangeCardsInContainer(rainyCities, "rainy");
-  this.setTimeIntervalsForMiddleCards(rainyCities, rainyCities.length);
-};
+  arrangeCardsInContainer(rainyCities, "rainy");
+  setTimeIntervalsForMiddleCards(rainyCities, rainyCities.length);
+}
 
-Weather.prototype.rightScroll = function () {
+function rightScroll() {
   var right = document.querySelector(".cards");
   var width = document.querySelector(".card").clientWidth * 1.2;
   right.scrollBy(width, 0);
-};
+}
 
-Weather.prototype.leftScroll = function () {
+function leftScroll() {
   var left = document.querySelector(".cards");
   var width = document.querySelector(".card").clientWidth * 1.2;
   left.scrollBy(-width, 0);
-};
+}
 
-Weather.prototype.isIdSelected = function (id) {
+const isIdSelected = function (id) {
   return document.getElementById(id).className === "border";
 };
 
-Weather.prototype.displayGivenNumberOfCities = function () {
+function displayGivenNumberOfCities() {
   let noOfCities = document.getElementById("no-of-cities").value;
   let cities, weatherCondition;
 
-  if (this.isIdSelected("sunny-icon")) {
-    cities = this.filterSunnyCards();
+  if (isIdSelected("sunny-icon")) {
+    cities = filterSunnyCards();
     weatherCondition = "sunny";
-  } else if (this.isIdSelected("snow-icon")) {
-    cities = this.filterSnowCards();
+  } else if (isIdSelected("snow-icon")) {
+    cities = filterSnowCards();
     weatherCondition = "snowflake";
   } else {
-    cities = this.filterRainyCards();
+    cities = filterRainyCards();
     weatherCondition = "rainy";
   }
   let sizeOfCitiesArray = cities.length > 10 ? 10 : cities.length;
@@ -500,118 +523,129 @@ Weather.prototype.displayGivenNumberOfCities = function () {
     document.getElementById("no-of-cities").value = sizeOfCitiesArray;
     noOfCities = sizeOfCitiesArray;
   }
-  this.toggleArrowsAndDisplayNumber(noOfCities);
+  toggleArrowsAndDisplayNumber(noOfCities);
 
-  this.arrangeCardsInContainer(cities, weatherCondition, noOfCities);
-  this.setTimeIntervalsForMiddleCards(cities, noOfCities);
-};
+  arrangeCardsInContainer(cities, weatherCondition, noOfCities);
+  setTimeIntervalsForMiddleCards(cities, noOfCities);
+}
 
-Weather.prototype.toogleArrows = function (element) {
+const toogleArrows = function (element) {
   if (element.alt === "arrowUp") {
     element.alt = "arrowDown";
-    element.src = this.arrowDownIconPath;
+    element.src = arrowDownIconPath;
   } else {
     element.alt = "arrowUp";
-    element.src = this.arrowUpIconPath;
+    element.src = arrowUpIconPath;
   }
 };
 
-Weather.prototype.getContinentName = function (timeZone) {
+const createCityRequiredWeatherDataObjects = (cityKeys) => {
+  let cityObjects = [];
+
+  cityKeys.forEach((key) => {
+    let cityWeatherData = new CityWeatherData(
+      weatherData[key].cityName,
+      weatherData[key].timeZone,
+      weatherData[key].temperature,
+      weatherData[key].humidity
+    );
+
+    cityObjects.push(cityWeatherData);
+  });
+
+  return cityObjects;
+};
+
+const getContinentName = function (timeZone) {
   return timeZone.split("/")[0];
 };
 
-Weather.prototype.sortCitiesByTemperatureAndContinent = function (
-  cityKeys,
+const sortCitiesByTemperatureAndContinent = function (
   continetArrowDirection,
   temperatureArrowDirection
 ) {
   let continentVarable =
     continetArrowDirection === "arrowUp"
-      ? this.sortOrderEnum.ASCENDING_ORDER
-      : this.sortOrderEnum.DESCENDING_ORDER;
+      ? sortOrderEnum.ASCENDING_ORDER
+      : sortOrderEnum.DESCENDING_ORDER;
   let temperatureVariable =
     temperatureArrowDirection === "arrowUp"
-      ? this.sortOrderEnum.ASCENDING_ORDER
-      : this.sortOrderEnum.DESCENDING_ORDER;
+      ? sortOrderEnum.ASCENDING_ORDER
+      : sortOrderEnum.DESCENDING_ORDER;
+  let cityKeys = Object.keys(weatherData);
 
   cityKeys = cityKeys.sort((city1, city2) => {
     return (
-      this.getContinentName(this.weatherData[city1].timeZone).localeCompare(
-        this.getContinentName(this.weatherData[city2].timeZone)
+      getContinentName(weatherData[city1].timeZone).localeCompare(
+        getContinentName(weatherData[city2].timeZone)
       ) * continentVarable ||
-      (parseInt(this.weatherData[city1].temperature) -
-        parseInt(this.weatherData[city2].temperature)) *
+      (parseInt(weatherData[city1].temperature) -
+        parseInt(weatherData[city2].temperature)) *
         temperatureVariable
     );
   });
 
-  return cityKeys;
+  return createCityRequiredWeatherDataObjects(cityKeys);
 };
 
-Weather.prototype.arrangeCardsInContainerByOrder = function (cityKeys) {
+const arrangeCardsInContainerByOrder = function (cityObjects) {
   let htmlInnerText = "";
   let cardsContainer = document.getElementById("continent-card-container");
 
   for (let i = 0; i < 12; i++) {
     htmlInnerText += `<div class="card">
-    <p class="name">${this.getContinentName(
-      this.weatherData[cityKeys[i]].timeZone
-    )}</p>
-    <p class="temp">${this.weatherData[cityKeys[i]].temperature}</p>
-    <p class="place-time">${
-      this.weatherData[cityKeys[i]].cityName
-    }, ${this.getTime12Hrs(this.weatherData[cityKeys[i]].timeZone)}</p>
+    <p class="name">${getContinentName(cityObjects[i].timeZone)}</p>
+    <p class="temp">${cityObjects[i].temperature}</p>
+    <p class="place-time">${cityObjects[i].cityName}, ${cityObjects[
+      i
+    ].getTime12Hrs()}</p>
     <p class="humidity">
       <img
-        src=${this.humidityIconPath}
+        src=${humidityIconPath}
         alt="humidityIcon"
         width="15"
         height="15"
       />
-      ${this.weatherData[cityKeys[i]].humidity}
+      ${cityObjects[i].humidity}
     </p>
   </div>`;
   }
   cardsContainer.innerHTML = htmlInnerText;
 };
 
-Weather.prototype.setTimeIntervels = function (cityKeys) {
-  if (this.continentTimerId) {
+const setTimeIntervels = function (cityObjects) {
+  if (continentTimerId) {
     clearInterval(this.continentTimerId);
   }
-  this.continentTimerId = setInterval(() => {
+  continentTimerId = setInterval(() => {
     for (let i = 0; i < 12; i++) {
       let element = document.querySelectorAll(".place-time")[i];
-      let str =
-        this.weatherData[cityKeys[i]].cityName +
-        " , " +
-        this.getTime12Hrs(this.weatherData[cityKeys[i]].timeZone);
+      let str = `${cityObjects[i].cityName}, ${cityObjects[i].getTime12Hrs()}`;
       element.innerHTML = str;
     }
   }, 60000);
 };
 
-Weather.prototype.sortingAndArrangingCards = function () {
-  let cityKeys = this.sortCitiesByTemperatureAndContinent(
-    Object.keys(this.weatherData),
+const sortingAndArrangingCards = function () {
+  let cityObjects = sortCitiesByTemperatureAndContinent(
     document.getElementById("continent-name").alt,
     document.getElementById("temperature").alt
   );
 
-  this.arrangeCardsInContainerByOrder(cityKeys);
-  this.setTimeIntervels(cityKeys);
+  arrangeCardsInContainerByOrder(cityObjects);
+  setTimeIntervels(cityObjects);
 };
 
-Weather.prototype.arrangeCardsInOrderTemperature = function () {
+function arrangeCardsInOrderTemperature() {
   let temperatureElement = document.getElementById("temperature");
 
-  this.toogleArrows(temperatureElement);
-  this.sortingAndArrangingCards();
-};
+  toogleArrows(temperatureElement);
+  sortingAndArrangingCards();
+}
 
-Weather.prototype.arrangeCardsInOrderContinentName = function () {
+function arrangeCardsInOrderContinentName() {
   let continentNameElement = document.getElementById("continent-name");
 
-  this.toogleArrows(continentNameElement);
-  this.sortingAndArrangingCards();
-};
+  toogleArrows(continentNameElement);
+  sortingAndArrangingCards();
+}
