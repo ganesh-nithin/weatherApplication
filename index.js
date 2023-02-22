@@ -24,7 +24,7 @@ fetch("/Assets/files/data.json")
   })
   .then((json) => {
     weatherData = json;
-    settingCitiesToDropdownAndAddingDefaultCity();
+    addingCitiesToDropDownAndCallingDefaultFunctions();
   })
   .catch((err) => console.error(`Fetch problem: ${err.message}`));
 
@@ -66,7 +66,7 @@ function CityWeatherData(
 
 CityWeatherData.prototype = Object.create(City.prototype);
 
-const settingCitiesToDropdownAndAddingDefaultCity = () => {
+const addingCitiesToDropDownAndCallingDefaultFunctions = () => {
   var str = "";
   const keys = Object.keys(weatherData);
   var my_list = document.getElementById("cities");
