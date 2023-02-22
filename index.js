@@ -68,11 +68,11 @@ CityWeatherData.prototype = Object.create(City.prototype);
 
 const settingCitiesToDropdownAndAddingDefaultCity = () => {
   var str = "";
-  const keys = Object.keys(this.weatherData);
+  const keys = Object.keys(weatherData);
   var my_list = document.getElementById("cities");
 
   keys.forEach((key) => {
-    str += '<option value="' + this.weatherData[key].cityName + '" />';
+    str += '<option value="' + weatherData[key].cityName + '" />';
   });
   my_list.innerHTML = str;
   document.getElementById("input-city").value = "Kolkata";
@@ -210,7 +210,7 @@ CityWeatherData.prototype.changeNextFiveHrs = function () {
   }
 };
 
-changeWeatherTimeDateDataForSelectedCity = (key) => {
+const changeWeatherTimeDateDataForSelectedCity = (key) => {
   if (weatherData[key] === null) {
     return;
   }
@@ -232,8 +232,8 @@ changeWeatherTimeDateDataForSelectedCity = (key) => {
 };
 
 const showNILValues = () => {
-  if (this.timerId) {
-    clearInterval(this.timerId);
+  if (timerId) {
+    clearInterval(timerId);
   }
 
   document.getElementById("invalid-input").style.display = "block";
@@ -615,7 +615,7 @@ const arrangeCardsInContainerByOrder = function (cityObjects) {
 
 const setTimeIntervels = function (cityObjects) {
   if (continentTimerId) {
-    clearInterval(this.continentTimerId);
+    clearInterval(continentTimerId);
   }
   continentTimerId = setInterval(() => {
     for (let i = 0; i < 12; i++) {
