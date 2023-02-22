@@ -365,7 +365,7 @@ const toggleArrowsAndDisplayNumber = function (noOfCities) {
     noOfCities > 10 ? 10 : noOfCities;
 };
 
-const createCityFullWeatherDataObjects = (cityKeys) => {
+const createCityWeatherDataObjects = (cityKeys) => {
   let cityObjects = [];
 
   cityKeys.forEach((key) => {
@@ -398,7 +398,7 @@ const filterRainyCards = function () {
     return parseInt(city2.humidity) - parseInt(city1.humidity);
   });
 
-  rainyCities = createCityFullWeatherDataObjects(rainyCities);
+  rainyCities = createCityWeatherDataObjects(rainyCities);
 
   return rainyCities;
 };
@@ -424,7 +424,8 @@ const filterSnowCards = function () {
     return parseInt(city2.precipitation) - parseInt(city1.precipitation);
   });
 
-  snowCities = createCityFullWeatherDataObjects(snowCities);
+  snowCities = createCityWeatherDataObjects(snowCities);
+
   return snowCities;
 };
 
@@ -448,7 +449,8 @@ const filterSunnyCards = function () {
     return parseInt(city2.temperature) - parseInt(city1.temperature);
   });
 
-  sunnyCities = createCityFullWeatherDataObjects(sunnyCities);
+  sunnyCities = createCityWeatherDataObjects(sunnyCities);
+
   return sunnyCities;
 };
 
@@ -539,23 +541,6 @@ const toggleArrows = function (element) {
   }
 };
 
-const createCityRequiredWeatherDataObjects = (cityKeys) => {
-  let cityObjects = [];
-
-  cityKeys.forEach((key) => {
-    let cityWeatherData = new CityWeatherData(
-      weatherData[key].cityName,
-      weatherData[key].timeZone,
-      weatherData[key].temperature,
-      weatherData[key].humidity
-    );
-
-    cityObjects.push(cityWeatherData);
-  });
-
-  return cityObjects;
-};
-
 const getContinentName = function (timeZone) {
   return timeZone.split("/")[0];
 };
@@ -585,7 +570,7 @@ const sortCitiesByTemperatureAndContinent = function (
     );
   });
 
-  return createCityRequiredWeatherDataObjects(cityKeys);
+  return createCityWeatherDataObjects(cityKeys);
 };
 
 const arrangeCardsInContainerByOrder = function (cityObjects) {
