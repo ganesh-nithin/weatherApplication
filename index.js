@@ -529,7 +529,7 @@ function displayGivenNumberOfCities() {
   setTimeIntervalsForMiddleCards(cities, noOfCities);
 }
 
-const toogleArrows = function (element) {
+const toggleArrows = function (element) {
   if (element.alt === "arrowUp") {
     element.alt = "arrowDown";
     element.src = arrowDownIconPath;
@@ -639,13 +639,13 @@ const sortingAndArrangingCards = function () {
 function arrangeCardsInOrderTemperature() {
   let temperatureElement = document.getElementById("temperature");
 
-  toogleArrows(temperatureElement);
+  toggleArrows(temperatureElement);
   sortingAndArrangingCards();
 }
 
 function arrangeCardsInOrderContinentName() {
   let continentNameElement = document.getElementById("continent-name");
 
-  toogleArrows(continentNameElement);
+  toggleArrows(continentNameElement);
   sortingAndArrangingCards();
 }
