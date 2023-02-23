@@ -11,7 +11,6 @@ const arrowUpIconPath = "/Assets/General%20Images%20&%20Icons/arrowUp.svg";
 const arrowDownIconPath = "/Assets/General%20Images%20&%20Icons/arrowDown.svg";
 var continentTimerId;
 var weatherDataInterval;
-// var toggleArrowsTimeInterval;
 const sortOrderEnum = {
   ASCENDING_ORDER: 1,
   DESCENDING_ORDER: -1,
