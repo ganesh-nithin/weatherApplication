@@ -28,7 +28,7 @@ class City {
   changeIcon() {
     let image = document.getElementById("city-img");
     image.src =
-      "/Assets/Icons for cities/" + this.cityName.toLowerCase() + ".svg";
+      "/Assets/Icons_for_cities/" + this.cityName.toLowerCase() + ".svg";
     image.style.visibility = "visible";
   }
 
@@ -148,7 +148,7 @@ class CityWeatherData extends City {
     }
 
     document.getElementById(`temp${number}`).innerHTML = temperature;
-    image.src = "/Assets/Weather Icons/" + icon + "Icon.svg";
+    image.src = "/Assets/Weather_Icons/" + icon + "Icon.svg";
     image.title = icon;
     image.style.visibility = "visible";
   }
@@ -347,7 +347,7 @@ const arrangeCardsInContainer = (cities, weatherCondition, noOfCities) => {
         ${cities[i].cityName}
         <img
           class="img"
-          src="/Assets/Weather Icons/${weatherCondition}Icon.svg"
+          src="/Assets/Weather_Icons/${weatherCondition}Icon.svg"
           alt="${weatherCondition}Icon"
           width="18"
           height="18"
@@ -382,7 +382,7 @@ const arrangeCardsInContainer = (cities, weatherCondition, noOfCities) => {
   for (let i = 0; i < noOfCities; i++) {
     document.getElementById(
       `card${i}`
-    ).style.backgroundImage = `url(/Assets/Icons%20for%20cities/${cities[
+    ).style.backgroundImage = `url(/Assets/Icons_for_cities/${cities[
       i
     ].cityName.toLowerCase()}.svg)`;
   }
