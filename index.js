@@ -11,7 +11,7 @@ const arrowUpIconPath = "/Assets/General%20Images%20&%20Icons/arrowUp.svg";
 const arrowDownIconPath = "/Assets/General%20Images%20&%20Icons/arrowDown.svg";
 var continentTimerId;
 var weatherDataInterval;
-var toggleArrowsTimeInterval;
+// var toggleArrowsTimeInterval;
 const sortOrderEnum = {
   ASCENDING_ORDER: 1,
   DESCENDING_ORDER: -1,
@@ -226,6 +226,7 @@ document
 document
   .getElementById("temperature")
   .addEventListener("click", arrangeCardsInOrderTemperature);
+window.addEventListener("resize", displayGivenNumberOfCities);
 
 function jsonData(response) {
   try {
@@ -505,12 +506,7 @@ function showSunnyCards() {
   document.getElementById("sunny-icon").className = "border";
   document.getElementById("snow-icon").className = "";
   document.getElementById("rainy-icon").className = "";
-  if (toggleArrowsTimeInterval) {
-    clearInterval(toggleArrowsTimeInterval);
-  }
-  toggleArrowsTimeInterval = setInterval(() => {
-    toggleArrowsAndDisplayNumber(sunnyCities.length);
-  }, 1);
+  toggleArrowsAndDisplayNumber(sunnyCities.length);
   arrangeCardsInContainer(sunnyCities, "sunny");
   setTimeIntervalsForMiddleCards(sunnyCities, sunnyCities.length);
 }
@@ -521,12 +517,7 @@ function showSnowCards() {
   document.getElementById("sunny-icon").className = "";
   document.getElementById("snow-icon").className = "border";
   document.getElementById("rainy-icon").className = "";
-  if (toggleArrowsTimeInterval) {
-    clearInterval(toggleArrowsTimeInterval);
-  }
-  toggleArrowsTimeInterval = setInterval(() => {
-    toggleArrowsAndDisplayNumber(sunnyCities.length);
-  }, 1);
+  toggleArrowsAndDisplayNumber(snowCities.length);
   arrangeCardsInContainer(snowCities, "snowflake");
   setTimeIntervalsForMiddleCards(snowCities, snowCities.length);
 }
@@ -537,12 +528,7 @@ function showRainyCards() {
   document.getElementById("sunny-icon").className = "";
   document.getElementById("snow-icon").className = "";
   document.getElementById("rainy-icon").className = "border";
-  if (toggleArrowsTimeInterval) {
-    clearInterval(toggleArrowsTimeInterval);
-  }
-  toggleArrowsTimeInterval = setInterval(() => {
-    toggleArrowsAndDisplayNumber(sunnyCities.length);
-  }, 1);
+  toggleArrowsAndDisplayNumber(rainyCities.length);
   arrangeCardsInContainer(rainyCities, "rainy");
   setTimeIntervalsForMiddleCards(rainyCities, rainyCities.length);
 }
@@ -583,13 +569,7 @@ function displayGivenNumberOfCities() {
     document.getElementById("no-of-cities").value = sizeOfCitiesArray;
     noOfCities = sizeOfCitiesArray;
   }
-  if (toggleArrowsTimeInterval) {
-    clearInterval(toggleArrowsTimeInterval);
-  }
-  toggleArrowsTimeInterval = setInterval(() => {
-    toggleArrowsAndDisplayNumber(sunnyCities.length);
-  }, 1);
-
+  toggleArrowsAndDisplayNumber(noOfCities);
   arrangeCardsInContainer(cities, weatherCondition, noOfCities);
   setTimeIntervalsForMiddleCards(cities, noOfCities);
 }
