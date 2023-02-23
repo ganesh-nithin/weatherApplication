@@ -15,35 +15,6 @@ const sortOrderEnum = {
   DESCENDING_ORDER: -1,
 };
 
-fetch("/Assets/files/data.json")
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error(`HTTP error: ${response.status}`);
-    }
-    return response.json();
-  })
-  .then((json) => {
-    weatherData = json;
-    addingCitiesToDropDownAndCallingDefaultFunctions();
-  })
-  .catch((err) => console.error(`Fetch problem: ${err.message}`));
-
-document.getElementById("input-city").addEventListener("input", changeCity);
-document.getElementById("sunny-icon").addEventListener("click", showSunnyCards);
-document.getElementById("snow-icon").addEventListener("click", showSnowCards);
-document.getElementById("rainy-icon").addEventListener("click", showRainyCards);
-document.getElementById("arrow-right").addEventListener("click", rightScroll);
-document.getElementById("arrow-left").addEventListener("click", leftScroll);
-document
-  .getElementById("no-of-cities")
-  .addEventListener("change", displayGivenNumberOfCities);
-document
-  .getElementById("continent-name")
-  .addEventListener("click", arrangeCardsInOrderContinentName);
-document
-  .getElementById("temperature")
-  .addEventListener("click", arrangeCardsInOrderTemperature);
-
 class City {
   constructor(cityName, timeZone) {
     this.cityName = cityName;
@@ -202,6 +173,36 @@ class CityWeatherData extends City {
     }
   }
 }
+
+fetch("/Assets/files/data.json")
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error(`HTTP error: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then((json) => {
+    weatherData = json;
+    addingCitiesToDropDownAndCallingDefaultFunctions();
+  })
+  .catch((err) => console.error(`Fetch problem: ${err.message}`));
+
+document.getElementById("input-city").addEventListener("input", changeCity);
+document.getElementById("sunny-icon").addEventListener("click", showSunnyCards);
+document.getElementById("snow-icon").addEventListener("click", showSnowCards);
+document.getElementById("rainy-icon").addEventListener("click", showRainyCards);
+document.getElementById("arrow-right").addEventListener("click", rightScroll);
+document.getElementById("arrow-left").addEventListener("click", leftScroll);
+document
+  .getElementById("no-of-cities")
+  .addEventListener("change", displayGivenNumberOfCities);
+document
+  .getElementById("continent-name")
+  .addEventListener("click", arrangeCardsInOrderContinentName);
+document
+  .getElementById("temperature")
+  .addEventListener("click", arrangeCardsInOrderTemperature);
+
 
 const addingCitiesToDropDownAndCallingDefaultFunctions = () => {
   var str = "";
