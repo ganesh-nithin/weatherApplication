@@ -9,12 +9,16 @@
 .middle-sec {
   color: var(--primary-white);
   background-color: var(--primary-black);
+  border-top-left-radius: 10%;
+  border-top-right-radius: 10%;
 }
 
 .middle-sec .header {
   display: grid;
   position: sticky;
   top: 0px;
+  width: 80%;
+  margin: 0 auto;
   background-color: var(--primary-black);
   grid-template-columns: 0.55fr 0.45fr;
   padding: 20px;
@@ -135,26 +139,6 @@
   transform: scale(1.1);
 }
 
-.middle-sec .cards > .card1 {
-  background-image: url("/Assets/Icons for cities/brokenhill.svg");
-}
-
-.middle-sec .cards > .card2 {
-  background-image: url("/Assets/Icons for cities/vostok.svg");
-}
-
-.middle-sec .cards > .card3 {
-  background-image: url("/Assets/Icons for cities/auckland.svg");
-}
-
-.middle-sec .cards > .card4 {
-  background-image: url("/Assets/Icons for cities/bangkok.svg");
-}
-
-.middle-sec .cards > .card5 {
-  background-image: url("/Assets/Icons for cities/maseru.svg");
-}
-
 .middle-sec .cards::-webkit-scrollbar {
   display: none;
 }
@@ -181,6 +165,9 @@
   }
   .middle-sec .cards {
     max-width: 845px;
+  }
+  .middle-sec .header > .icons {
+    padding-right: 0px;
   }
 }
 
@@ -237,7 +224,12 @@
 
 @media screen and (max-width: 640px) {
   .middle-sec .cards,
-  .middle-sec .arrow {
-    transform: scale(0.95);
+  .middle-sec .arrow,
+  .middle-sec .header {
+    transform: scale(0.9);
+  }
+  .middle-sec .header {
+    padding-right: 0;
+    width: 100%;
   }
 }
