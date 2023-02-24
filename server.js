@@ -17,12 +17,16 @@ app.get("/allTimeZones", (request, response) => {
   response.json(allTimeZonesData);
 });
 
-      response.writeHead(200, { "Content-Type": "application/json" });
-      response.write(allTimeZonesData);
-      response.end();
-    } else if (request.url.startsWith("/timeForOneCity")) {
-      let cityName = request.url.split("=")[1];
-      let timeForOneCityData = JSON.stringify(timeForOneCity(cityName));
+app.get("/city", (request, response) => {
+  var cityName = request.query.cityName;
+  if (cityName) {
+    response.json(timeForOneCity(cityName));
+  } else {
+    response
+      .status(404)
+      .json({ Error: "Not a Valid EndPonit. Please check API Doc" });
+  }
+});
 
       response.writeHead(200, { "Content-Type": "application/json" });
       response.write(timeForOneCityData);
