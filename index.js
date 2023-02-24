@@ -154,23 +154,21 @@ class CityWeatherData extends City {
   }
 
   async getNextFiveYearsData() {
-    let timeForCity = await getDataFromServer(
-      `https://soliton.glitch.me?city=${this.cityName}`
+    let response = await fetch(
+      `http://localhost:3000/timeForOneCity=${this.cityName}`
     );
+    let timeForCity = await jsonData(response);
 
-    let weatherDataForNextFiveYears = await fetch(
-      "https://soliton.glitch.me/hourly-forecast",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          city_Date_Time_Name: timeForCity["city_Date_Time_Name"],
-          hours: 5,
-        }),
-      }
-    );
+    response = await fetch("http://localhost:3000/nextNhoursWeather", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        city_Date_Time_Name: timeForCity["city_Date_Time_Name"],
+        hours: 5,
+      }),
+    });
 
     this.weatherDataForNextFiveYears = await getJsonData(
       weatherDataForNextFiveYears
@@ -211,9 +209,8 @@ async function getDataFromServer(serverLink) {
 }
 
 async function featchData() {
-  let jsonWeatherData = await getDataFromServer(
-    "https://soliton.glitch.me/all-timezone-cities"
-  );
+  let response = await fetch("http://localhost:3000/allTimeZones");
+  let jsonWeatherData = await jsonData(response);
 
   jsonWeatherData.forEach((index) => {
     let cityName = index.cityName.toLowerCase();
