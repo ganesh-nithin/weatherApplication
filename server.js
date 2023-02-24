@@ -1,66 +1,15 @@
-const http = require("http");
-const fs = require("fs");
-const path = require("path");
+const express = require("express");
 const {
   allTimeZones,
   timeForOneCity,
   nextNhoursWeather,
 } = require("./timeZone");
-
+const app = express();
 const port = process.env.PORT || 3000;
 
-function getFilePath(request) {
-  return path.join(__dirname, request.url === "/" ? "index.html" : request.url);
-}
-
-function writeAllTimeZoneData(response) {
-  let allTimeZonesData = JSON.stringify(allTimeZones());
-
-  response.writeHead(200, { "Content-Type": "application/json" });
-  response.write(allTimeZonesData);
-  response.end();
-}
-
-function writeTimeForOneCityData(request, response) {
-  let cityName = request.url.split("=")[1];
-  let timeForOneCityData = JSON.stringify(timeForOneCity(cityName));
-
-  response.writeHead(200, { "Content-Type": "application/json" });
-  response.write(timeForOneCityData);
-  response.end();
-}
-
-function writeNextNhoursWeatherData(request, response) {
-  let timeForOneCityData = "";
-
-  request.on("data", function (chunk) {
-    timeForOneCityData += chunk;
-  });
-  request.on("end", () => {
-    response.writeHead(200, { "Content-Type": "application/json" });
-    timeForOneCityData = JSON.parse(timeForOneCityData);
-    let nextNhoursWeatherData = nextNhoursWeather(
-      timeForOneCityData.city_Date_Time_Name,
-      timeForOneCityData.hours,
-      allTimeZones()
-    );
-    nextNhoursWeatherData = JSON.stringify(nextNhoursWeatherData);
-    response.write(nextNhoursWeatherData);
-    response.end();
-  });
-}
-
-function write(response, contentType, filePath) {
-  response.writeHead(200, { "Content-Type": contentType });
-  const readStream = fs.createReadStream(filePath);
-  readStream.pipe(response);
-}
-
-http
-  .createServer((request, response) => {
-    let filePath = getFilePath(request);
-    let extensionName = path.extname(filePath);
-    let contentType = "text/html";
+app.use(express.static("public"));
+app.use(express.json());
+app.listen(port);
 
     switch (extensionName) {
       case ".css":
