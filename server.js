@@ -10,15 +10,15 @@ const {
 const port = process.env.PORT || 3000;
 
 http
-  .createServer((req, res) => {
+  .createServer((request, response) => {
     let filePath = path.join(
       __dirname,
-      req.url === "/" ? "index.html" : req.url
+      request.url === "/" ? "index.html" : request.url
     );
-    let extName = path.extname(filePath);
+    let extensionName = path.extname(filePath);
     let contentType = "text/html";
 
-    switch (extName) {
+    switch (extensionName) {
       case ".css":
         contentType = "text/css";
         break;
@@ -33,38 +33,41 @@ http
         break;
     }
 
-    if (req.url === "/allTimeZones") {
-      res.writeHead(200, { "Content-Type": "application/json" });
-      const jsonContent = JSON.stringify(allTimeZones());
-      res.write(jsonContent);
-      res.end();
-    } else if (req.url.startsWith("/timeForOneCity")) {
-      res.writeHead(200, { "Content-Type": "application/json" });
-      let cityName = req.url.split("=")[1];
-      const jsonContent = JSON.stringify(timeForOneCity(cityName));
-      res.write(jsonContent);
-      res.end();
-    } else if (req.url === "/nextNhoursWeather") {
-      let data = "";
-      req.on("data", function (chunk) {
-        data += chunk;
+    if (request.url === "/allTimeZones") {
+      let allTimeZonesData = JSON.stringify(allTimeZones());
+
+      response.writeHead(200, { "Content-Type": "application/json" });
+      response.write(allTimeZonesData);
+      response.end();
+    } else if (request.url.startsWith("/timeForOneCity")) {
+      let cityName = request.url.split("=")[1];
+      let timeForOneCityData = JSON.stringify(timeForOneCity(cityName));
+
+      response.writeHead(200, { "Content-Type": "application/json" });
+      response.write(timeForOneCityData);
+      response.end();
+    } else if (request.url === "/nextNhoursWeather") {
+      let timeForOneCityData = "";
+
+      request.on("data", function (chunk) {
+        timeForOneCityData += chunk;
       });
-      req.on("end", () => {
-        res.writeHead(200, { "Content-Type": "application/json" });
-        data = JSON.parse(data);
-        let content = nextNhoursWeather(
-          data.city_Date_Time_Name,
-          data.hours,
+      request.on("end", () => {
+        response.writeHead(200, { "Content-Type": "application/json" });
+        timeForOneCityData = JSON.parse(timeForOneCityData);
+        let nextNhoursWeatherData = nextNhoursWeather(
+          timeForOneCityData.city_Date_Time_Name,
+          timeForOneCityData.hours,
           allTimeZones()
         );
-        const jsonContent = JSON.stringify(content);
-        res.write(jsonContent);
-        res.end();
+        nextNhoursWeatherData = JSON.stringify(nextNhoursWeatherData);
+        response.write(nextNhoursWeatherData);
+        response.end();
       });
     } else {
-      res.writeHead(200, { "Content-Type": contentType });
+      response.writeHead(200, { "Content-Type": contentType });
       const readStream = fs.createReadStream(filePath);
-      readStream.pipe(res);
+      readStream.pipe(response);
     }
   })
   .listen(port, (err) => {
