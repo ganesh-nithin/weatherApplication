@@ -35,7 +35,7 @@ class WeatherForTimeZones {
   }
   // return temperature btw min and max range
   getTempBtwRange(min, max,appendDegC =true) {
-    if(appendDegC)return Math.floor(Math.random() * (max - min) + min) + "캜";
+    if(appendDegC)return Math.floor(Math.random() * (max - min) + min) + "째C";
     return Math.floor(Math.random() * (max - min) + min);
   }
   // Conditions: Max temp 50 C (0% humid) & 0 C (100% humid)
@@ -58,8 +58,8 @@ class WeatherForTimeZones {
       dateAndTime: this.getTimeForZone({ timeZone: timeZone }),
       timeZone:timeZone,
       temperature: temp,
-      humidity: this.getHumidity(Number(temp.split("캜")[0])),
-      precipitation: this.getPrecipitation(Number(temp.split("캜")[0]))
+      humidity: this.getHumidity(Number(temp.split("째C")[0])),
+      precipitation: this.getPrecipitation(Number(temp.split("째C")[0]))
     };
   }
   // return time date city for one city
@@ -81,15 +81,15 @@ class WeatherForTimeZones {
     let city = cityTDN.replace(/\s/g, "").split(",")[2];
     for (let i = 0; i < lastForeCast.length; i++) {
       if (lastForeCast[i].cityName.toLowerCase() === city.toLowerCase()) {
-        let temp = Number(lastForeCast[i].temperature.split("캜")[0]);
+        let temp = Number(lastForeCast[i].temperature.split("째C")[0]);
         let data = {
           hours: [`+1 Hour`, `+2 Hour`, `+3 Hour`, `+4 Hour`, `+5 Hour`],
           temperature: [
-            `${temp}캜`,
-            `${temp + this.getTempBtwRange(0,6,false)}캜`,
-            `${temp + this.getTempBtwRange(0,6,false)}캜`,
-            `${temp - this.getTempBtwRange(0,5,false)}캜`,
-            `${temp - this.getTempBtwRange(0,5,false)}캜`
+            `${temp}째C`,
+            `${temp + this.getTempBtwRange(0,6,false)}째C`,
+            `${temp + this.getTempBtwRange(0,6,false)}째C`,
+            `${temp - this.getTempBtwRange(0,5,false)}째C`,
+            `${temp - this.getTempBtwRange(0,5,false)}째C`
           ]
         };
         return {
