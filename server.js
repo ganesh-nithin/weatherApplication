@@ -28,37 +28,13 @@ app.get("/city", (request, response) => {
   }
 });
 
-      response.writeHead(200, { "Content-Type": "application/json" });
-      response.write(timeForOneCityData);
-      response.end();
-    } else if (request.url === "/nextNhoursWeather") {
-      let timeForOneCityData = "";
+app.post("/nextNhoursWeather", (request, response) => {
+  let city_Date_Time_Name = request.body.city_Date_Time_Name;
+  let hours = request.body.hours;
 
-      request.on("data", function (chunk) {
-        timeForOneCityData += chunk;
-      });
-      request.on("end", () => {
-        response.writeHead(200, { "Content-Type": "application/json" });
-        timeForOneCityData = JSON.parse(timeForOneCityData);
-        let nextNhoursWeatherData = nextNhoursWeather(
-          timeForOneCityData.city_Date_Time_Name,
-          timeForOneCityData.hours,
-          allTimeZones()
-        );
-        nextNhoursWeatherData = JSON.stringify(nextNhoursWeatherData);
-        response.write(nextNhoursWeatherData);
-        response.end();
-      });
-    } else {
-      response.writeHead(200, { "Content-Type": contentType });
-      const readStream = fs.createReadStream(filePath);
-      readStream.pipe(response);
-    }
-  })
-  .listen(port, (err) => {
-    if (err) {
-      console.log(`Error: ${err}`);
-    } else {
-      console.log(`Server listening at port ${port}...`);
-    }
-  });
+  if (city_Date_Time_Name && hours) {
+    response.json(
+      nextNhoursWeather(city_Date_Time_Name, hours, allTimeZones())
+    );
+  }
+});
