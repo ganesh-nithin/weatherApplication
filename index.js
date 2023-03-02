@@ -151,13 +151,13 @@ class CityWeatherData extends City {
   }
 
   async getNextFiveYearsData() {
-    let response = await fetch(
+    let timeForCity = await getDataFromServer(
       `https://soliton.glitch.me?city=${this.cityName}`
     );
 
-    let timeForCity = await jsonData(response);
-
-    response = await fetch("https://soliton.glitch.me/hourly-forecast", {
+    let weatherDataForNextFiveYears = await fetch(
+      "https://soliton.glitch.me/hourly-forecast",
+      {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -166,9 +166,12 @@ class CityWeatherData extends City {
         city_Date_Time_Name: timeForCity["city_Date_Time_Name"],
         hours: 5,
       }),
-    });
+      }
+    );
 
-    this.weatherDataForNextFiveYears = await jsonData(response);
+    this.weatherDataForNextFiveYears = await getJsonData(
+      weatherDataForNextFiveYears
+    );
     this.weatherDataForNextFiveYears =
       this.weatherDataForNextFiveYears.temperature;
   }
@@ -196,15 +199,32 @@ class CityWeatherData extends City {
   }
 }
 
+async function getDataFromServer(serverLink) {
+  let dataFromServer = await fetch(serverLink);
+  return await getJsonData(dataFromServer);
+}
+
 async function featchData() {
-  let response = await fetch("https://soliton.glitch.me/all-timezone-cities");
-  let jsonWeatherData = await jsonData(response);
+  let jsonWeatherData = await getDataFromServer(
+    "https://soliton.glitch.me/all-timezone-cities"
+  );
 
   jsonWeatherData.forEach((index) => {
     let cityName = index.cityName.toLowerCase();
     weatherData[cityName] = index;
   });
   addingCitiesToDropDownAndCallingDefaultFunctions();
+}
+
+function getJsonData(response) {
+  try {
+    if (!response.ok) {
+      throw new Error(`HTTP error: ${response.status}`);
+    }
+    return response.json();
+  } catch (e) {
+    console.error(`Fetch problem: ${e.message}`);
+  }
 }
 
 featchData();
