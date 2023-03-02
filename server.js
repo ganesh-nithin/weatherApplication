@@ -27,14 +27,9 @@ app.get("/allTimeZones", (_request, response) => {
 });
 
 app.get("/city", (request, response) => {
-  var cityName = request.query.cityName;
-  if (isValidCity(cityName)) {
-    response.json(timeForOneCity(cityName));
-  } else {
-    response
-      .status(404)
-      .json({ Error: "Not a Valid EndPoint. Please check API Doc" });
-  }
+  let childProcess = fork("./child-processes/time-for-one-city.js");
+  childProcess.send({ cityName: request.query.cityName });
+  childProcess.on("message", (timeForCity) => response.send(timeForCity));
 });
 
 app.post("/nextNhoursWeather", (request, response) => {
