@@ -68,6 +68,39 @@ http
       response.writeHead(200, { "Content-Type": contentType });
       const readStream = fs.createReadStream(filePath);
       readStream.pipe(response);
+http
+  .createServer((request, response) => {
+    let filePath = getFilePath(request);
+    let extensionName = path.extname(filePath);
+    let contentType = "text/html";
+
+    switch (extensionName) {
+      case ".css":
+        contentType = "text/css";
+        break;
+      case ".js":
+        contentType = "text/js";
+        break;
+      case ".svg":
+        contentType = "image/svg+xml";
+        break;
+      case ".ico":
+        contentType = "image/x-icon";
+        break;
+    }
+
+    switch (request.url) {
+      case "/allTimeZones":
+        writeAllTimeZoneData(response);
+        break;
+      case request.url.startsWith("/timeForOneCity") ? request.url : "":
+        writeTimeForOneCityData(request, response);
+        break;
+      case "/nextNhoursWeather":
+        writeNextNhoursWeatherData(request, response);
+        break;
+      default:
+        write(response, contentType, filePath);
     }
   })
   .listen(port, (err) => {
