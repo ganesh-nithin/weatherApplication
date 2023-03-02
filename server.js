@@ -1,9 +1,5 @@
 const express = require("express");
-const {
-  allTimeZones,
-  timeForOneCity,
-  nextNhoursWeather,
-} = require("./timeZone");
+
 const app = express();
 const port = process.env.PORT || 3000;
 const allTimeZonesData = allTimeZones();
@@ -24,7 +20,10 @@ app.use(express.json());
 app.listen(port);
 
 app.get("/allTimeZones", (_request, response) => {
-  response.json(allTimeZonesData);
+  let childProcess = fork("./child-processes/all-Time-Zones.js");
+  childProcess.on("message", (allTimeZoneData) =>
+    response.send(allTimeZoneData)
+  );
 });
 
 app.get("/city", (request, response) => {
