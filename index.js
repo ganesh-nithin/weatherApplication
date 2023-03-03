@@ -12,12 +12,12 @@ const sortOrderEnum = {
   ASCENDING_ORDER: 1,
   DESCENDING_ORDER: -1,
 };
-const amStateIconPath = "/Assets/General%20Images%20&%20Icons/amState.svg";
-const pmStateIconPath = "/Assets/General%20Images%20&%20Icons/pmState.svg";
-const humidityIconPath = "/Assets/Weather%20Icons/humidityIcon.svg";
-const precipitationIconPath = "/Assets/Weather%20Icons/precipitationIcon.svg";
-const arrowUpIconPath = "/Assets/General%20Images%20&%20Icons/arrowUp.svg";
-const arrowDownIconPath = "/Assets/General%20Images%20&%20Icons/arrowDown.svg";
+const amStateIconPath = "/Assets/General_Images_&_Icons/amState.svg";
+const pmStateIconPath = "/Assets/General_Images_&_Icons/pmState.svg";
+const humidityIconPath = "/Assets/Weather_Icons/humidityIcon.svg";
+const precipitationIconPath = "/Assets/Weather_Icons/precipitationIcon.svg";
+const arrowUpIconPath = "/Assets/General_Images_&_Icons/arrowUp.svg";
+const arrowDownIconPath = "/Assets/General_Images_&_Icons/arrowDown.svg";
 
 class City {
   constructor(cityName, timeZone) {
@@ -154,12 +154,11 @@ class CityWeatherData extends City {
   }
 
   async getNextFiveYearsData() {
-    let response = await fetch(
-      `http://localhost:3000/timeForOneCity=${this.cityName}`
+    let timeForCity = await getDataFromServer(
+      `./timeForOneCity=${this.cityName}`
     );
-    let timeForCity = await jsonData(response);
 
-    response = await fetch("http://localhost:3000/nextNhoursWeather", {
+    let weatherDataForNextFiveYears = await fetch("./nextNhoursWeather", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -208,9 +207,8 @@ async function getDataFromServer(serverLink) {
   return await getJsonData(dataFromServer);
 }
 
-async function featchData() {
-  let response = await fetch("http://localhost:3000/allTimeZones");
-  let jsonWeatherData = await jsonData(response);
+async function fetchData() {
+  let jsonWeatherData = await getDataFromServer("./allTimeZones");
 
   jsonWeatherData.forEach((index) => {
     let cityName = index.cityName.toLowerCase();
@@ -230,8 +228,8 @@ function getJsonData(response) {
   }
 }
 
-featchData();
-setInterval(featchData, fourHoursTimerInterval);
+fetchData();
+setInterval(fetchData, fourHoursTimerInterval);
 
 document.getElementById("input-city").addEventListener("input", changeCity);
 document.getElementById("sunny-icon").addEventListener("click", showSunnyCards);
