@@ -1,5 +1,20 @@
 {
   "dependencies": {
+    "@ganesh-nithin/time-zone": "^1.0.1",
     "express": "^4.18.2"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "@ganesh-nithin/time-zone",
+  "description": "This is the WebTIPS assignments repository",
+  "version": "1.0.0",
+  "main": "server.js",
+  "keywords": [],
+  "author": "ganesh-nithin <sarvabhotla.g@solitontech>",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/webtips062/"
   }
 }
