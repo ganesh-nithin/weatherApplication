@@ -11,7 +11,7 @@ app.use(express.static("public"));
 app.use(express.json());
 app.listen(port);
 
-app.get("/allTimeZones", (request, response) => {
+app.get("/allTimeZones", (_request, response) => {
   let allTimeZonesData = allTimeZones();
 
   response.json(allTimeZonesData);
