@@ -1,4 +1,7 @@
-const { allTimeZones, nextNhoursWeather } = require("../time-zone");
+const {
+  allTimeZones,
+  nextNhoursWeather,
+} = require("@ganesh-nithin/time-zone/time-zone");
 
 process.on("message", (city) => {
   process.send(getNextNHoursWeather(city.city_Date_Time_Name, city.hours));

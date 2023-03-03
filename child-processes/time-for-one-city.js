@@ -1,4 +1,4 @@
-const { timeForOneCity } = require("../time-zone");
+const { timeForOneCity } = require("@ganesh-nithin/time-zone/time-zone");
 
 process.on("message", (city) => {
   process.send(getTimeForOneCity(city.cityName));

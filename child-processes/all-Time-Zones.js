@@ -1,4 +1,4 @@
-const { allTimeZones } = require("../time-zone");
+const { allTimeZones } = require("@ganesh-nithin/time-zone/time-zone");
 
 process.send(getAllTimeZonesData());
 process.exit();
