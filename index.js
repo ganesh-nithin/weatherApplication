@@ -12,12 +12,12 @@ const sortOrderEnum = {
   ASCENDING_ORDER: 1,
   DESCENDING_ORDER: -1,
 };
-const amStateIconPath = "/Assets/General%20Images%20&%20Icons/amState.svg";
-const pmStateIconPath = "/Assets/General%20Images%20&%20Icons/pmState.svg";
-const humidityIconPath = "/Assets/Weather%20Icons/humidityIcon.svg";
-const precipitationIconPath = "/Assets/Weather%20Icons/precipitationIcon.svg";
-const arrowUpIconPath = "/Assets/General%20Images%20&%20Icons/arrowUp.svg";
-const arrowDownIconPath = "/Assets/General%20Images%20&%20Icons/arrowDown.svg";
+const amStateIconPath = "/Assets/General_Images_&_Icons/amState.svg";
+const pmStateIconPath = "/Assets/General_Images_&_Icons/pmState.svg";
+const humidityIconPath = "/Assets/Weather_Icons/humidityIcon.svg";
+const precipitationIconPath = "/Assets/Weather_Icons/precipitationIcon.svg";
+const arrowUpIconPath = "/Assets/General_Images_&_Icons/arrowUp.svg";
+const arrowDownIconPath = "/Assets/General_Images_&_Icons/arrowDown.svg";
 
 class City {
   constructor(cityName, timeZone) {
@@ -28,7 +28,7 @@ class City {
   changeIcon() {
     let image = document.getElementById("city-img");
     image.src =
-      "/Assets/Icons for cities/" + this.cityName.toLowerCase() + ".svg";
+      "/Assets/Icons_for_cities/" + this.cityName.toLowerCase() + ".svg";
     image.style.visibility = "visible";
   }
 
@@ -148,29 +148,26 @@ class CityWeatherData extends City {
     }
 
     document.getElementById(`temp${number}`).innerHTML = temperature;
-    image.src = "/Assets/Weather Icons/" + icon + "Icon.svg";
+    image.src = "/Assets/Weather_Icons/" + icon + "Icon.svg";
     image.title = icon;
     image.style.visibility = "visible";
   }
 
   async getNextFiveYearsData() {
     let timeForCity = await getDataFromServer(
-      `https://soliton.glitch.me?city=${this.cityName}`
+      `./timeForOneCity=${this.cityName}`
     );
 
-    let weatherDataForNextFiveYears = await fetch(
-      "https://soliton.glitch.me/hourly-forecast",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          city_Date_Time_Name: timeForCity["city_Date_Time_Name"],
-          hours: 5,
-        }),
-      }
-    );
+    let weatherDataForNextFiveYears = await fetch("./nextNhoursWeather", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        city_Date_Time_Name: timeForCity["city_Date_Time_Name"],
+        hours: 5,
+      }),
+    });
 
     this.weatherDataForNextFiveYears = await getJsonData(
       weatherDataForNextFiveYears
@@ -210,10 +207,8 @@ async function getDataFromServer(serverLink) {
   return await getJsonData(dataFromServer);
 }
 
-async function featchData() {
-  let jsonWeatherData = await getDataFromServer(
-    "https://soliton.glitch.me/all-timezone-cities"
-  );
+async function fetchData() {
+  let jsonWeatherData = await getDataFromServer("./allTimeZones");
 
   jsonWeatherData.forEach((index) => {
     let cityName = index.cityName.toLowerCase();
@@ -233,8 +228,8 @@ function getJsonData(response) {
   }
 }
 
-featchData();
-setInterval(featchData, fourHoursTimerInterval);
+fetchData();
+setInterval(fetchData, fourHoursTimerInterval);
 
 document.getElementById("input-city").addEventListener("input", changeCity);
 document.getElementById("sunny-icon").addEventListener("click", showSunnyCards);
@@ -347,7 +342,7 @@ const arrangeCardsInContainer = (cities, weatherCondition, noOfCities) => {
         ${cities[i].cityName}
         <img
           class="img"
-          src="/Assets/Weather Icons/${weatherCondition}Icon.svg"
+          src="/Assets/Weather_Icons/${weatherCondition}Icon.svg"
           alt="${weatherCondition}Icon"
           width="18"
           height="18"
@@ -382,7 +377,7 @@ const arrangeCardsInContainer = (cities, weatherCondition, noOfCities) => {
   for (let i = 0; i < noOfCities; i++) {
     document.getElementById(
       `card${i}`
-    ).style.backgroundImage = `url(/Assets/Icons%20for%20cities/${cities[
+    ).style.backgroundImage = `url(/Assets/Icons_for_cities/${cities[
       i
     ].cityName.toLowerCase()}.svg)`;
   }
