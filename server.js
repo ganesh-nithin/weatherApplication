@@ -24,7 +24,7 @@ app.get("/city", (request, response) => {
 app.post("/nextNhoursWeather", (request, response) => {
   let childProcess = fork("./child-processes/next-N-Hours-Weather.js");
   childProcess.send({
-    city_Date_Time_Name: request.body.city_Date_Time_Name,
+    cityDateTimeName: request.body.city_Date_Time_Name,
     hours: request.body.hours,
   });
   childProcess.on("message", (nextNhoursWeather) =>

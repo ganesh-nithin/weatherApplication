@@ -164,7 +164,7 @@ class CityWeatherData extends City {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        city_Date_Time_Name: timeForCity["city_Date_Time_Name"],
+        cityDateTimeName: timeForCity["city_Date_Time_Name"],
         hours: 5,
       }),
     });

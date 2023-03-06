@@ -4,12 +4,12 @@ const {
 } = require("@ganesh-nithin/time-zone/time-zone");
 
 process.on("message", (city) => {
-  process.send(getNextNHoursWeather(city.city_Date_Time_Name, city.hours));
+  process.send(getNextNHoursWeather(city.cityDateTimeName, city.hours));
   process.exit();
 });
 
-function getNextNHoursWeather(city_Date_Time_Name, hours) {
+function getNextNHoursWeather(cityDateTimeName, hours) {
   return JSON.stringify(
-    nextNhoursWeather(city_Date_Time_Name, hours, allTimeZones())
+    nextNhoursWeather(cityDateTimeName, hours, allTimeZones())
   );
 }
