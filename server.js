@@ -6,20 +6,30 @@ const {
 } = require("./timeZone");
 const app = express();
 const port = process.env.PORT || 3000;
+const allTimeZonesData = allTimeZones();
+let cityNames = [];
+
+allTimeZonesData.forEach((city) => {
+  cityNames.push(city.cityName);
+});
+
+function isValidCity(cityName) {
+  return cityNames.find((cityNameIndex) => {
+    return cityName === cityNameIndex;
+  });
+}
 
 app.use(express.static("public"));
 app.use(express.json());
 app.listen(port);
 
 app.get("/allTimeZones", (_request, response) => {
-  let allTimeZonesData = allTimeZones();
-
   response.json(allTimeZonesData);
 });
 
 app.get("/city", (request, response) => {
   var cityName = request.query.cityName;
-  if (cityName) {
+  if (isValidCity(cityName)) {
     response.json(timeForOneCity(cityName));
   } else {
     response
