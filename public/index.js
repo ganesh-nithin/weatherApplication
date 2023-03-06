@@ -155,7 +155,7 @@ class CityWeatherData extends City {
 
   async getNextFiveYearsData() {
     let timeForCity = await getDataFromServer(
-      `./timeForOneCity=${this.cityName}`
+      `./city?cityName=${this.cityName}`
     );
 
     let weatherDataForNextFiveYears = await fetch("./nextNhoursWeather", {

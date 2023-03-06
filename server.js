@@ -1,100 +1,48 @@
-const http = require("http");
-const fs = require("fs");
-const path = require("path");
+const express = require("express");
 const {
   allTimeZones,
   timeForOneCity,
   nextNhoursWeather,
 } = require("./timeZone");
-
+const app = express();
 const port = process.env.PORT || 3000;
+const allTimeZonesData = allTimeZones();
+let cityNames = [];
 
-function getFilePath(request) {
-  return path.join(__dirname, request.url === "/" ? "index.html" : request.url);
-}
+allTimeZonesData.forEach((city) => {
+  cityNames.push(city.cityName);
+});
 
-function writeAllTimeZoneData(response) {
-  let allTimeZonesData = JSON.stringify(allTimeZones());
-
-  response.writeHead(200, { "Content-Type": "application/json" });
-  response.write(allTimeZonesData);
-  response.end();
-}
-
-function writeTimeForOneCityData(request, response) {
-  let cityName = request.url.split("=")[1];
-  let timeForOneCityData = JSON.stringify(timeForOneCity(cityName));
-
-  response.writeHead(200, { "Content-Type": "application/json" });
-  response.write(timeForOneCityData);
-  response.end();
-}
-
-function writeNextNhoursWeatherData(request, response) {
-  let timeForOneCityData = "";
-
-  request.on("data", function (chunk) {
-    timeForOneCityData += chunk;
-  });
-  request.on("end", () => {
-    response.writeHead(200, { "Content-Type": "application/json" });
-    timeForOneCityData = JSON.parse(timeForOneCityData);
-    let nextNhoursWeatherData = nextNhoursWeather(
-      timeForOneCityData.city_Date_Time_Name,
-      timeForOneCityData.hours,
-      allTimeZones()
-    );
-    nextNhoursWeatherData = JSON.stringify(nextNhoursWeatherData);
-    response.write(nextNhoursWeatherData);
-    response.end();
+function isValidCity(cityName) {
+  return cityNames.find((cityNameIndex) => {
+    return cityName === cityNameIndex;
   });
 }
 
-function write(response, contentType, filePath) {
-  response.writeHead(200, { "Content-Type": contentType });
-  const readStream = fs.createReadStream(filePath);
-  readStream.pipe(response);
-}
+app.use(express.static("public"));
+app.use(express.json());
+app.listen(port);
 
-http
-  .createServer((request, response) => {
-    let filePath = getFilePath(request);
-    let extensionName = path.extname(filePath);
-    let contentType = "text/html";
+app.get("/allTimeZones", (_request, response) => {
+  response.json(allTimeZonesData);
+});
 
-    switch (extensionName) {
-      case ".css":
-        contentType = "text/css";
-        break;
-      case ".js":
-        contentType = "text/js";
-        break;
-      case ".svg":
-        contentType = "image/svg+xml";
-        break;
-      case ".ico":
-        contentType = "image/x-icon";
-        break;
-    }
+app.get("/city", (request, response) => {
+  var cityName = request.query.cityName;
+  if (isValidCity(cityName)) {
+    response.json(timeForOneCity(cityName));
+  } else {
+    response
+      .status(404)
+      .json({ Error: "Not a Valid EndPoint. Please check API Doc" });
+  }
+});
 
-    switch (request.url) {
-      case "/allTimeZones":
-        writeAllTimeZoneData(response);
-        break;
-      case request.url.startsWith("/timeForOneCity") ? request.url : "":
-        writeTimeForOneCityData(request, response);
-        break;
-      case "/nextNhoursWeather":
-        writeNextNhoursWeatherData(request, response);
-        break;
-      default:
-        write(response, contentType, filePath);
-    }
-  })
-  .listen(port, (err) => {
-    if (err) {
-      console.log(`Error: ${err}`);
-    } else {
-      console.log(`Server listening at port ${port}...`);
-    }
-  });
+app.post("/nextNhoursWeather", (request, response) => {
+  let cityDateTimeName = request.body.city_Date_Time_Name;
+  let hours = request.body.hours;
+
+  if (cityDateTimeName && hours) {
+    response.json(nextNhoursWeather(cityDateTimeName, hours, allTimeZones()));
+  }
+});
