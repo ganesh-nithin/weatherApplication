@@ -1,20 +1,23 @@
 var weatherData = {};
-var timerId;
-const amStateIconPath = "/Assets/General_Images_&_Icons/amState.svg";
-const pmStateIconPath = "/Assets/General_Images_&_Icons/pmState.svg";
-const humidityIconPath = "/Assets/Weather_Icons/humidityIcon.svg";
-const precipitationIconPath = "/Assets/Weather_Icons/precipitationIcon.svg";
+var cityTimeTimerId;
 var cityTimerId;
-const timeIntervalValue = 60000;
 var cardsTimerId;
-const arrowUpIconPath = "/Assets/General_Images_&_Icons/arrowUp.svg";
-const arrowDownIconPath = "/Assets/General_Images_&_Icons/arrowDown.svg";
 var continentTimerId;
-var weatherDataInterval;
+var weatherDataTimerId;
+const oneSecondTimeInterval = 1000;
+const oneMinuteTimeInterval = 60000;
+const oneHourTimerInterval = 3600000;
+const fourHoursTimerInterval = 14400000;
 const sortOrderEnum = {
   ASCENDING_ORDER: 1,
   DESCENDING_ORDER: -1,
 };
+const amStateIconPath = "/Assets/General_Images_&_Icons/amState.svg";
+const pmStateIconPath = "/Assets/General_Images_&_Icons/pmState.svg";
+const humidityIconPath = "/Assets/Weather_Icons/humidityIcon.svg";
+const precipitationIconPath = "/Assets/Weather_Icons/precipitationIcon.svg";
+const arrowUpIconPath = "/Assets/General_Images_&_Icons/arrowUp.svg";
+const arrowDownIconPath = "/Assets/General_Images_&_Icons/arrowDown.svg";
 
 class City {
   constructor(cityName, timeZone) {
@@ -71,12 +74,12 @@ class City {
   }
 
   changeTime() {
-    if (timerId) {
-      clearInterval(timerId);
+    if (cityTimeTimerId) {
+      clearInterval(cityTimeTimerId);
     }
     document.getElementById("stateIcon").style.visibility = "visible";
 
-    timerId = setInterval(() => {
+    cityTimeTimerId = setInterval(() => {
       let time = this.getTime().split(":");
       document.getElementById("hour-minutes").innerHTML =
         (time[0] == 12 ? 12 : time[0] % 12) + ":" + time[1];
@@ -86,7 +89,7 @@ class City {
       } else {
         document.getElementById("stateIcon").src = pmStateIconPath;
       }
-    }, 100);
+    }, oneSecondTimeInterval);
   }
 
   changeDate() {
@@ -151,10 +154,11 @@ class CityWeatherData extends City {
   }
 
   async getNextFiveYearsData() {
-    let response = await fetch(`./city?cityName=${this.cityName}`);
-    let timeForCity = await jsonData(response);
+    let timeForCity = await getDataFromServer(
+      `./city?cityName=${this.cityName}`
+    );
 
-    response = await fetch("./nextNhoursWeather", {
+    let weatherDataForNextFiveYears = await fetch("./nextNhoursWeather", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -165,17 +169,22 @@ class CityWeatherData extends City {
       }),
     });
 
-    this.weatherDataForNextFiveYears = await jsonData(response);
+    this.weatherDataForNextFiveYears = await getJsonData(
+      weatherDataForNextFiveYears
+    );
     this.weatherDataForNextFiveYears =
       this.weatherDataForNextFiveYears.temperature;
   }
 
   async changeNextFiveHrs() {
     await this.getNextFiveYearsData();
-    if (weatherDataInterval) {
-      clearInterval(weatherDataInterval);
+    if (weatherDataTimerId) {
+      clearInterval(weatherDataTimerId);
     }
-    weatherDataInterval = setInterval(this.getNextFiveYearsData(), 3600000);
+    weatherDataTimerId = setInterval(
+      this.getNextFiveYearsData(),
+      oneHourTimerInterval
+    );
     let hour = parseInt(this.getTime().split(":")[0]);
 
     this.changeWeatherIconData(this.temperature, 0);
@@ -193,9 +202,13 @@ class CityWeatherData extends City {
   }
 }
 
-async function featchData() {
-  let response = await fetch("./allTimeZones");
-  let jsonWeatherData = await jsonData(response);
+async function getDataFromServer(serverLink) {
+  let dataFromServer = await fetch(serverLink);
+  return await getJsonData(dataFromServer);
+}
+
+async function fetchData() {
+  let jsonWeatherData = await getDataFromServer("./allTimeZones");
 
   jsonWeatherData.forEach((index) => {
     let cityName = index.cityName.toLowerCase();
@@ -204,8 +217,19 @@ async function featchData() {
   addingCitiesToDropDownAndCallingDefaultFunctions();
 }
 
-featchData();
-setInterval(featchData, 14400000);
+function getJsonData(response) {
+  try {
+    if (!response.ok) {
+      throw new Error(`HTTP error: ${response.status}`);
+    }
+    return response.json();
+  } catch (e) {
+    console.error(`Fetch problem: ${e.message}`);
+  }
+}
+
+fetchData();
+setInterval(fetchData, fourHoursTimerInterval);
 
 document.getElementById("input-city").addEventListener("input", changeCity);
 document.getElementById("sunny-icon").addEventListener("click", showSunnyCards);
@@ -223,17 +247,6 @@ document
   .getElementById("temperature")
   .addEventListener("click", arrangeCardsInOrderTemperature);
 window.addEventListener("resize", displayGivenNumberOfCities);
-
-function jsonData(response) {
-  try {
-    if (!response.ok) {
-      throw new Error(`HTTP error: ${response.status}`);
-    }
-    return response.json();
-  } catch (e) {
-    console.error(`Fetch problem: ${e.message}`);
-  }
-}
 
 const addingCitiesToDropDownAndCallingDefaultFunctions = () => {
   var str = "";
@@ -271,8 +284,8 @@ const changeWeatherTimeDateDataForSelectedCity = (key) => {
 };
 
 const showNILValues = () => {
-  if (timerId) {
-    clearInterval(timerId);
+  if (cityTimeTimerId) {
+    clearInterval(cityTimeTimerId);
   }
 
   document.getElementById("invalid-input").style.display = "block";
@@ -381,7 +394,7 @@ const setTimeIntervalsForMiddleCards = function (cities, noOfCities) {
       let str = cities[i].getTime12Hrs();
       element.innerHTML = str;
     }
-  }, timeIntervalValue);
+  }, oneMinuteTimeInterval);
 };
 
 const toggleArrowsAndDisplayNumber = function (noOfCities) {
@@ -647,7 +660,7 @@ const setTimeIntervels = function (cityObjects) {
       let str = `${cityObjects[i].cityName}, ${cityObjects[i].getTime12Hrs()}`;
       element.innerHTML = str;
     }
-  }, 60000);
+  }, oneMinuteTimeInterval);
 };
 
 const sortingAndArrangingCards = function () {

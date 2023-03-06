@@ -2,18 +2,7 @@ const express = require("express");
 
 const app = express();
 const port = process.env.PORT || 3000;
-const allTimeZonesData = allTimeZones();
-let cityNames = [];
-
-allTimeZonesData.forEach((city) => {
-  cityNames.push(city.cityName);
-});
-
-function isValidCity(cityName) {
-  return cityNames.find((cityNameIndex) => {
-    return cityName === cityNameIndex;
-  });
-}
+const { fork } = require("child_process");
 
 app.use(express.static("public"));
 app.use(express.json());
