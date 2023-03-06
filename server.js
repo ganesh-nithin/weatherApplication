@@ -34,7 +34,7 @@ app.get("/city", (request, response) => {
   } else {
     response
       .status(404)
-      .json({ Error: "Not a Valid EndPonit. Please check API Doc" });
+      .json({ Error: "Not a Valid EndPoint. Please check API Doc" });
   }
 });
 
