@@ -39,12 +39,10 @@ app.get("/city", (request, response) => {
 });
 
 app.post("/nextNhoursWeather", (request, response) => {
-  let city_Date_Time_Name = request.body.city_Date_Time_Name;
+  let cityDateTimeName = request.body.city_Date_Time_Name;
   let hours = request.body.hours;
 
-  if (city_Date_Time_Name && hours) {
-    response.json(
-      nextNhoursWeather(city_Date_Time_Name, hours, allTimeZones())
-    );
+  if (cityDateTimeName && hours) {
+    response.json(nextNhoursWeather(cityDateTimeName, hours, allTimeZones()));
   }
 });
